@@ -1,8 +1,8 @@
 package net.minecraft.server;
 
-import net.minecraft.server.entity.Entity;
-import net.minecraft.server.entity.EntityLiving;
-import net.minecraft.server.entity.EntityTypes;
+import net.minecraft.server.world.entity.Entity;
+import net.minecraft.server.world.entity.EntityLiving;
+import net.minecraft.server.world.entity.EntityTypes;
 
 public class TileEntityMobSpawner extends TileEntity {
 

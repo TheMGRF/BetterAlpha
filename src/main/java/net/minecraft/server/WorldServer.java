@@ -1,8 +1,8 @@
 package net.minecraft.server;
 
-import net.minecraft.server.entity.Entity;
-import net.minecraft.server.entity.EntityAnimal;
-import net.minecraft.server.entity.EntityHuman;
+import net.minecraft.server.world.entity.Entity;
+import net.minecraft.server.world.entity.EntityAnimal;
+import net.minecraft.server.world.entity.EntityHuman;
 
 import java.io.File;
 import java.util.ArrayList;

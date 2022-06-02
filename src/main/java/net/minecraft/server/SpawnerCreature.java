@@ -1,6 +1,6 @@
 package net.minecraft.server;
 
-import net.minecraft.server.entity.*;
+import net.minecraft.server.world.entity.*;
 
 import java.util.HashSet;
 import java.util.Iterator;

@@ -1,7 +1,9 @@
 package net.minecraft.server;
 
-import net.minecraft.server.block.Block;
-import net.minecraft.server.block.BlockFlower;
+import net.minecraft.server.world.Block;
+import net.minecraft.server.world.BlockFlower;
+import net.minecraft.server.world.block.Block;
+import net.minecraft.server.world.block.BlockFlower;
 
 import java.util.Random;
 

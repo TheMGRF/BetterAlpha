@@ -1,7 +1,7 @@
 package net.minecraft.server;
 
-import net.minecraft.server.entity.Entity;
-import net.minecraft.server.entity.EntityList;
+import net.minecraft.server.world.entity.Entity;
+import net.minecraft.server.world.entity.EntityList;
 
 public class Pathfinder {
 

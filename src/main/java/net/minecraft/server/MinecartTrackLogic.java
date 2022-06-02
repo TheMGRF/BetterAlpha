@@ -1,6 +1,7 @@
 package net.minecraft.server;
 
-import net.minecraft.server.block.BlockMinecartTrack;
+import net.minecraft.server.world.BlockMinecartTrack;
+import net.minecraft.server.world.block.BlockMinecartTrack;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
 package net.minecraft.server;
 
-import net.minecraft.server.entity.EntityLiving;
-import net.minecraft.server.entity.EntityTypes;
+import net.minecraft.server.world.entity.EntityLiving;
+import net.minecraft.server.world.entity.EntityTypes;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

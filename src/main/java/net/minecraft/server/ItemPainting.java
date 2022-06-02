@@ -1,8 +1,8 @@
 package net.minecraft.server;
 
-import net.minecraft.server.entity.Entity;
-import net.minecraft.server.entity.EntityHuman;
-import net.minecraft.server.entity.EntityPainting;
+import net.minecraft.server.world.entity.Entity;
+import net.minecraft.server.world.entity.EntityHuman;
+import net.minecraft.server.world.entity.EntityPainting;
 
 public class ItemPainting extends Item {
 

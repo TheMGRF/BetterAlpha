@@ -1,9 +1,9 @@
 package net.minecraft.server;
 
-import net.minecraft.server.entity.Entity;
-import net.minecraft.server.entity.EntityHuman;
-import net.minecraft.server.entity.EntityPlayer;
-import net.minecraft.server.entity.EntityTracker;
+import net.minecraft.server.world.entity.Entity;
+import net.minecraft.server.world.entity.EntityHuman;
+import net.minecraft.server.world.entity.EntityPlayer;
+import net.minecraft.server.world.entity.EntityTracker;
 
 import java.awt.GraphicsEnvironment;
 import java.io.File;

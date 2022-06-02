@@ -1,7 +1,9 @@
 package net.minecraft.server;
 
-import net.minecraft.server.block.Block;
-import net.minecraft.server.block.BlockFurnace;
+import net.minecraft.server.world.Block;
+import net.minecraft.server.world.BlockFurnace;
+import net.minecraft.server.world.block.Block;
+import net.minecraft.server.world.block.BlockFurnace;
 
 public class TileEntityFurnace extends TileEntity implements IInventory {
 

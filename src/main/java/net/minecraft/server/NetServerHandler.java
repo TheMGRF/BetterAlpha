@@ -1,8 +1,8 @@
 package net.minecraft.server;
 
-import net.minecraft.server.entity.Entity;
-import net.minecraft.server.entity.EntityItem;
-import net.minecraft.server.entity.EntityPlayer;
+import net.minecraft.server.world.entity.Entity;
+import net.minecraft.server.world.entity.EntityItem;
+import net.minecraft.server.world.entity.EntityPlayer;
 
 import java.util.logging.Logger;
 

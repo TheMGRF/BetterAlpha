@@ -1,6 +1,6 @@
 package net.minecraft.server;
 
-import net.minecraft.server.entity.EntityItem;
+import net.minecraft.server.world.entity.EntityItem;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

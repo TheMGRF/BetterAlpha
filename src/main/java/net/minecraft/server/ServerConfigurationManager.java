@@ -1,6 +1,6 @@
 package net.minecraft.server;
 
-import net.minecraft.server.entity.EntityPlayer;
+import net.minecraft.server.world.entity.EntityPlayer;
 
 import java.io.BufferedReader;
 import java.io.File;
