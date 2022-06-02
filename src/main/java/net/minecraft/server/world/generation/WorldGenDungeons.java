@@ -12,7 +12,8 @@ import java.util.Random;
 
 public class WorldGenDungeons extends WorldGenerator {
 
-    public WorldGenDungeons() {}
+    public WorldGenDungeons() {
+    }
 
     public boolean a(World world, Random random, int i, int j, int k) {
         byte b0 = 3;
@@ -70,7 +71,8 @@ public class WorldGenDungeons extends WorldGenerator {
 
                 while (true) {
                     if (l1 < 3) {
-                        label204: {
+                        label204:
+                        {
                             i2 = i + random.nextInt(l * 2 + 1) - l;
                             int j2 = k + random.nextInt(i1 * 2 + 1) - i1;
 

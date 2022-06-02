@@ -1,7 +1,7 @@
 package net.minecraft.server.packet;
 
-import net.minecraft.server.utils.MathHelper;
 import net.minecraft.server.network.handler.NetHandler;
+import net.minecraft.server.utils.MathHelper;
 import net.minecraft.server.world.entity.Entity;
 
 import java.io.DataInputStream;
@@ -19,7 +19,8 @@ public class PacketUnusedFishing extends Packet {
     public byte g;
     public int h;
 
-    public PacketUnusedFishing() {}
+    public PacketUnusedFishing() {
+    }
 
     public PacketUnusedFishing(Entity entity, int i) {
         this.a = entity.g;

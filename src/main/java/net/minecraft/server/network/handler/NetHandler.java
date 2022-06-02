@@ -4,13 +4,17 @@ import net.minecraft.server.packet.*;
 
 public class NetHandler {
 
-    public NetHandler() {}
+    public NetHandler() {
+    }
 
-    public void a(Packet51MapChunk packet51mapchunk) {}
+    public void a(Packet51MapChunk packet51mapchunk) {
+    }
 
-    public void a(Packet packet) {}
+    public void a(Packet packet) {
+    }
 
-    public void a(String s) {}
+    public void a(String s) {
+    }
 
     public void a(Packet255KickDisconnect packet255kickdisconnect) {
         this.a((Packet) packet255kickdisconnect);

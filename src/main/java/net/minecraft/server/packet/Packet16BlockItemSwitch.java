@@ -11,7 +11,8 @@ public class Packet16BlockItemSwitch extends Packet {
     public int a;
     public int b;
 
-    public Packet16BlockItemSwitch() {}
+    public Packet16BlockItemSwitch() {
+    }
 
     public Packet16BlockItemSwitch(int i, int j) {
         this.a = i;

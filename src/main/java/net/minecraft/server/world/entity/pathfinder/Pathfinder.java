@@ -1,8 +1,8 @@
 package net.minecraft.server.world.entity.pathfinder;
 
-import net.minecraft.server.world.block.material.Material;
 import net.minecraft.server.utils.MathHelper;
 import net.minecraft.server.world.block.IBlockAccess;
+import net.minecraft.server.world.block.material.Material;
 import net.minecraft.server.world.entity.Entity;
 import net.minecraft.server.world.entity.EntityList;
 

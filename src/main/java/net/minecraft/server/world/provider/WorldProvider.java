@@ -2,7 +2,10 @@ package net.minecraft.server.world.provider;
 
 import net.minecraft.server.world.World;
 import net.minecraft.server.world.block.Block;
-import net.minecraft.server.world.chunk.*;
+import net.minecraft.server.world.chunk.ChunkLoader;
+import net.minecraft.server.world.chunk.ChunkProviderGenerate;
+import net.minecraft.server.world.chunk.IChunkLoader;
+import net.minecraft.server.world.chunk.IChunkProvider;
 import net.minecraft.server.world.chunk.manager.WorldChunkManager;
 
 import java.io.File;
@@ -16,7 +19,8 @@ public class WorldProvider {
     public int e = 0;
     private float[] f = new float[4];
 
-    public WorldProvider() {}
+    public WorldProvider() {
+    }
 
     public final void a(World world) {
         this.a = world;

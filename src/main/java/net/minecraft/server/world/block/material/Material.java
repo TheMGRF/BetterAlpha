@@ -28,7 +28,8 @@ public class Material {
     public static final Material x = new Material();
     private boolean y;
 
-    public Material() {}
+    public Material() {
+    }
 
     public boolean d() {
         return false;

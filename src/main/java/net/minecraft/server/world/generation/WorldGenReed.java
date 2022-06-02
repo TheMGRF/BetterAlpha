@@ -1,14 +1,15 @@
 package net.minecraft.server.world.generation;
 
-import net.minecraft.server.world.block.material.Material;
 import net.minecraft.server.world.World;
 import net.minecraft.server.world.block.Block;
+import net.minecraft.server.world.block.material.Material;
 
 import java.util.Random;
 
 public class WorldGenReed extends WorldGenerator {
 
-    public WorldGenReed() {}
+    public WorldGenReed() {
+    }
 
     public boolean a(World world, Random random, int i, int j, int k) {
         for (int l = 0; l < 20; ++l) {

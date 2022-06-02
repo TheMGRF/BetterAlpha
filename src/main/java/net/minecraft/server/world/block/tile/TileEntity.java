@@ -15,7 +15,8 @@ public class TileEntity {
     public int c;
     public int d;
 
-    public TileEntity() {}
+    public TileEntity() {
+    }
 
     private static void a(Class oclass, String s) {
         if (f.containsKey(s)) {
@@ -45,7 +46,8 @@ public class TileEntity {
         }
     }
 
-    public void b() {}
+    public void b() {
+    }
 
     public static TileEntity c(NBTTagCompound nbttagcompound) {
         TileEntity tileentity = null;

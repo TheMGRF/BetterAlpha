@@ -4,10 +4,10 @@ import net.minecraft.server.nbt.NBTTagCompound;
 import net.minecraft.server.utils.MathHelper;
 import net.minecraft.server.utils.MovingObjectPosition;
 import net.minecraft.server.utils.Vec3D;
-import net.minecraft.server.world.block.material.Material;
-import net.minecraft.server.world.block.sound.StepSound;
 import net.minecraft.server.world.World;
 import net.minecraft.server.world.block.Block;
+import net.minecraft.server.world.block.material.Material;
+import net.minecraft.server.world.block.sound.StepSound;
 import net.minecraft.server.world.entity.Entity;
 
 import java.util.List;
@@ -697,7 +697,8 @@ public class EntityLiving extends Entity {
         return f + f3;
     }
 
-    public void K() {}
+    public void K() {
+    }
 
     public boolean a() {
         return this.l.a(this.z) && this.l.a((Entity) this, this.z).size() == 0 && !this.l.b(this.z);

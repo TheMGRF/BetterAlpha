@@ -1,10 +1,10 @@
 package net.minecraft.server.world.entity.impl;
 
 import net.minecraft.server.utils.MathHelper;
-import net.minecraft.server.world.entity.Entity;
-import net.minecraft.server.world.entity.pathfinder.PathEntity;
 import net.minecraft.server.utils.Vec3D;
 import net.minecraft.server.world.World;
+import net.minecraft.server.world.entity.Entity;
+import net.minecraft.server.world.entity.pathfinder.PathEntity;
 
 public class EntityCreature extends EntityLiving {
 
@@ -141,7 +141,8 @@ public class EntityCreature extends EntityLiving {
         }
     }
 
-    protected void a(Entity entity, float f) {}
+    protected void a(Entity entity, float f) {
+    }
 
     protected float a(int i, int j, int k) {
         return 0.0F;

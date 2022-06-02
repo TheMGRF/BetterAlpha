@@ -3,7 +3,6 @@ package net.minecraft.server.world;
 import net.minecraft.server.utils.AxisAlignedBB;
 import net.minecraft.server.utils.MathHelper;
 import net.minecraft.server.utils.Vec3D;
-import net.minecraft.server.world.World;
 import net.minecraft.server.world.block.Block;
 import net.minecraft.server.world.chunk.ChunkPosition;
 import net.minecraft.server.world.entity.Entity;
@@ -18,7 +17,8 @@ public class Explosion {
     public boolean a = false;
     private Random b = new Random();
 
-    public Explosion() {}
+    public Explosion() {
+    }
 
     public void a(World world, Entity entity, double d0, double d1, double d2, float f) {
         world.a(d0, d1, d2, "random.explode", 4.0F, (1.0F + (world.l.nextFloat() - world.l.nextFloat()) * 0.2F) * 0.7F);

@@ -197,11 +197,14 @@ public class EntityHuman extends EntityLiving {
         nbttagcompound.a("Dimension", this.dimension);
     }
 
-    public void a(IInventory iinventory) {}
+    public void a(IInventory iinventory) {
+    }
 
-    public void F() {}
+    public void F() {
+    }
 
-    public void c(Entity entity, int i) {}
+    public void c(Entity entity, int i) {
+    }
 
     public float s() {
         return 0.12F;
@@ -239,9 +242,11 @@ public class EntityHuman extends EntityLiving {
         }
     }
 
-    public void a(TileEntityFurnace tileentityfurnace) {}
+    public void a(TileEntityFurnace tileentityfurnace) {
+    }
 
-    public void a(TileEntitySign tileentitysign) {}
+    public void a(TileEntitySign tileentitysign) {
+    }
 
     public ItemStack G() {
         return this.ak.b();

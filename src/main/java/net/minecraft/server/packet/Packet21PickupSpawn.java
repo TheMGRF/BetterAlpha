@@ -1,7 +1,7 @@
 package net.minecraft.server.packet;
 
-import net.minecraft.server.utils.MathHelper;
 import net.minecraft.server.network.handler.NetHandler;
+import net.minecraft.server.utils.MathHelper;
 import net.minecraft.server.world.entity.impl.EntityItem;
 
 import java.io.DataInputStream;
@@ -20,7 +20,8 @@ public class Packet21PickupSpawn extends Packet {
     public int h;
     public int i;
 
-    public Packet21PickupSpawn() {}
+    public Packet21PickupSpawn() {
+    }
 
     public Packet21PickupSpawn(EntityItem entityitem) {
         this.a = entityitem.g;

@@ -14,7 +14,8 @@ public class Packet15Place extends Packet {
     public int d;
     public int e;
 
-    public Packet15Place() {}
+    public Packet15Place() {
+    }
 
     public void a(DataInputStream datainputstream) throws IOException {
         this.a = datainputstream.readShort();

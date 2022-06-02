@@ -2,13 +2,13 @@ package net.minecraft.server.world;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.block.tile.TileEntity;
-import net.minecraft.server.world.provider.WorldProvider;
 import net.minecraft.server.world.chunk.ChunkLoader;
 import net.minecraft.server.world.chunk.ChunkProviderServer;
 import net.minecraft.server.world.chunk.IChunkProvider;
 import net.minecraft.server.world.entity.Entity;
 import net.minecraft.server.world.entity.EntityAnimal;
 import net.minecraft.server.world.entity.impl.EntityHuman;
+import net.minecraft.server.world.provider.WorldProvider;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -6,7 +6,7 @@ public enum EnumCreatureType {
     public final Class WATER_CREATURE;
     public final int d;
 
-    private static final EnumCreatureType[] e = new EnumCreatureType[] { MONSTER, CREATURE};
+    private static final EnumCreatureType[] e = new EnumCreatureType[]{MONSTER, CREATURE};
 
     private EnumCreatureType(String s, int i, Class oclass, int j) {
         this.WATER_CREATURE = oclass;

@@ -2,8 +2,8 @@ package net.minecraft.server.world.block;
 
 import net.minecraft.server.item.Item;
 import net.minecraft.server.item.ItemStack;
-import net.minecraft.server.world.block.material.Material;
 import net.minecraft.server.world.World;
+import net.minecraft.server.world.block.material.Material;
 import net.minecraft.server.world.entity.Entity;
 import net.minecraft.server.world.entity.impl.EntityHuman;
 import net.minecraft.server.world.entity.impl.EntityItem;

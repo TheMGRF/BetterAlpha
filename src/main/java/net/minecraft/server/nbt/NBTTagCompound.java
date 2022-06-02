@@ -11,7 +11,8 @@ public class NBTTagCompound extends NBTBase {
 
     private Map a = new HashMap();
 
-    public NBTTagCompound() {}
+    public NBTTagCompound() {
+    }
 
     void a(DataOutput dataoutput) throws IOException {
         Iterator iterator = this.a.values().iterator();

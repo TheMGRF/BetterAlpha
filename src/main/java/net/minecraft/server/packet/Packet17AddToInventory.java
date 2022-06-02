@@ -13,7 +13,8 @@ public class Packet17AddToInventory extends Packet {
     public int b;
     public int c;
 
-    public Packet17AddToInventory() {}
+    public Packet17AddToInventory() {
+    }
 
     public Packet17AddToInventory(ItemStack itemstack, int i) {
         this.a = itemstack.c;

@@ -2,14 +2,18 @@ package net.minecraft.server.world.provider;
 
 import net.minecraft.server.world.biome.BiomeBase;
 import net.minecraft.server.world.block.Block;
-import net.minecraft.server.world.chunk.*;
+import net.minecraft.server.world.chunk.ChunkLoader;
+import net.minecraft.server.world.chunk.ChunkProviderHell;
+import net.minecraft.server.world.chunk.IChunkLoader;
+import net.minecraft.server.world.chunk.IChunkProvider;
 import net.minecraft.server.world.chunk.manager.WorldChunkManagerHell;
 
 import java.io.File;
 
 public class WorldProviderHell extends WorldProvider {
 
-    public WorldProviderHell() {}
+    public WorldProviderHell() {
+    }
 
     public void a() {
         this.b = new WorldChunkManagerHell(BiomeBase.HELL, 1.0D, 0.0D);

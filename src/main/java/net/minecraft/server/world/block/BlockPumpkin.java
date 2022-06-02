@@ -1,8 +1,8 @@
 package net.minecraft.server.world.block;
 
-import net.minecraft.server.world.block.material.Material;
 import net.minecraft.server.utils.MathHelper;
 import net.minecraft.server.world.World;
+import net.minecraft.server.world.block.material.Material;
 import net.minecraft.server.world.entity.impl.EntityLiving;
 
 public class BlockPumpkin extends Block {

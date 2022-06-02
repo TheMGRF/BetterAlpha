@@ -24,7 +24,7 @@ public class ChunkProviderServer implements IChunkProvider {
     }
 
     public boolean a(int i, int j) {
-    	return this.e.containsKey(Integer.valueOf(ChunkCoordIntPair.a(i, j)));
+        return this.e.containsKey(Integer.valueOf(ChunkCoordIntPair.a(i, j)));
     }
 
     public void c(int i, int j) {
@@ -82,7 +82,7 @@ public class ChunkProviderServer implements IChunkProvider {
     }
 
     public Chunk b(int i, int j) {
-    	Chunk chunk = (Chunk) this.e.get(Integer.valueOf(ChunkCoordIntPair.a(i, j)));
+        Chunk chunk = (Chunk) this.e.get(Integer.valueOf(ChunkCoordIntPair.a(i, j)));
 
         return chunk == null ? (this.g.x ? this.d(i, j) : this.b) : chunk;
     }

@@ -4,10 +4,11 @@ import net.minecraft.server.nbt.NBTTagCompound;
 
 public class TileEntitySign extends TileEntity {
 
-    public String[] e = new String[] { "", "", "", ""};
+    public String[] e = new String[]{"", "", "", ""};
     public int f = -1;
 
-    public TileEntitySign() {}
+    public TileEntitySign() {
+    }
 
     public void b(NBTTagCompound nbttagcompound) {
         super.b(nbttagcompound);

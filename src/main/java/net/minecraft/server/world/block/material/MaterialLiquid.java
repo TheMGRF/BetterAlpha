@@ -2,7 +2,8 @@ package net.minecraft.server.world.block.material;
 
 public class MaterialLiquid extends Material {
 
-    public MaterialLiquid() {}
+    public MaterialLiquid() {
+    }
 
     public boolean d() {
         return true;

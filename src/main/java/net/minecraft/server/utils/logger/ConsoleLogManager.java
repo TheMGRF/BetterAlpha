@@ -9,7 +9,8 @@ public class ConsoleLogManager {
 
     public static Logger a = Logger.getLogger("Minecraft");
 
-    public ConsoleLogManager() {}
+    public ConsoleLogManager() {
+    }
 
     public static void a() {
         ConsoleLogFormatter consolelogformatter = new ConsoleLogFormatter();

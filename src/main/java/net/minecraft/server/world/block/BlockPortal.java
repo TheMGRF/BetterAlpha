@@ -1,8 +1,8 @@
 package net.minecraft.server.world.block;
 
 import net.minecraft.server.utils.AxisAlignedBB;
-import net.minecraft.server.world.block.material.Material;
 import net.minecraft.server.world.World;
+import net.minecraft.server.world.block.material.Material;
 import net.minecraft.server.world.entity.Entity;
 
 import java.util.Random;

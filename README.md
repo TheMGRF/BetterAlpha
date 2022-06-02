@@ -1,7 +1,9 @@
 # BetterAlpha
+
 A Minecraft Alpha v1.2.1 server implementation.
 
 ## Useful Stuff
+
 - Minecraft Ids: https://minecraft-ids.grahamedgecombe.com/
 - Wiki.vg: https://wiki.vg/index.php?title=Protocol&oldid=120
 

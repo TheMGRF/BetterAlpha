@@ -1,8 +1,8 @@
 package net.minecraft.server.packet;
 
 import net.minecraft.server.item.ItemStack;
-import net.minecraft.server.utils.MathHelper;
 import net.minecraft.server.network.handler.NetHandler;
+import net.minecraft.server.utils.MathHelper;
 import net.minecraft.server.world.entity.impl.EntityHuman;
 
 import java.io.DataInputStream;
@@ -20,7 +20,8 @@ public class Packet20NamedEntitySpawn extends Packet {
     public byte g;
     public int h;
 
-    public Packet20NamedEntitySpawn() {}
+    public Packet20NamedEntitySpawn() {
+    }
 
     public Packet20NamedEntitySpawn(EntityHuman entityhuman) {
         this.a = entityhuman.g;

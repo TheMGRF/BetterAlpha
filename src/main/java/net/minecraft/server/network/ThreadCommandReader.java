@@ -1,7 +1,7 @@
 package net.minecraft.server.network;
 
-import net.minecraft.server.command.ICommandListener;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.command.ICommandListener;
 
 import java.io.BufferedReader;
 import java.io.IOException;

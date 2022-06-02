@@ -1,8 +1,8 @@
 package net.minecraft.server.network.handler;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.thread.ThreadLoginVerifier;
 import net.minecraft.server.network.NetworkManager;
+import net.minecraft.server.network.thread.ThreadLoginVerifier;
 import net.minecraft.server.packet.*;
 import net.minecraft.server.world.WorldServer;
 import net.minecraft.server.world.entity.impl.EntityPlayer;
@@ -78,7 +78,7 @@ public class NetLoginHandler extends NetHandler {
 
     public void b(Packet1Login packet1login) {
         EntityPlayer entityplayer = this.e.f.a(this, packet1login.b, packet1login.c);
-    	WorldServer worldserver = this.e.a(entityplayer.dimension);
+        WorldServer worldserver = this.e.a(entityplayer.dimension);
 
         if (entityplayer != null) {
             LOGGER.info(this.b() + " logged in");

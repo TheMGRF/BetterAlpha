@@ -1,9 +1,9 @@
 package net.minecraft.server.world.chunk;
 
-import net.minecraft.server.world.block.IBlockAccess;
-import net.minecraft.server.world.block.material.Material;
 import net.minecraft.server.world.World;
 import net.minecraft.server.world.block.Block;
+import net.minecraft.server.world.block.IBlockAccess;
+import net.minecraft.server.world.block.material.Material;
 
 public class ChunkCache implements IBlockAccess {
 

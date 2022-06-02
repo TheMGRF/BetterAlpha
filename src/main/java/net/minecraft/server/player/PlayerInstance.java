@@ -40,7 +40,7 @@ class PlayerInstance {
 
     public void a(EntityPlayer entityplayer) {
         if (this.b.contains(entityplayer)) {
-        	new IllegalStateException("Failed to add player. " + entityplayer + " already is in chunk " + this.c + ", " + this.d);
+            new IllegalStateException("Failed to add player. " + entityplayer + " already is in chunk " + this.c + ", " + this.d);
         } else {
             entityplayer.ai.add(this.e);
             entityplayer.a.b((Packet) (new Packet50PreChunk(this.e.a, this.e.b, true)));
@@ -128,7 +128,7 @@ class PlayerInstance {
     }
 
     public void a() {
-    	WorldServer world = this.a.aworld();
+        WorldServer world = this.a.aworld();
         if (this.g != 0) {
             int i;
             int j;

@@ -2,7 +2,8 @@ package net.minecraft.server.world.block.material;
 
 public class MaterialTransparent extends Material {
 
-    public MaterialTransparent() {}
+    public MaterialTransparent() {
+    }
 
     public boolean a() {
         return false;

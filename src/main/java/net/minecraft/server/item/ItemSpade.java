@@ -4,7 +4,7 @@ import net.minecraft.server.world.block.Block;
 
 public class ItemSpade extends ItemTool {
 
-    private static Block[] bb = new Block[] { Block.GRASS, Block.DIRT, Block.SAND, Block.GRAVEL, Block.SNOW, Block.SNOW_BLOCK, Block.CLAY};
+    private static Block[] bb = new Block[]{Block.GRASS, Block.DIRT, Block.SAND, Block.GRAVEL, Block.SNOW, Block.SNOW_BLOCK, Block.CLAY};
 
     public ItemSpade(int i, int j) {
         super(i, 1, j, bb);

@@ -1,9 +1,9 @@
 package net.minecraft.server.world.chunk.manager;
 
-import net.minecraft.server.world.generation.generator.NoiseGeneratorOctaves2;
 import net.minecraft.server.world.World;
 import net.minecraft.server.world.biome.BiomeBase;
 import net.minecraft.server.world.chunk.ChunkCoordIntPair;
+import net.minecraft.server.world.generation.generator.NoiseGeneratorOctaves2;
 
 import java.util.Random;
 
@@ -19,7 +19,8 @@ public class WorldChunkManager {
     private static double h = 0.5D;
     private static double i = 0.5D;
 
-    protected WorldChunkManager() {}
+    protected WorldChunkManager() {
+    }
 
     public WorldChunkManager(World world) {
         this.e = new NoiseGeneratorOctaves2(new Random(world.u * 9871L), 4);

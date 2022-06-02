@@ -1,7 +1,6 @@
 package net.minecraft.server.world;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.world.WorldServer;
 
 import java.io.File;
 

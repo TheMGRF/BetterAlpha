@@ -221,7 +221,9 @@ public class EntityBoat extends Entity {
         this.j.a(this.p + d0, this.q + this.j() + this.j.A(), this.r + d1);
     }
 
-    public void a(NBTTagCompound nbttagcompound) {}
+    public void a(NBTTagCompound nbttagcompound) {
+    }
 
-    public void b(NBTTagCompound nbttagcompound) {}
+    public void b(NBTTagCompound nbttagcompound) {
+    }
 }

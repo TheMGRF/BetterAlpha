@@ -12,7 +12,8 @@ public class Packet6SpawnPosition extends Packet {
     public int b;
     public int c;
 
-    public Packet6SpawnPosition() {}
+    public Packet6SpawnPosition() {
+    }
 
     public Packet6SpawnPosition(int i, int j, int k) {
         this.a = i;

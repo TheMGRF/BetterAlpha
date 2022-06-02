@@ -135,7 +135,7 @@ public class ServerConfigurationManager {
 
     // added int l
     public void a(int i, int j, int k, int l) {
-    	this.a(l).a(i, j, k);
+        this.a(l).a(i, j, k);
     }
 
     public void a(Packet packet) {

@@ -42,6 +42,6 @@ public class NextTickListEntry implements Comparable {
     }
 
     public int compareTo(Object o) {
-    	return this.a((NextTickListEntry)o);
+        return this.a((NextTickListEntry) o);
     }
 }

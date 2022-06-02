@@ -2,8 +2,8 @@ package net.minecraft.server.item;
 
 public class ItemArmor extends Item {
 
-    private static final int[] be = new int[] { 3, 8, 6, 3};
-    private static final int[] bf = new int[] { 11, 16, 15, 13};
+    private static final int[] be = new int[]{3, 8, 6, 3};
+    private static final int[] bf = new int[]{11, 16, 15, 13};
     public final int a;
     public final int bb;
     public final int bc;

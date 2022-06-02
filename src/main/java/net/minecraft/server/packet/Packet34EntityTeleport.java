@@ -1,7 +1,7 @@
 package net.minecraft.server.packet;
 
-import net.minecraft.server.utils.MathHelper;
 import net.minecraft.server.network.handler.NetHandler;
+import net.minecraft.server.utils.MathHelper;
 import net.minecraft.server.world.entity.Entity;
 
 import java.io.DataInputStream;
@@ -17,7 +17,8 @@ public class Packet34EntityTeleport extends Packet {
     public byte e;
     public byte f;
 
-    public Packet34EntityTeleport() {}
+    public Packet34EntityTeleport() {
+    }
 
     public Packet34EntityTeleport(Entity entity) {
         this.a = entity.g;

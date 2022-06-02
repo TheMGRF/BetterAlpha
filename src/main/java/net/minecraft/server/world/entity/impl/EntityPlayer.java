@@ -1,6 +1,6 @@
 package net.minecraft.server.world.entity.impl;
 
-import net.minecraft.server.*;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.item.Item;
 import net.minecraft.server.item.ItemInWorldManager;
 import net.minecraft.server.item.ItemStack;
@@ -56,15 +56,18 @@ public class EntityPlayer extends EntityHuman {
         this.c.a = this;
     }
 
-    public void b_() {}
+    public void b_() {
+    }
 
-    public void f(Entity entity) {}
+    public void f(Entity entity) {
+    }
 
     public boolean a(Entity entity, int i) {
         return false;
     }
 
-    public void a(int i) {}
+    public void a(int i) {
+    }
 
     public void k() {
         super.b_();
@@ -93,7 +96,7 @@ public class EntityPlayer extends EntityHuman {
             }
 
             if (flag) {
-            	WorldServer worldserver = this.b.a(this.dimension);
+                WorldServer worldserver = this.b.a(this.dimension);
                 this.f.remove(chunkcoordintpair);
                 this.a.b((Packet) (new Packet51MapChunk(chunkcoordintpair.a * 16, 0, chunkcoordintpair.b * 16, 16, 128, 16, worldserver)));
                 List list = worldserver.d(chunkcoordintpair.a * 16, 0, chunkcoordintpair.b * 16, chunkcoordintpair.a * 16 + 16, 128, chunkcoordintpair.b * 16 + 16);
@@ -118,12 +121,12 @@ public class EntityPlayer extends EntityHuman {
             EntityTracker entitytracker = this.b.b(this.dimension);
 
             if (entity instanceof EntityItem) {
-            	this.a.b((Packet) (new Packet17AddToInventory(((EntityItem) entity).a, i)));
+                this.a.b((Packet) (new Packet17AddToInventory(((EntityItem) entity).a, i)));
                 entitytracker.a(entity, new Packet22Collect(entity.g, this.g));
             }
 
             if (entity instanceof EntityArrow) {
-            	this.a.b((Packet) (new Packet17AddToInventory(new ItemStack(Item.ARROW, 1), i)));
+                this.a.b((Packet) (new Packet17AddToInventory(new ItemStack(Item.ARROW, 1), i)));
                 entitytracker.a(entity, new Packet22Collect(entity.g, this.g));
             }
         }
@@ -138,7 +141,7 @@ public class EntityPlayer extends EntityHuman {
 
     public void E() {
         if (!this.ap) {
-        	EntityTracker entitytracker = this.b.b(this.dimension);
+            EntityTracker entitytracker = this.b.b(this.dimension);
             this.aq = -1;
             this.ap = true;
             entitytracker.a(this, new Packet18ArmAnimation(this, 1));

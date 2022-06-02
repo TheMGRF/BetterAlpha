@@ -1,11 +1,11 @@
 package net.minecraft.server.item;
 
-import net.minecraft.server.world.block.material.Material;
 import net.minecraft.server.world.block.Block;
+import net.minecraft.server.world.block.material.Material;
 
 public class ItemPickaxe extends ItemTool {
 
-    private static Block[] bb = new Block[] { Block.COBBLESTONE, Block.DOUBLE_STEP, Block.STEP, Block.STONE, Block.MOSSY_COBBLESTONE, Block.IRON_ORE, Block.IRON_BLOCK, Block.COAL_ORE, Block.GOLD_BLOCK, Block.GOLD_ORE, Block.DIAMOND_ORE, Block.DIAMOND_BLOCK, Block.ICE, Block.NETHERRACK};
+    private static Block[] bb = new Block[]{Block.COBBLESTONE, Block.DOUBLE_STEP, Block.STEP, Block.STONE, Block.MOSSY_COBBLESTONE, Block.IRON_ORE, Block.IRON_BLOCK, Block.COAL_ORE, Block.GOLD_BLOCK, Block.GOLD_ORE, Block.DIAMOND_ORE, Block.DIAMOND_BLOCK, Block.ICE, Block.NETHERRACK};
     private int bc;
 
     public ItemPickaxe(int i, int j) {

@@ -1,9 +1,9 @@
 package net.minecraft.server.world.entity;
 
-import net.minecraft.server.world.block.material.Material;
 import net.minecraft.server.utils.MathHelper;
 import net.minecraft.server.world.World;
 import net.minecraft.server.world.biome.BiomeBase;
+import net.minecraft.server.world.block.material.Material;
 import net.minecraft.server.world.chunk.ChunkCoordIntPair;
 import net.minecraft.server.world.chunk.ChunkPosition;
 import net.minecraft.server.world.entity.impl.EntityHuman;
@@ -19,7 +19,8 @@ public final class SpawnerCreature {
 
     private static Set a = new HashSet();
 
-    public SpawnerCreature() {}
+    public SpawnerCreature() {
+    }
 
     protected static ChunkPosition a(World world, int i, int j) {
         int k = i + world.l.nextInt(16);
@@ -98,7 +99,7 @@ public final class SpawnerCreature {
                                                     EntityLiving entityliving;
 
                                                     try {
-                                                        entityliving = (EntityLiving) aclass[k1].getConstructor(new Class[] { World.class}).newInstance(new Object[] { world});
+                                                        entityliving = (EntityLiving) aclass[k1].getConstructor(new Class[]{World.class}).newInstance(new Object[]{world});
                                                     } catch (Exception exception) {
                                                         exception.printStackTrace();
                                                         return i;

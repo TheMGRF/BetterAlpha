@@ -67,7 +67,8 @@ public class Chunk {
         return this.h[j << 4 | i] & 255;
     }
 
-    public void a() {}
+    public void a() {
+    }
 
     public void b() {
         int i = 127;

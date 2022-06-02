@@ -14,7 +14,8 @@ public abstract class Packet {
     private static Map b = new HashMap();
     public boolean j = false;
 
-    public Packet() {}
+    public Packet() {
+    }
 
     static void a(int i, Class oclass) {
         if (a.containsKey(Integer.valueOf(i))) {

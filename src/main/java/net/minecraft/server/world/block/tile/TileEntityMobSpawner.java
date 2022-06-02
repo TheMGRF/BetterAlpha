@@ -1,10 +1,10 @@
 package net.minecraft.server.world.block.tile;
 
-import net.minecraft.server.utils.AxisAlignedBB;
 import net.minecraft.server.nbt.NBTTagCompound;
+import net.minecraft.server.utils.AxisAlignedBB;
 import net.minecraft.server.world.entity.Entity;
-import net.minecraft.server.world.entity.impl.EntityLiving;
 import net.minecraft.server.world.entity.EntityTypes;
+import net.minecraft.server.world.entity.impl.EntityLiving;
 
 public class TileEntityMobSpawner extends TileEntity {
 

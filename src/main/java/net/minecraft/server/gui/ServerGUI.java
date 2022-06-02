@@ -1,7 +1,7 @@
 package net.minecraft.server.gui;
 
-import net.minecraft.server.command.ICommandListener;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.command.ICommandListener;
 import net.minecraft.server.player.PlayerListBox;
 
 import javax.swing.*;

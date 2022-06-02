@@ -22,9 +22,9 @@ import net.minecraft.server.world.WorldServer;
 import net.minecraft.server.world.chunk.ChunkCoordinates;
 import net.minecraft.server.world.chunk.IProgressUpdate;
 import net.minecraft.server.world.entity.Entity;
+import net.minecraft.server.world.entity.EntityTracker;
 import net.minecraft.server.world.entity.impl.EntityHuman;
 import net.minecraft.server.world.entity.impl.EntityPlayer;
-import net.minecraft.server.world.entity.EntityTracker;
 
 import java.awt.*;
 import java.io.File;
@@ -117,21 +117,20 @@ public class MinecraftServer implements ICommandListener, Runnable {
     }
 
     private void c(String s, long i) {
-    	this.e = new WorldServer[2];
-    	
-    	for (int j = 0; j < this.e.length; ++j) {
-    		if (j == 0) {
-    			this.e[j] = new WorldServer(this, new File("."), s, j == 0 ? 0 : -1, i);
-    		}
-    		else {
-    			this.e[j] = new SecondaryWorldServer(this, new File("."), s + "_nether", j == 0 ? 0 : -1, i, this.e[0]);
-    		}
-    		
-    		this.e[j].a(new WorldManager(this, this.e[j]));
-    		this.e[j].k = this.d.a("spawn-monsters", true) ? 1 : 0;
-    		this.f.a(this.e);
-    	}
-        
+        this.e = new WorldServer[2];
+
+        for (int j = 0; j < this.e.length; ++j) {
+            if (j == 0) {
+                this.e[j] = new WorldServer(this, new File("."), s, j == 0 ? 0 : -1, i);
+            } else {
+                this.e[j] = new SecondaryWorldServer(this, new File("."), s + "_nether", j == 0 ? 0 : -1, i, this.e[0]);
+            }
+
+            this.e[j].a(new WorldManager(this, this.e[j]));
+            this.e[j].k = this.d.a("spawn-monsters", true) ? 1 : 0;
+            this.f.a(this.e);
+        }
+
         short short1 = 196;
         long k = System.currentTimeMillis();
 
@@ -362,15 +361,15 @@ public class MinecraftServer implements ICommandListener, Runnable {
                     this.a(s1, "Enabling level saving..");
                     this.e[0].C = false;
                 } else if (s.toLowerCase().startsWith("clearentity")) {
-                	int i = 0;
+                    int i = 0;
                     for (int j = 0; j < this.e[0].b.size(); ++j) {
                         Entity e = ((Entity) this.e[0].b.get(j));
-                    	if (!(e instanceof EntityHuman) || !(e instanceof EntityPlayer)) {
+                        if (!(e instanceof EntityHuman) || !(e instanceof EntityPlayer)) {
                             this.e[0].d(e);
                             i++;
-                    	}
+                        }
                     }
-                	this.a(s1, "Cleared " + i + " entities.");
+                    this.a(s1, "Cleared " + i + " entities.");
                 } else {
                     String s2;
 

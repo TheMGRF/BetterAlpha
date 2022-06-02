@@ -10,7 +10,8 @@ public class Packet3Chat extends Packet {
 
     public String a;
 
-    public Packet3Chat() {}
+    public Packet3Chat() {
+    }
 
     public Packet3Chat(String s) {
         this.a = s;

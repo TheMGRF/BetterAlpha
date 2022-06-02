@@ -10,7 +10,8 @@ public class MapGenBase {
     protected int a = 8;
     protected Random b = new Random();
 
-    public MapGenBase() {}
+    public MapGenBase() {
+    }
 
     public void a(IChunkProvider ichunkprovider, World world, int i, int j, byte[] abyte) {
         int k = this.a;
@@ -27,5 +28,6 @@ public class MapGenBase {
         }
     }
 
-    protected void a(World world, int i, int j, int k, int l, byte[] abyte) {}
+    protected void a(World world, int i, int j, int k, int l, byte[] abyte) {
+    }
 }

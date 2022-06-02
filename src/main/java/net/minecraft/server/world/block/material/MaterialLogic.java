@@ -2,7 +2,8 @@ package net.minecraft.server.world.block.material;
 
 public class MaterialLogic extends Material {
 
-    public MaterialLogic() {}
+    public MaterialLogic() {
+    }
 
     public boolean a() {
         return false;

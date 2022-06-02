@@ -1,9 +1,9 @@
 package net.minecraft.server.packet;
 
-import net.minecraft.server.utils.MathHelper;
 import net.minecraft.server.network.handler.NetHandler;
-import net.minecraft.server.world.entity.impl.EntityLiving;
+import net.minecraft.server.utils.MathHelper;
 import net.minecraft.server.world.entity.EntityTypes;
+import net.minecraft.server.world.entity.impl.EntityLiving;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -19,7 +19,8 @@ public class Packet24MobSpawn extends Packet {
     public byte f;
     public byte g;
 
-    public Packet24MobSpawn() {}
+    public Packet24MobSpawn() {
+    }
 
     public Packet24MobSpawn(EntityLiving entityliving) {
         this.a = entityliving.g;

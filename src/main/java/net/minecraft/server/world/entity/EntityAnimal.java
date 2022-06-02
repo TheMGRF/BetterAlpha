@@ -1,7 +1,7 @@
 package net.minecraft.server.world.entity;
 
-import net.minecraft.server.utils.MathHelper;
 import net.minecraft.server.nbt.NBTTagCompound;
+import net.minecraft.server.utils.MathHelper;
 import net.minecraft.server.world.World;
 import net.minecraft.server.world.block.Block;
 import net.minecraft.server.world.entity.impl.EntityCreature;

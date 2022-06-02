@@ -103,7 +103,8 @@ public final class ItemStack {
         return Item.c[this.c].a(block);
     }
 
-    public void a(EntityHuman entityhuman) {}
+    public void a(EntityHuman entityhuman) {
+    }
 
     public ItemStack d() {
         return new ItemStack(this.c, this.a, this.d);

@@ -6,13 +6,14 @@ import net.minecraft.server.item.ItemStack;
 import net.minecraft.server.utils.AxisAlignedBB;
 import net.minecraft.server.utils.MovingObjectPosition;
 import net.minecraft.server.utils.Vec3D;
+import net.minecraft.server.world.World;
 import net.minecraft.server.world.block.material.Material;
 import net.minecraft.server.world.block.sound.StepSound;
 import net.minecraft.server.world.block.sound.StepSoundSand;
 import net.minecraft.server.world.block.sound.StepSoundStone;
-import net.minecraft.server.world.World;
 import net.minecraft.server.world.block.tile.TileEntitySign;
-import net.minecraft.server.world.entity.*;
+import net.minecraft.server.world.entity.Entity;
+import net.minecraft.server.world.entity.EnumMobType;
 import net.minecraft.server.world.entity.impl.EntityHuman;
 import net.minecraft.server.world.entity.impl.EntityItem;
 import net.minecraft.server.world.entity.impl.EntityLiving;
@@ -245,19 +246,24 @@ public class Block {
         return true;
     }
 
-    public void a(World world, int i, int j, int k, Random random) {}
+    public void a(World world, int i, int j, int k, Random random) {
+    }
 
-    public void a(World world, int i, int j, int k, int l) {}
+    public void a(World world, int i, int j, int k, int l) {
+    }
 
-    public void b(World world, int i, int j, int k, int l) {}
+    public void b(World world, int i, int j, int k, int l) {
+    }
 
     public int b() {
         return 10;
     }
 
-    public void e(World world, int i, int j, int k) {}
+    public void e(World world, int i, int j, int k) {
+    }
 
-    public void b(World world, int i, int j, int k) {}
+    public void b(World world, int i, int j, int k) {
+    }
 
     public int a(Random random) {
         return 1;
@@ -408,7 +414,8 @@ public class Block {
         return vec3d == null ? false : vec3d.a >= this.bl && vec3d.a <= this.bo && vec3d.b >= this.bm && vec3d.b <= this.bp;
     }
 
-    public void c(World world, int i, int j, int k) {}
+    public void c(World world, int i, int j, int k) {
+    }
 
     public boolean a(World world, int i, int j, int k) {
         int l = world.a(i, j, k);
@@ -420,15 +427,20 @@ public class Block {
         return false;
     }
 
-    public void b(World world, int i, int j, int k, Entity entity) {}
+    public void b(World world, int i, int j, int k, Entity entity) {
+    }
 
-    public void c(World world, int i, int j, int k, int l) {}
+    public void c(World world, int i, int j, int k, int l) {
+    }
 
-    public void b(World world, int i, int j, int k, EntityHuman entityhuman) {}
+    public void b(World world, int i, int j, int k, EntityHuman entityhuman) {
+    }
 
-    public void a(World world, int i, int j, int k, Entity entity, Vec3D vec3d) {}
+    public void a(World world, int i, int j, int k, Entity entity, Vec3D vec3d) {
+    }
 
-    public void a(IBlockAccess iblockaccess, int i, int j, int k) {}
+    public void a(IBlockAccess iblockaccess, int i, int j, int k) {
+    }
 
     public boolean b(IBlockAccess iblockaccess, int i, int j, int k, int l) {
         return false;
@@ -438,7 +450,8 @@ public class Block {
         return false;
     }
 
-    public void a(World world, int i, int j, int k, Entity entity) {}
+    public void a(World world, int i, int j, int k, Entity entity) {
+    }
 
     public boolean d(World world, int i, int j, int k, int l) {
         return false;
@@ -448,7 +461,8 @@ public class Block {
         return true;
     }
 
-    public void a(World world, int i, int j, int k, EntityLiving entityliving) {}
+    public void a(World world, int i, int j, int k, EntityLiving entityliving) {
+    }
 
     static {
         for (int i = 0; i < 256; ++i) {

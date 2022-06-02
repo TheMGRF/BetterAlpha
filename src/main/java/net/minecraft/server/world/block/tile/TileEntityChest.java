@@ -10,7 +10,8 @@ public class TileEntityChest extends TileEntity implements IInventory {
 
     private ItemStack[] e = new ItemStack[36];
 
-    public TileEntityChest() {}
+    public TileEntityChest() {
+    }
 
     public int a() {
         return 27;

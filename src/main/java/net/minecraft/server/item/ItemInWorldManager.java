@@ -17,7 +17,7 @@ public class ItemInWorldManager {
     private int i;
 
     public ItemInWorldManager(World world) {
-    	//System.out.println("ItemInWorldManager: " + world.w);
+        //System.out.println("ItemInWorldManager: " + world.w);
         this.b = world;
     }
 

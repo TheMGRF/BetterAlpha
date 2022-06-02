@@ -1,6 +1,6 @@
 package net.minecraft.server.network.handler;
 
-import net.minecraft.server.*;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ICommandListener;
 import net.minecraft.server.item.ItemInWorldManager;
 import net.minecraft.server.item.ItemStack;
@@ -56,7 +56,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
     }
 
     public void a(Packet10Flying packet10flying) {
-    	WorldServer worldserver = this.d.a(this.e.dimension);
+        WorldServer worldserver = this.d.a(this.e.dimension);
         double d0;
 
         if (!this.j) {
@@ -132,19 +132,18 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
             this.e.A = packet10flying.g;
             this.d.f.b(this.e);
         }
-        Material m = worldserver.c((int)packet10flying.a, (int)packet10flying.b, (int)packet10flying.c);
+        Material m = worldserver.c((int) packet10flying.a, (int) packet10flying.b, (int) packet10flying.c);
         if (m != Material.x && this.justPortaled) {
-        	this.justPortaled = false;
-        	return;
-        }
-        else if (m == Material.x && !this.justPortaled) {
-        	this.justPortaled = true;
-        	tpToNether(this.e);
+            this.justPortaled = false;
+            return;
+        } else if (m == Material.x && !this.justPortaled) {
+            this.justPortaled = true;
+            tpToNether(this.e);
         }
     }
 
     public void tpToNether(EntityPlayer player) {
-    	WorldServer world = this.d.a(player.dimension);
+        WorldServer world = this.d.a(player.dimension);
         byte b0;
 
         if (player.dimension == -1) {
@@ -153,10 +152,10 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
             b0 = -1;
         }
         player.dimension = b0;
-    	WorldServer toTp = this.d.a(player.dimension);
-    	
-    	world.d(player);
-    	player.F = false;
+        WorldServer toTp = this.d.a(player.dimension);
+
+        world.d(player);
+        player.F = false;
         double d0 = player.p;
         double d1 = player.r;
         double d2 = 8.0D;
@@ -184,12 +183,12 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
         }
         this.d.f.ass(player);
         this.a(player.p, player.q, player.r, player.v, player.w);
-    	player.spawnIn(toTp);
-    	player.c = new ItemInWorldManager(toTp);
-    	player.c.a = player;
+        player.spawnIn(toTp);
+        player.c = new ItemInWorldManager(toTp);
+        player.c.a = player;
         for (int j = 0; j < world.b.size(); ++j) {
             Entity en = ((Entity) world.b.get(j));
-        	this.e.a.b((Packet) (new Packet29DestroyEntity(en.g)));
+            this.e.a.b((Packet) (new Packet29DestroyEntity(en.g)));
         }
     }
 
@@ -203,7 +202,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
     }
 
     public void a(Packet14BlockDig packet14blockdig) {
-    	WorldServer worldserver = this.d.a(this.e.dimension);
+        WorldServer worldserver = this.d.a(this.e.dimension);
         this.e.ak.a[this.e.ak.d] = this.k;
         //boolean flag = worldserver.B = worldserver.q.e != 0 || this.d.f.g(this.e.ar);
         boolean flag1 = false;
@@ -244,13 +243,13 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
         }
 
         if (packet14blockdig.e == 0) {
-        	//System.out.println("break 0");
+            //System.out.println("break 0");
             this.e.c.a(i, j, k);
         } else if (packet14blockdig.e == 2) {
-        	//System.out.println("break 2");
+            //System.out.println("break 2");
             this.e.c.a();
         } else if (packet14blockdig.e == 1) {
-        	//System.out.println("break 1");
+            //System.out.println("break 1");
             this.e.c.a(i, j, k, l);
         } else if (packet14blockdig.e == 3) {
             double d1 = this.e.p - ((double) i + 0.5D);
@@ -267,8 +266,8 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
     }
 
     public void a(Packet15Place packet15place) {
-    	WorldServer worldserver = this.d.a(this.e.dimension);
-    	boolean flag = worldserver.B = worldserver.q.e != 0 || this.d.f.g(this.e.ar);
+        WorldServer worldserver = this.d.a(this.e.dimension);
+        boolean flag = worldserver.B = worldserver.q.e != 0 || this.d.f.g(this.e.ar);
         int i = packet15place.b;
         int j = packet15place.c;
         int k = packet15place.d;
@@ -311,7 +310,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
     	} else {
     		
     	}*/
-    	
+
         int i = packet16blockitemswitch.b;
 
         this.e.ak.d = this.e.ak.a.length - 1;
@@ -323,12 +322,12 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 
         this.e.ak.a[this.e.ak.d] = this.k;
         for (int j = 0; j < this.d.k.length; ++j) {
-        	this.d.k[j].a(this.e, new Packet16BlockItemSwitch(this.e.g, i));
+            this.d.k[j].a(this.e, new Packet16BlockItemSwitch(this.e.g, i));
         }
     }
 
     public void a(Packet21PickupSpawn packet21pickupspawn) {
-    	WorldServer worldserver = this.d.a(this.e.dimension);
+        WorldServer worldserver = this.d.a(this.e.dimension);
         double d0 = (double) packet21pickupspawn.b / 32.0D;
         double d1 = (double) packet21pickupspawn.c / 32.0D;
         double d2 = (double) packet21pickupspawn.d / 32.0D;
@@ -384,7 +383,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
                 }
             }
         } else if (s.toLowerCase().startsWith("/list")) {
-        	this.b((Packet) (new Packet3Chat("\u00A7cConnected players\u00A7f: " + this.d.f.c())));
+            this.b((Packet) (new Packet3Chat("\u00A7cConnected players\u00A7f: " + this.d.f.c())));
         } else {
             String s1;
 
@@ -442,7 +441,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
     }
 
     public void a(Packet59ComplexEntity packet59complexentity) {
-    	WorldServer worldserver = this.d.a(this.e.dimension);
+        WorldServer worldserver = this.d.a(this.e.dimension);
         if (packet59complexentity.e.d("x") == packet59complexentity.a) {
             if (packet59complexentity.e.d("y") == packet59complexentity.b) {
                 if (packet59complexentity.e.d("z") == packet59complexentity.c) {

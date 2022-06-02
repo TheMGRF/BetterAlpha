@@ -1,7 +1,7 @@
 package net.minecraft.server.packet;
 
-import net.minecraft.server.utils.MathHelper;
 import net.minecraft.server.network.handler.NetHandler;
+import net.minecraft.server.utils.MathHelper;
 import net.minecraft.server.world.entity.Entity;
 
 import java.io.DataInputStream;
@@ -16,7 +16,8 @@ public class Packet23VehicleSpawn extends Packet {
     public int d;
     public int e;
 
-    public Packet23VehicleSpawn() {}
+    public Packet23VehicleSpawn() {
+    }
 
     public Packet23VehicleSpawn(Entity entity, int i) {
         this.a = entity.g;

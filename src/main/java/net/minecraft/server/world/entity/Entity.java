@@ -5,11 +5,11 @@ import net.minecraft.server.nbt.*;
 import net.minecraft.server.utils.AxisAlignedBB;
 import net.minecraft.server.utils.MathHelper;
 import net.minecraft.server.utils.Vec3D;
-import net.minecraft.server.world.block.material.Material;
-import net.minecraft.server.world.block.sound.StepSound;
 import net.minecraft.server.world.World;
 import net.minecraft.server.world.block.Block;
 import net.minecraft.server.world.block.BlockFluids;
+import net.minecraft.server.world.block.material.Material;
+import net.minecraft.server.world.block.sound.StepSound;
 import net.minecraft.server.world.entity.impl.EntityHuman;
 import net.minecraft.server.world.entity.impl.EntityItem;
 
@@ -490,7 +490,8 @@ public abstract class Entity {
         this.a((Entity) null, i);
     }
 
-    public void a(float f) {}
+    public void a(float f) {
+    }
 
     public boolean r() {
         return this.l.a(this.z.b(0.0D, -0.4000000059604645D, 0.0D), Material.f, this);
@@ -614,7 +615,8 @@ public abstract class Entity {
         return d0 * d0 + d1 * d1 + d2 * d2;
     }
 
-    public void a(EntityHuman entityhuman) {}
+    public void a(EntityHuman entityhuman) {
+    }
 
     public void c(Entity entity) {
         if (entity.j != this && entity.k != this) {
@@ -662,7 +664,8 @@ public abstract class Entity {
         return false;
     }
 
-    public void b(Entity entity, int i) {}
+    public void b(Entity entity, int i) {
+    }
 
     public boolean c(NBTTagCompound nbttagcompound) {
         String s = this.v();
@@ -677,9 +680,9 @@ public abstract class Entity {
     }
 
     public void d(NBTTagCompound nbttagcompound) {
-        nbttagcompound.a("Pos", (NBTBase) this.a(new double[] { this.p, this.q, this.r}));
-        nbttagcompound.a("Motion", (NBTBase) this.a(new double[] { this.s, this.t, this.u}));
-        nbttagcompound.a("Rotation", (NBTBase) this.a(new float[] { this.v, this.w}));
+        nbttagcompound.a("Pos", (NBTBase) this.a(new double[]{this.p, this.q, this.r}));
+        nbttagcompound.a("Motion", (NBTBase) this.a(new double[]{this.s, this.t, this.u}));
+        nbttagcompound.a("Rotation", (NBTBase) this.a(new float[]{this.v, this.w}));
         nbttagcompound.a("FallDistance", this.M);
         nbttagcompound.a("Fire", (short) this.Y);
         nbttagcompound.a("Air", (short) this.ac);
@@ -864,5 +867,6 @@ public abstract class Entity {
         return null;
     }
 
-    public void C() {}
+    public void C() {
+    }
 }

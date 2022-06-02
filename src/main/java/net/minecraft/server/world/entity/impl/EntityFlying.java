@@ -10,7 +10,8 @@ public class EntityFlying extends EntityLiving {
         super(world);
     }
 
-    public void a(float f) {}
+    public void a(float f) {
+    }
 
     public void c(float f, float f1) {
         double d0;

@@ -1,7 +1,7 @@
 package net.minecraft.server.world.biome;
 
 import net.minecraft.server.world.block.Block;
-import net.minecraft.server.world.entity.*;
+import net.minecraft.server.world.entity.EnumCreatureType;
 import net.minecraft.server.world.entity.impl.*;
 
 public class BiomeBase {
@@ -31,8 +31,8 @@ public class BiomeBase {
         this.o = (byte) Block.GRASS.bi;
         this.p = (byte) Block.DIRT.bi;
         this.q = 5169201;
-        this.r = new Class[] { EntitySpider.class, EntityZombie.class, EntitySkeleton.class, EntityCreeper.class};
-        this.s = new Class[] { EntitySheep.class, EntityPig.class, EntityChicken.class, EntityCow.class};
+        this.r = new Class[]{EntitySpider.class, EntityZombie.class, EntitySkeleton.class, EntityCreeper.class};
+        this.s = new Class[]{EntitySheep.class, EntityPig.class, EntityChicken.class, EntityCow.class};
     }
 
     public static void a() {

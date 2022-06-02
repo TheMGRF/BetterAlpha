@@ -9,7 +9,7 @@ public enum EnumArt {
     public final int B;
     public final int C;
 
-    private static final EnumArt[] D = new EnumArt[] { KEBAB, AZTEC, ALBAN, AZTEC2, BOMB, PLANT, WASTELAND, POOL, COURBET, SEA, SUNSET, CREEBET, WANDERER, GRAHAM, MATCH, BUST, STAGE, VOID, SKULL_AND_ROSES, FIGHTERS, POINTER, PIGSCENE, BURNINGSKULL, SKELETON};
+    private static final EnumArt[] D = new EnumArt[]{KEBAB, AZTEC, ALBAN, AZTEC2, BOMB, PLANT, WASTELAND, POOL, COURBET, SEA, SUNSET, CREEBET, WANDERER, GRAHAM, MATCH, BUST, STAGE, VOID, SKULL_AND_ROSES, FIGHTERS, POINTER, PIGSCENE, BURNINGSKULL, SKELETON};
 
     private EnumArt(String s, int i, String s1, int j, int k, int l, int i1) {
         this.y = s1;

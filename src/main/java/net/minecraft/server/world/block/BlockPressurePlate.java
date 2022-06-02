@@ -1,12 +1,12 @@
 package net.minecraft.server.world.block;
 
 import net.minecraft.server.utils.AxisAlignedBB;
-import net.minecraft.server.world.block.material.Material;
 import net.minecraft.server.world.World;
+import net.minecraft.server.world.block.material.Material;
 import net.minecraft.server.world.entity.Entity;
+import net.minecraft.server.world.entity.EnumMobType;
 import net.minecraft.server.world.entity.impl.EntityHuman;
 import net.minecraft.server.world.entity.impl.EntityLiving;
-import net.minecraft.server.world.entity.EnumMobType;
 
 import java.util.List;
 import java.util.Random;
@@ -40,7 +40,8 @@ public class BlockPressurePlate extends Block {
         return world.d(i, j - 1, k);
     }
 
-    public void e(World world, int i, int j, int k) {}
+    public void e(World world, int i, int j, int k) {
+    }
 
     public void b(World world, int i, int j, int k, int l) {
         boolean flag = false;

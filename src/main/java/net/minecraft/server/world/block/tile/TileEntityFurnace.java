@@ -17,7 +17,8 @@ public class TileEntityFurnace extends TileEntity implements IInventory {
     private int g = 0;
     private int h = 0;
 
-    public TileEntityFurnace() {}
+    public TileEntityFurnace() {
+    }
 
     public int a() {
         return this.e.length;

@@ -1,8 +1,8 @@
 package net.minecraft.server.item;
 
-import net.minecraft.server.world.block.material.Material;
 import net.minecraft.server.world.World;
 import net.minecraft.server.world.block.Block;
+import net.minecraft.server.world.block.material.Material;
 import net.minecraft.server.world.entity.impl.EntityHuman;
 
 import java.util.Random;
@@ -144,7 +144,8 @@ public class Item {
         return this.aY;
     }
 
-    public void a(ItemStack itemstack, int i, int j, int k, int l) {}
+    public void a(ItemStack itemstack, int i, int j, int k, int l) {
+    }
 
     public boolean a(Block block) {
         return false;

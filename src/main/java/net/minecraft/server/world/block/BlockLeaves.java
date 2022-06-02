@@ -1,7 +1,7 @@
 package net.minecraft.server.world.block;
 
-import net.minecraft.server.world.block.material.Material;
 import net.minecraft.server.world.World;
+import net.minecraft.server.world.block.material.Material;
 import net.minecraft.server.world.entity.Entity;
 
 import java.util.Random;
@@ -22,7 +22,8 @@ public class BlockLeaves extends BlockLeavesBase {
         super.b(world, i, j, k, l);
     }
 
-    public void g(World world, int i, int j, int k) {}
+    public void g(World world, int i, int j, int k) {
+    }
 
     public int a(Random random) {
         return random.nextInt(20) == 0 ? 1 : 0;

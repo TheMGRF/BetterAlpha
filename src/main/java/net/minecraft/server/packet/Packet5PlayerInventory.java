@@ -12,7 +12,8 @@ public class Packet5PlayerInventory extends Packet {
     public int a;
     public ItemStack[] b;
 
-    public Packet5PlayerInventory() {}
+    public Packet5PlayerInventory() {
+    }
 
     public Packet5PlayerInventory(int i, ItemStack[] aitemstack) {
         this.a = i;
