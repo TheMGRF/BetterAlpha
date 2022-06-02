@@ -1,11 +1,11 @@
 package net.minecraft.server.network.handler;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.ThreadLoginVerifier;
+import net.minecraft.server.network.thread.ThreadLoginVerifier;
 import net.minecraft.server.network.NetworkManager;
 import net.minecraft.server.packet.*;
 import net.minecraft.server.world.WorldServer;
-import net.minecraft.server.world.entity.EntityPlayer;
+import net.minecraft.server.world.entity.impl.EntityPlayer;
 
 import java.io.IOException;
 import java.net.Socket;

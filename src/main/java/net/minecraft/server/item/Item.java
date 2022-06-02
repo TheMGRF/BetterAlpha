@@ -1,9 +1,9 @@
 package net.minecraft.server.item;
 
-import net.minecraft.server.Material;
+import net.minecraft.server.world.block.material.Material;
 import net.minecraft.server.world.World;
 import net.minecraft.server.world.block.Block;
-import net.minecraft.server.world.entity.EntityHuman;
+import net.minecraft.server.world.entity.impl.EntityHuman;
 
 import java.util.Random;
 

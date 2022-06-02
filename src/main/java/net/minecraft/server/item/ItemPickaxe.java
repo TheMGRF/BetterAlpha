@@ -1,6 +1,6 @@
 package net.minecraft.server.item;
 
-import net.minecraft.server.Material;
+import net.minecraft.server.world.block.material.Material;
 import net.minecraft.server.world.block.Block;
 
 public class ItemPickaxe extends ItemTool {

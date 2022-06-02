@@ -1,7 +1,7 @@
 package net.minecraft.server.network;
 
 import net.minecraft.server.network.handler.NetHandler;
-import net.minecraft.server.ThreadMonitorConnection;
+import net.minecraft.server.network.thread.ThreadMonitorConnection;
 import net.minecraft.server.packet.Packet;
 
 import java.io.DataInputStream;

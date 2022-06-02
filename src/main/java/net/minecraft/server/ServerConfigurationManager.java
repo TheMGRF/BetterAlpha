@@ -7,9 +7,10 @@ import net.minecraft.server.packet.Packet;
 import net.minecraft.server.packet.Packet3Chat;
 import net.minecraft.server.packet.Packet4UpdateTime;
 import net.minecraft.server.packet.Packet59ComplexEntity;
+import net.minecraft.server.player.PlayerManager;
 import net.minecraft.server.world.WorldServer;
 import net.minecraft.server.world.block.tile.TileEntity;
-import net.minecraft.server.world.entity.EntityPlayer;
+import net.minecraft.server.world.entity.impl.EntityPlayer;
 
 import java.io.*;
 import java.util.*;

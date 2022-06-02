@@ -1,9 +1,7 @@
 package net.minecraft.server.nbt;
 
-import net.minecraft.server.CompressedStreamTools;
-import net.minecraft.server.nbt.NBTTagCompound;
-import net.minecraft.server.world.entity.EntityHuman;
-import net.minecraft.server.world.entity.EntityPlayer;
+import net.minecraft.server.world.entity.impl.EntityHuman;
+import net.minecraft.server.world.entity.impl.EntityPlayer;
 
 import java.io.*;
 import java.util.logging.Logger;

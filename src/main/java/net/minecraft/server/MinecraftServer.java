@@ -1,18 +1,29 @@
 package net.minecraft.server;
 
+import net.minecraft.server.command.ICommandListener;
+import net.minecraft.server.command.ServerCommand;
+import net.minecraft.server.gui.ServerGUI;
 import net.minecraft.server.item.Item;
 import net.minecraft.server.item.ItemStack;
 import net.minecraft.server.network.NetworkListenThread;
+import net.minecraft.server.network.ThreadCommandReader;
+import net.minecraft.server.network.thread.ThreadServerApplication;
+import net.minecraft.server.network.thread.ThreadSleepForever;
 import net.minecraft.server.packet.Packet;
 import net.minecraft.server.packet.Packet3Chat;
 import net.minecraft.server.packet.Packet4UpdateTime;
+import net.minecraft.server.player.IUpdatePlayerListBox;
+import net.minecraft.server.utils.AxisAlignedBB;
+import net.minecraft.server.utils.Vec3D;
+import net.minecraft.server.utils.logger.ConsoleLogManager;
 import net.minecraft.server.world.SecondaryWorldServer;
 import net.minecraft.server.world.WorldManager;
 import net.minecraft.server.world.WorldServer;
 import net.minecraft.server.world.chunk.ChunkCoordinates;
+import net.minecraft.server.world.chunk.IProgressUpdate;
 import net.minecraft.server.world.entity.Entity;
-import net.minecraft.server.world.entity.EntityHuman;
-import net.minecraft.server.world.entity.EntityPlayer;
+import net.minecraft.server.world.entity.impl.EntityHuman;
+import net.minecraft.server.world.entity.impl.EntityPlayer;
 import net.minecraft.server.world.entity.EntityTracker;
 
 import java.awt.*;
@@ -544,7 +555,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
             MinecraftServer minecraftserver = new MinecraftServer();
 
             if (!GraphicsEnvironment.isHeadless() && (astring.length <= 0 || !astring[0].equals("nogui"))) {
-                ServerGUI.a(minecraftserver); 
+                ServerGUI.a(minecraftserver);
             }
 
             (new ThreadServerApplication("Server thread", minecraftserver)).start();

@@ -1,8 +1,8 @@
 package net.minecraft.server.packet;
 
-import net.minecraft.server.MathHelper;
+import net.minecraft.server.utils.MathHelper;
 import net.minecraft.server.network.handler.NetHandler;
-import net.minecraft.server.world.entity.EntityItem;
+import net.minecraft.server.world.entity.impl.EntityItem;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

@@ -1,15 +1,20 @@
 package net.minecraft.server.network.handler;
 
 import net.minecraft.server.*;
+import net.minecraft.server.command.ICommandListener;
 import net.minecraft.server.item.ItemInWorldManager;
 import net.minecraft.server.item.ItemStack;
 import net.minecraft.server.network.NetworkManager;
 import net.minecraft.server.packet.*;
+import net.minecraft.server.utils.MathHelper;
+import net.minecraft.server.utils.MovingObjectPosition;
+import net.minecraft.server.utils.PortalTravelAgent;
 import net.minecraft.server.world.WorldServer;
+import net.minecraft.server.world.block.material.Material;
 import net.minecraft.server.world.block.tile.TileEntity;
 import net.minecraft.server.world.entity.Entity;
-import net.minecraft.server.world.entity.EntityItem;
-import net.minecraft.server.world.entity.EntityPlayer;
+import net.minecraft.server.world.entity.impl.EntityItem;
+import net.minecraft.server.world.entity.impl.EntityPlayer;
 
 import java.util.logging.Logger;
 

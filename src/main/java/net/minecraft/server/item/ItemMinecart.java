@@ -3,8 +3,8 @@ package net.minecraft.server.item;
 import net.minecraft.server.world.World;
 import net.minecraft.server.world.block.Block;
 import net.minecraft.server.world.entity.Entity;
-import net.minecraft.server.world.entity.EntityHuman;
-import net.minecraft.server.world.entity.EntityMinecart;
+import net.minecraft.server.world.entity.impl.EntityHuman;
+import net.minecraft.server.world.entity.impl.EntityMinecart;
 
 public class ItemMinecart extends Item {
 
