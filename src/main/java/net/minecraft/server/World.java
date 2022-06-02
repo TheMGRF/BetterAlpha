@@ -2,6 +2,7 @@ package net.minecraft.server;
 
 import net.minecraft.server.world.block.Block;
 import net.minecraft.server.world.block.BlockFluids;
+import net.minecraft.server.world.block.IBlockAccess;
 import net.minecraft.server.world.chunk.*;
 import net.minecraft.server.world.entity.Entity;
 import net.minecraft.server.world.entity.EntityHuman;

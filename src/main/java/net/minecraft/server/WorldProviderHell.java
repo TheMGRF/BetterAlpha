@@ -1,5 +1,6 @@
 package net.minecraft.server;
 
+import net.minecraft.server.world.biome.BiomeBase;
 import net.minecraft.server.world.block.Block;
 import net.minecraft.server.world.chunk.ChunkLoader;
 import net.minecraft.server.world.chunk.ChunkProviderHell;
