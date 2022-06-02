@@ -1,7 +1,10 @@
 package net.minecraft.server;
 
-import net.minecraft.server.world.Block;
 import net.minecraft.server.world.block.Block;
+import net.minecraft.server.world.chunk.ChunkLoader;
+import net.minecraft.server.world.chunk.ChunkProviderHell;
+import net.minecraft.server.world.chunk.IChunkLoader;
+import net.minecraft.server.world.chunk.IChunkProvider;
 
 import java.io.File;
 

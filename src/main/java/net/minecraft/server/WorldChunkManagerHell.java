@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import net.minecraft.server.world.chunk.ChunkCoordIntPair;
+
 import java.util.Arrays;
 
 public class WorldChunkManagerHell extends WorldChunkManager {

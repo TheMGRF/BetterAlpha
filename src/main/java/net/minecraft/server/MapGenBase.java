@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import net.minecraft.server.world.chunk.IChunkProvider;
+
 import java.util.Random;
 
 public class MapGenBase {

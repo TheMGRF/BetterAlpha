@@ -2,16 +2,8 @@ package net.minecraft.server;
 
 import net.minecraft.server.world.entity.EntityPlayer;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.io.*;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class ServerConfigurationManager {

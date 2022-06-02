@@ -1,27 +1,13 @@
 package net.minecraft.server;
 
-import net.minecraft.server.world.Block;
-import net.minecraft.server.world.BlockFluids;
 import net.minecraft.server.world.block.Block;
 import net.minecraft.server.world.block.BlockFluids;
+import net.minecraft.server.world.chunk.*;
 import net.minecraft.server.world.entity.Entity;
 import net.minecraft.server.world.entity.EntityHuman;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.TreeSet;
+import java.io.*;
+import java.util.*;
 
 public class World implements IBlockAccess {
 

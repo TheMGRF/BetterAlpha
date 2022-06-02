@@ -1,5 +1,8 @@
 package net.minecraft.server;
 
+import net.minecraft.server.world.chunk.ChunkLoader;
+import net.minecraft.server.world.chunk.ChunkProviderServer;
+import net.minecraft.server.world.chunk.IChunkProvider;
 import net.minecraft.server.world.entity.Entity;
 import net.minecraft.server.world.entity.EntityAnimal;
 import net.minecraft.server.world.entity.EntityHuman;
