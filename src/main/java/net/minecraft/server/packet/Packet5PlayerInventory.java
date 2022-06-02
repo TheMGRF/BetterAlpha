@@ -1,7 +1,7 @@
 package net.minecraft.server.packet;
 
 import net.minecraft.server.item.ItemStack;
-import net.minecraft.server.NetHandler;
+import net.minecraft.server.network.handler.NetHandler;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

@@ -1,4 +1,4 @@
-package net.minecraft.server;
+package net.minecraft.server.network.handler;
 
 import net.minecraft.server.packet.*;
 

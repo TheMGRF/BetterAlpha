@@ -1,6 +1,6 @@
 package net.minecraft.server.packet;
 
-import net.minecraft.server.NetHandler;
+import net.minecraft.server.network.handler.NetHandler;
 import net.minecraft.server.world.World;
 import net.minecraft.server.world.chunk.Chunk;
 

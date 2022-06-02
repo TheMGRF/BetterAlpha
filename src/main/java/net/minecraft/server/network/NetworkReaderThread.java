@@ -1,10 +1,10 @@
-package net.minecraft.server;
+package net.minecraft.server.network;
 
-class NetworkWriterThread extends Thread {
+class NetworkReaderThread extends Thread {
 
     final NetworkManager a;
 
-    NetworkWriterThread(NetworkManager networkmanager, String s) {
+    NetworkReaderThread(NetworkManager networkmanager, String s) {
         super(s);
         this.a = networkmanager;
     }
@@ -13,7 +13,7 @@ class NetworkWriterThread extends Thread {
         Object object = NetworkManager.a;
 
         synchronized (NetworkManager.a) {
-            ++NetworkManager.c;
+            ++NetworkManager.b;
         }
 
         while (true) {
@@ -21,18 +21,24 @@ class NetworkWriterThread extends Thread {
 
             try {
                 flag = true;
-                if (!NetworkManager.a(this.a)) {
+                if (NetworkManager.a(this.a)) {
+                    if (!NetworkManager.b(this.a)) {
+                        NetworkManager.c(this.a);
+                        continue;
+                    }
+
                     flag = false;
                     break;
                 }
 
-                NetworkManager.d(this.a);
+                flag = false;
+                break;
             } finally {
                 if (flag) {
                     Object object1 = NetworkManager.a;
 
                     synchronized (NetworkManager.a) {
-                        --NetworkManager.c;
+                        --NetworkManager.b;
                     }
                 }
             }
@@ -40,7 +46,7 @@ class NetworkWriterThread extends Thread {
 
         object = NetworkManager.a;
         synchronized (NetworkManager.a) {
-            --NetworkManager.c;
+            --NetworkManager.b;
         }
     }
 }

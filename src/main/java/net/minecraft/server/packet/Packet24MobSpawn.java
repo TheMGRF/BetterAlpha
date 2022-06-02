@@ -1,7 +1,7 @@
 package net.minecraft.server.packet;
 
 import net.minecraft.server.MathHelper;
-import net.minecraft.server.NetHandler;
+import net.minecraft.server.network.handler.NetHandler;
 import net.minecraft.server.world.entity.EntityLiving;
 import net.minecraft.server.world.entity.EntityTypes;
 

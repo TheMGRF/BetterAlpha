@@ -1,5 +1,8 @@
-package net.minecraft.server;
+package net.minecraft.server.network.handler;
 
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.ThreadLoginVerifier;
+import net.minecraft.server.network.NetworkManager;
 import net.minecraft.server.packet.*;
 import net.minecraft.server.world.WorldServer;
 import net.minecraft.server.world.entity.EntityPlayer;
@@ -11,8 +14,9 @@ import java.util.logging.Logger;
 
 public class NetLoginHandler extends NetHandler {
 
-    public static Logger a = Logger.getLogger("Minecraft");
-    private static Random d = new Random();
+    public static final Logger LOGGER = Logger.getLogger("Minecraft");
+    public static final Random RANDOM = new Random();
+
     public NetworkManager b;
     public boolean c = false;
     private MinecraftServer e;
@@ -40,7 +44,7 @@ public class NetLoginHandler extends NetHandler {
     }
 
     public void b(String s) {
-        a.info("Disconnecting " + this.b() + ": " + s);
+        LOGGER.info("Disconnecting " + this.b() + ": " + s);
         this.b.a((Packet) (new Packet255KickDisconnect(s)));
         this.b.c();
         this.c = true;
@@ -48,7 +52,7 @@ public class NetLoginHandler extends NetHandler {
 
     public void a(Packet2Handshake packet2handshake) {
         if (this.e.l) {
-            this.i = Long.toHexString(d.nextLong());
+            this.i = Long.toHexString(RANDOM.nextLong());
             this.b.a((Packet) (new Packet2Handshake(this.i)));
         } else {
             this.b.a((Packet) (new Packet2Handshake("-")));
@@ -77,7 +81,7 @@ public class NetLoginHandler extends NetHandler {
     	WorldServer worldserver = this.e.a(entityplayer.dimension);
 
         if (entityplayer != null) {
-            a.info(this.b() + " logged in");
+            LOGGER.info(this.b() + " logged in");
             NetServerHandler netserverhandler = new NetServerHandler(this.e, this.b, entityplayer);
 
             netserverhandler.b((Packet) (new Packet1Login("", "", 0, worldserver.u, (byte) worldserver.q.e)));
@@ -93,7 +97,7 @@ public class NetLoginHandler extends NetHandler {
     }
 
     public void a(String s) {
-        a.info(this.b() + " lost connection");
+        LOGGER.info(this.b() + " lost connection");
         this.c = true;
     }
 
@@ -105,11 +109,11 @@ public class NetLoginHandler extends NetHandler {
         return this.g != null ? this.g + " [" + this.b.b().toString() + "]" : this.b.b().toString();
     }
 
-    static String a(NetLoginHandler netloginhandler) {
+    public static String a(NetLoginHandler netloginhandler) {
         return netloginhandler.i;
     }
 
-    static Packet1Login a(NetLoginHandler netloginhandler, Packet1Login packet1login) {
+    public static Packet1Login a(NetLoginHandler netloginhandler, Packet1Login packet1login) {
         return netloginhandler.h = packet1login;
     }
 }

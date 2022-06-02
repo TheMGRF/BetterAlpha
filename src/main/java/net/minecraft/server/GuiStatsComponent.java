@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import net.minecraft.server.network.NetworkManager;
+
 import javax.swing.*;
 import java.awt.*;
 

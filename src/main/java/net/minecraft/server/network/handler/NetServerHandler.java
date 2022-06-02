@@ -1,7 +1,9 @@
-package net.minecraft.server;
+package net.minecraft.server.network.handler;
 
+import net.minecraft.server.*;
 import net.minecraft.server.item.ItemInWorldManager;
 import net.minecraft.server.item.ItemStack;
+import net.minecraft.server.network.NetworkManager;
 import net.minecraft.server.packet.*;
 import net.minecraft.server.world.WorldServer;
 import net.minecraft.server.world.block.tile.TileEntity;

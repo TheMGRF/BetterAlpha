@@ -1,4 +1,8 @@
-package net.minecraft.server;
+package net.minecraft.server.network;
+
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.handler.NetLoginHandler;
+import net.minecraft.server.network.handler.NetServerHandler;
 
 import java.io.IOException;
 import java.net.InetAddress;

@@ -1,5 +1,7 @@
-package net.minecraft.server;
+package net.minecraft.server.network;
 
+import net.minecraft.server.network.handler.NetHandler;
+import net.minecraft.server.ThreadMonitorConnection;
 import net.minecraft.server.packet.Packet;
 
 import java.io.DataInputStream;
@@ -194,27 +196,27 @@ public class NetworkManager {
         return this.k.size();
     }
 
-    static boolean a(NetworkManager networkmanager) {
+    public static boolean a(NetworkManager networkmanager) {
         return networkmanager.h;
     }
 
-    static boolean b(NetworkManager networkmanager) {
+    public static boolean b(NetworkManager networkmanager) {
         return networkmanager.m;
     }
 
-    static void c(NetworkManager networkmanager) {
+    public static void c(NetworkManager networkmanager) {
         networkmanager.f();
     }
 
-    static void d(NetworkManager networkmanager) {
+    public static void d(NetworkManager networkmanager) {
         networkmanager.e();
     }
 
-    static Thread e(NetworkManager networkmanager) {
+    public static Thread e(NetworkManager networkmanager) {
         return networkmanager.o;
     }
 
-    static Thread f(NetworkManager networkmanager) {
+    public static Thread f(NetworkManager networkmanager) {
         return networkmanager.n;
     }
 }
