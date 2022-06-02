@@ -56,7 +56,7 @@ public class ServerConfigurationManager {
         this.d[0].b(entityplayer);
         this.d[1].b(entityplayer);
         this.a(entityplayer.dimension).a(entityplayer);
-        WorldServer worldserver = this.c.a(entityplayer.dimension);
+        WorldServer worldserver = this.c.getWorldByDimension(entityplayer.dimension);
 
         worldserver.A.d((int) entityplayer.p >> 4, (int) entityplayer.r >> 4);
     }
@@ -67,7 +67,7 @@ public class ServerConfigurationManager {
 
     public void a(EntityPlayer entityplayer) {
         this.b.add(entityplayer);
-        WorldServer worldserver = this.c.a(entityplayer.l.q.e);
+        WorldServer worldserver = this.c.getWorldByDimension(entityplayer.l.q.e);
 
         worldserver.A.d((int) entityplayer.p >> 4, (int) entityplayer.r >> 4);
 
@@ -93,7 +93,7 @@ public class ServerConfigurationManager {
 
     public void c(EntityPlayer entityplayer) {
         this.l.a(entityplayer);
-        this.c.a(entityplayer.dimension).d(entityplayer);
+        this.c.getWorldByDimension(entityplayer.dimension).d(entityplayer);
         this.b.remove(entityplayer);
         this.a(entityplayer.dimension).b(entityplayer);
     }
@@ -122,7 +122,7 @@ public class ServerConfigurationManager {
                     }
                 }
 
-                return new EntityPlayer(this.c, this.c.a(0), s, new ItemInWorldManager(this.c.a(0)));
+                return new EntityPlayer(this.c, this.c.getWorldByDimension(0), s, new ItemInWorldManager(this.c.getWorldByDimension(0)));
             }
         }
     }
@@ -347,7 +347,7 @@ public class ServerConfigurationManager {
     }
 
     public void a(int i, int j, int k, TileEntity tileentity) {
-        this.a(tileentity.a.q.e).a(new Packet59ComplexEntity(i, j, k, tileentity), i, j, k);
+        this.a(tileentity.world.q.e).a(new Packet59ComplexEntity(i, j, k, tileentity), i, j, k);
     }
 
     public void a(EntityPlayer entityplayer, WorldServer worldserver) {

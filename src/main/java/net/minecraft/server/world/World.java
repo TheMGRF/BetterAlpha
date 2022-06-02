@@ -35,7 +35,7 @@ public class World implements IBlockAccess {
     private List B = new ArrayList();
     private TreeSet C = new TreeSet();
     private Set D = new HashSet();
-    public List c = new ArrayList();
+    public List<TileEntity> tileEntities = new ArrayList<>();
     public List d = new ArrayList();
     public long e = 0L;
     private long E = 16777215L;
@@ -976,8 +976,8 @@ public class World implements IBlockAccess {
             }
         }
 
-        for (i = 0; i < this.c.size(); ++i) {
-            TileEntity tileentity = (TileEntity) this.c.get(i);
+        for (i = 0; i < this.tileEntities.size(); ++i) {
+            TileEntity tileentity = (TileEntity) this.tileEntities.get(i);
 
             tileentity.b();
         }

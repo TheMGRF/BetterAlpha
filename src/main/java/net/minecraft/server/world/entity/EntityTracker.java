@@ -64,7 +64,7 @@ public class EntityTracker {
 
             this.a.add(entitytrackerentry);
             this.b.a(entity.g, entitytrackerentry);
-            entitytrackerentry.b(this.c.a(this.e).d);
+            entitytrackerentry.b(this.c.getWorldByDimension(this.e).d);
         }
     }
 
@@ -94,7 +94,7 @@ public class EntityTracker {
         while (iterator.hasNext()) {
             EntityTrackerEntry entitytrackerentry = (EntityTrackerEntry) iterator.next();
 
-            entitytrackerentry.a(this.c.a(this.e).d);
+            entitytrackerentry.a(this.c.getWorldByDimension(this.e).d);
             if (entitytrackerentry.j && entitytrackerentry.a instanceof EntityPlayer) {
                 arraylist.add((EntityPlayer) entitytrackerentry.a);
             }

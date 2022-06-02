@@ -83,7 +83,7 @@ public class TileEntityFurnace extends TileEntity implements IInventory {
             --this.f;
         }
 
-        if (!this.a.z) {
+        if (!this.world.z) {
             if (this.f == 0 && this.g()) {
                 this.g = this.f = this.a(this.e[1]);
                 if (this.f > 0) {
@@ -110,7 +110,7 @@ public class TileEntityFurnace extends TileEntity implements IInventory {
 
             if (flag != this.f > 0) {
                 flag1 = true;
-                BlockFurnace.a(this.f > 0, this.a, this.b, this.c, this.d);
+                BlockFurnace.a(this.f > 0, this.world, this.x, this.y, this.z);
             }
         }
 

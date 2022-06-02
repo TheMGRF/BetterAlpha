@@ -21,7 +21,7 @@ import java.util.Set;
 public class EntityPlayer extends EntityHuman {
 
     public NetServerHandler a;
-    public MinecraftServer b;
+    public MinecraftServer minecraftServer;
     public ItemInWorldManager c;
     public double d;
     public double e;
@@ -42,7 +42,7 @@ public class EntityPlayer extends EntityHuman {
         }
 
         this.c((double) i + 0.5D, (double) k, (double) j + 0.5D, 0.0F, 0.0F);
-        this.b = minecraftserver;
+        this.minecraftServer = minecraftserver;
         this.R = 0.0F;
         iteminworldmanager.a = this;
         this.ar = s;
@@ -96,7 +96,7 @@ public class EntityPlayer extends EntityHuman {
             }
 
             if (flag) {
-                WorldServer worldserver = this.b.a(this.dimension);
+                WorldServer worldserver = this.minecraftServer.getWorldByDimension(this.dimension);
                 this.f.remove(chunkcoordintpair);
                 this.a.b((Packet) (new Packet51MapChunk(chunkcoordintpair.a * 16, 0, chunkcoordintpair.b * 16, 16, 128, 16, worldserver)));
                 List list = worldserver.d(chunkcoordintpair.a * 16, 0, chunkcoordintpair.b * 16, chunkcoordintpair.a * 16 + 16, 128, chunkcoordintpair.b * 16 + 16);
@@ -104,7 +104,7 @@ public class EntityPlayer extends EntityHuman {
                 for (int j = 0; j < list.size(); ++j) {
                     TileEntity tileentity = (TileEntity) list.get(j);
 
-                    this.a.b((Packet) (new Packet59ComplexEntity(tileentity.b, tileentity.c, tileentity.d, tileentity)));
+                    this.a.b((Packet) (new Packet59ComplexEntity(tileentity.x, tileentity.y, tileentity.z, tileentity)));
                 }
             }
         }
@@ -118,7 +118,7 @@ public class EntityPlayer extends EntityHuman {
 
     public void c(Entity entity, int i) {
         if (!entity.F) {
-            EntityTracker entitytracker = this.b.b(this.dimension);
+            EntityTracker entitytracker = this.minecraftServer.b(this.dimension);
 
             if (entity instanceof EntityItem) {
                 this.a.b((Packet) (new Packet17AddToInventory(((EntityItem) entity).a, i)));
@@ -141,7 +141,7 @@ public class EntityPlayer extends EntityHuman {
 
     public void E() {
         if (!this.ap) {
-            EntityTracker entitytracker = this.b.b(this.dimension);
+            EntityTracker entitytracker = this.minecraftServer.b(this.dimension);
             this.aq = -1;
             this.ap = true;
             entitytracker.a(this, new Packet18ArmAnimation(this, 1));

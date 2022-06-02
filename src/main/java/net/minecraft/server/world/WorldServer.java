@@ -45,17 +45,15 @@ public class WorldServer extends World {
         return this.A;
     }
 
-    public List d(int i, int j, int k, int l, int i1, int j1) {
-        ArrayList arraylist = new ArrayList();
+    public List<TileEntity> d(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+        List<TileEntity> tileEntitiesInRegion = new ArrayList<>();
 
-        for (int k1 = 0; k1 < this.c.size(); ++k1) {
-            TileEntity tileentity = (TileEntity) this.c.get(k1);
-
-            if (tileentity.b >= i && tileentity.c >= j && tileentity.d >= k && tileentity.b < l && tileentity.c < i1 && tileentity.d < j1) {
-                arraylist.add(tileentity);
+        this.tileEntities.forEach(tileEntity -> {
+            if (tileEntity.x >= h && tileEntity.y >= j && tileEntity.z >= k && tileEntity.x < minX && tileEntity.y < minY && tileEntity.z < minZ) {
+                tileEntitiesInRegion.add(tileEntity);
             }
-        }
+        });
 
-        return arraylist;
+        return tileEntitiesInRegion;
     }
 }
