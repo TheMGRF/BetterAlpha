@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import net.minecraft.server.block.Block;
+
 public class EntitySheep extends EntityAnimal {
 
     public boolean a = false;

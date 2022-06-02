@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import net.minecraft.server.block.Block;
+
 import java.util.List;
 
 public class EntityHuman extends EntityLiving {

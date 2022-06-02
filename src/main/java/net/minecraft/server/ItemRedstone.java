@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import net.minecraft.server.block.Block;
+
 public class ItemRedstone extends Item {
 
     public ItemRedstone(int i) {

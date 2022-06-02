@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import net.minecraft.server.block.Block;
+
 public class ItemHoe extends Item {
 
     public ItemHoe(int i, int j) {

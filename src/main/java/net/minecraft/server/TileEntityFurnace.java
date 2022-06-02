@@ -1,5 +1,8 @@
 package net.minecraft.server;
 
+import net.minecraft.server.block.Block;
+import net.minecraft.server.block.BlockFurnace;
+
 public class TileEntityFurnace extends TileEntity implements IInventory {
 
     private ItemStack[] e = new ItemStack[3];

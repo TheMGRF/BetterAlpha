@@ -1,5 +1,8 @@
 package net.minecraft.server;
 
+import net.minecraft.server.block.Block;
+import net.minecraft.server.block.BlockFluids;
+
 import java.util.List;
 import java.util.Random;
 

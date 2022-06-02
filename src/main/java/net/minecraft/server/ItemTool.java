@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import net.minecraft.server.block.Block;
+
 public class ItemTool extends Item {
 
     private Block[] bb;

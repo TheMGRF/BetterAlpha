@@ -1,5 +1,8 @@
 package net.minecraft.server;
 
+import net.minecraft.server.block.Block;
+import net.minecraft.server.block.BlockFlower;
+
 import java.util.Random;
 
 public class WorldGenFlowers extends WorldGenerator {

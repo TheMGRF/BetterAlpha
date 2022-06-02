@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import net.minecraft.server.block.Block;
+
 public abstract class EntityAnimal extends EntityCreature implements IAnimal {
 
     public EntityAnimal(World world) {

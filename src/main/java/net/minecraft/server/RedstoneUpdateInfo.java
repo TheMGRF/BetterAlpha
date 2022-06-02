@@ -1,11 +1,11 @@
 package net.minecraft.server;
 
-class RedstoneUpdateInfo {
+public class RedstoneUpdateInfo {
 
-    int a;
-    int b;
-    int c;
-    long d;
+    public int a;
+    public int b;
+    public int c;
+    public long d;
 
     public RedstoneUpdateInfo(int i, int j, int k, long l) {
         this.a = i;

@@ -1,5 +1,8 @@
 package net.minecraft.server;
 
+import net.minecraft.server.block.Block;
+import net.minecraft.server.block.BlockFluids;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;

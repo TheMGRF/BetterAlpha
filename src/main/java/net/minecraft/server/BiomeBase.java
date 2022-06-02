@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import net.minecraft.server.block.Block;
+
 public class BiomeBase {
 
     public static final BiomeBase RAINFOREST = (new BiomeBase()).b(588342).a("Rainforest").a(2094168);

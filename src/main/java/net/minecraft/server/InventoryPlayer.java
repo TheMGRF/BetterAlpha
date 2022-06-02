@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import net.minecraft.server.block.Block;
+
 public class InventoryPlayer implements IInventory {
 
     public ItemStack[] a = new ItemStack[37];

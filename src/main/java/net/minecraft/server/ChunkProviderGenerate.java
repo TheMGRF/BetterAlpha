@@ -1,5 +1,8 @@
 package net.minecraft.server;
 
+import net.minecraft.server.block.Block;
+import net.minecraft.server.block.BlockSand;
+
 import java.util.Random;
 
 public class ChunkProviderGenerate implements IChunkProvider {

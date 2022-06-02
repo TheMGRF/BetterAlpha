@@ -1,9 +1,11 @@
 package net.minecraft.server;
 
+import net.minecraft.server.block.BlockMinecartTrack;
+
 import java.util.ArrayList;
 import java.util.List;
 
-class MinecartTrackLogic {
+public class MinecartTrackLogic {
 
     private World b;
     private int c;
@@ -325,7 +327,7 @@ class MinecartTrackLogic {
         }
     }
 
-    static int a(MinecartTrackLogic minecarttracklogic) {
+    public static int a(MinecartTrackLogic minecarttracklogic) {
         return minecarttracklogic.c();
     }
 }
