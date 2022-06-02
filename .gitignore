@@ -20,4 +20,5 @@ banned-ips.txt
 banned-players.txt
 ops.txt
 server.log
+server.log.lck
 server.properties
