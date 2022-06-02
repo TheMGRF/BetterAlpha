@@ -1,5 +1,6 @@
 package net.minecraft.server;
 
+import net.minecraft.server.world.World;
 import net.minecraft.server.world.chunk.Chunk;
 
 import java.io.DataInputStream;

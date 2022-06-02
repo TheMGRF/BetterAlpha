@@ -1,5 +1,6 @@
 package net.minecraft.server;
 
+import net.minecraft.server.world.World;
 import net.minecraft.server.world.biome.BiomeBase;
 import net.minecraft.server.world.chunk.ChunkCoordIntPair;
 import net.minecraft.server.world.chunk.ChunkPosition;

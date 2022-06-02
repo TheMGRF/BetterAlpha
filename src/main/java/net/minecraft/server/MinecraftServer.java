@@ -1,5 +1,8 @@
 package net.minecraft.server;
 
+import net.minecraft.server.world.SecondaryWorldServer;
+import net.minecraft.server.world.WorldManager;
+import net.minecraft.server.world.WorldServer;
 import net.minecraft.server.world.chunk.ChunkCoordinates;
 import net.minecraft.server.world.entity.Entity;
 import net.minecraft.server.world.entity.EntityHuman;

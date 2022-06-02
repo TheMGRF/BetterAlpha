@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import net.minecraft.server.world.World;
+
 import java.util.HashMap;
 import java.util.Map;
 
