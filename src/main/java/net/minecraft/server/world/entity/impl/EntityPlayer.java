@@ -51,7 +51,7 @@ public class EntityPlayer extends EntityHuman {
     }
 
     public void a(World world) {
-        this.l = world;
+        this.world = world;
         this.c = new ItemInWorldManager((WorldServer) world);
         this.c.a = this;
     }
@@ -59,7 +59,7 @@ public class EntityPlayer extends EntityHuman {
     public void b_() {
     }
 
-    public void f(Entity entity) {
+    public void die(Entity entity) {
     }
 
     public boolean a(Entity entity, int i) {

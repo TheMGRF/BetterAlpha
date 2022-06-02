@@ -74,7 +74,7 @@ public class EntityArrow extends Entity {
         }
 
         if (this.f) {
-            int i = this.l.a(this.b, this.c, this.d);
+            int i = this.world.a(this.b, this.c, this.d);
 
             if (i == this.e) {
                 ++this.aj;
@@ -97,7 +97,7 @@ public class EntityArrow extends Entity {
 
         Vec3D vec3d = Vec3D.b(this.p, this.q, this.r);
         Vec3D vec3d1 = Vec3D.b(this.p + this.s, this.q + this.t, this.r + this.u);
-        MovingObjectPosition movingobjectposition = this.l.a(vec3d, vec3d1);
+        MovingObjectPosition movingobjectposition = this.world.a(vec3d, vec3d1);
 
         vec3d = Vec3D.b(this.p, this.q, this.r);
         vec3d1 = Vec3D.b(this.p + this.s, this.q + this.t, this.r + this.u);
@@ -106,7 +106,7 @@ public class EntityArrow extends Entity {
         }
 
         Entity entity = null;
-        List list = this.l.b((Entity) this, this.z.a(this.s, this.t, this.u).b(1.0D, 1.0D, 1.0D));
+        List list = this.world.b((Entity) this, this.boundingBox.a(this.s, this.t, this.u).b(1.0D, 1.0D, 1.0D));
         double d0 = 0.0D;
 
         float f;
@@ -116,7 +116,7 @@ public class EntityArrow extends Entity {
 
             if (entity1.c_() && (entity1 != this.ai || this.ak >= 5)) {
                 f = 0.3F;
-                AxisAlignedBB axisalignedbb = entity1.z.b((double) f, (double) f, (double) f);
+                AxisAlignedBB axisalignedbb = entity1.boundingBox.b((double) f, (double) f, (double) f);
                 MovingObjectPosition movingobjectposition1 = axisalignedbb.a(vec3d, vec3d1);
 
                 if (movingobjectposition1 != null) {
@@ -139,7 +139,7 @@ public class EntityArrow extends Entity {
         if (movingobjectposition != null) {
             if (movingobjectposition.g != null) {
                 if (movingobjectposition.g.a(this.ai, 4)) {
-                    this.l.a(this, "random.drr", 1.0F, 1.2F / (this.V.nextFloat() * 0.2F + 0.9F));
+                    this.world.a(this, "random.drr", 1.0F, 1.2F / (this.V.nextFloat() * 0.2F + 0.9F));
                     this.l();
                 } else {
                     this.s *= -0.10000000149011612D;
@@ -153,7 +153,7 @@ public class EntityArrow extends Entity {
                 this.b = movingobjectposition.b;
                 this.c = movingobjectposition.c;
                 this.d = movingobjectposition.d;
-                this.e = this.l.a(this.b, this.c, this.d);
+                this.e = this.world.a(this.b, this.c, this.d);
                 this.s = (double) ((float) (movingobjectposition.f.a - this.p));
                 this.t = (double) ((float) (movingobjectposition.f.b - this.q));
                 this.u = (double) ((float) (movingobjectposition.f.c - this.r));
@@ -161,7 +161,7 @@ public class EntityArrow extends Entity {
                 this.p -= this.s / (double) f1 * 0.05000000074505806D;
                 this.q -= this.t / (double) f1 * 0.05000000074505806D;
                 this.r -= this.u / (double) f1 * 0.05000000074505806D;
-                this.l.a(this, "random.drr", 1.0F, 1.2F / (this.V.nextFloat() * 0.2F + 0.9F));
+                this.world.a(this, "random.drr", 1.0F, 1.2F / (this.V.nextFloat() * 0.2F + 0.9F));
                 this.f = true;
                 this.a = 7;
             }
@@ -198,7 +198,7 @@ public class EntityArrow extends Entity {
             for (int k = 0; k < 4; ++k) {
                 float f3 = 0.25F;
 
-                this.l.a("bubble", this.p - this.s * (double) f3, this.q - this.t * (double) f3, this.r - this.u * (double) f3, this.s, this.t, this.u);
+                this.world.a("bubble", this.p - this.s * (double) f3, this.q - this.t * (double) f3, this.r - this.u * (double) f3, this.s, this.t, this.u);
             }
 
             f2 = 0.8F;
@@ -231,7 +231,7 @@ public class EntityArrow extends Entity {
 
     public void a(EntityHuman entityhuman) {
         if (this.f && this.ai == entityhuman && this.a <= 0 && entityhuman.ak.a(new ItemStack(Item.ARROW.aW, 1))) {
-            this.l.a(this, "random.pop", 0.2F, ((this.V.nextFloat() - this.V.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+            this.world.a(this, "random.pop", 0.2F, ((this.V.nextFloat() - this.V.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             entityhuman.c(this, 1);
             this.l();
         }

@@ -46,11 +46,11 @@ public class EntityItem extends Entity {
         this.n = this.q;
         this.o = this.r;
         this.t -= 0.03999999910593033D;
-        if (this.l.c(MathHelper.b(this.p), MathHelper.b(this.q), MathHelper.b(this.r)) == Material.g) {
+        if (this.world.c(MathHelper.b(this.p), MathHelper.b(this.q), MathHelper.b(this.r)) == Material.g) {
             this.t = 0.20000000298023224D;
             this.s = (double) ((this.V.nextFloat() - this.V.nextFloat()) * 0.2F);
             this.u = (double) ((this.V.nextFloat() - this.V.nextFloat()) * 0.2F);
-            this.l.a(this, "random.fizz", 0.4F, 2.0F + this.V.nextFloat() * 0.4F);
+            this.world.a(this, "random.fizz", 0.4F, 2.0F + this.V.nextFloat() * 0.4F);
         }
 
         this.g(this.p, this.q, this.r);
@@ -60,7 +60,7 @@ public class EntityItem extends Entity {
 
         if (this.A) {
             f = 0.58800006F;
-            int i = this.l.a(MathHelper.b(this.p), MathHelper.b(this.z.b) - 1, MathHelper.b(this.r));
+            int i = this.world.a(MathHelper.b(this.p), MathHelper.b(this.boundingBox.b) - 1, MathHelper.b(this.r));
 
             if (i > 0) {
                 f = Block.n[i].bu * 0.98F;
@@ -82,7 +82,7 @@ public class EntityItem extends Entity {
     }
 
     public boolean r() {
-        return this.l.a(this.z, Material.f, this);
+        return this.world.a(this.boundingBox, Material.f, this);
     }
 
     private boolean g(double d0, double d1, double d2) {
@@ -93,13 +93,13 @@ public class EntityItem extends Entity {
         double d4 = d1 - (double) j;
         double d5 = d2 - (double) k;
 
-        if (Block.p[this.l.a(i, j, k)]) {
-            boolean flag = !Block.p[this.l.a(i - 1, j, k)];
-            boolean flag1 = !Block.p[this.l.a(i + 1, j, k)];
-            boolean flag2 = !Block.p[this.l.a(i, j - 1, k)];
-            boolean flag3 = !Block.p[this.l.a(i, j + 1, k)];
-            boolean flag4 = !Block.p[this.l.a(i, j, k - 1)];
-            boolean flag5 = !Block.p[this.l.a(i, j, k + 1)];
+        if (Block.p[this.world.a(i, j, k)]) {
+            boolean flag = !Block.p[this.world.a(i - 1, j, k)];
+            boolean flag1 = !Block.p[this.world.a(i + 1, j, k)];
+            boolean flag2 = !Block.p[this.world.a(i, j - 1, k)];
+            boolean flag3 = !Block.p[this.world.a(i, j + 1, k)];
+            boolean flag4 = !Block.p[this.world.a(i, j, k - 1)];
+            boolean flag5 = !Block.p[this.world.a(i, j, k + 1)];
             byte b0 = -1;
             double d6 = 9999.0D;
 
@@ -191,11 +191,11 @@ public class EntityItem extends Entity {
     }
 
     public void a(EntityHuman entityhuman) {
-        if (!this.l.z) {
+        if (!this.world.z) {
             int i = this.a.a;
 
             if (this.c == 0 && entityhuman.ak.a(this.a)) {
-                this.l.a(this, "random.pop", 0.2F, ((this.V.nextFloat() - this.V.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                this.world.a(this, "random.pop", 0.2F, ((this.V.nextFloat() - this.V.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 entityhuman.c(this, i);
                 this.l();
             }

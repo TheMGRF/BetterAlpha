@@ -48,11 +48,11 @@ public class EntityMinecart extends Entity implements IInventory {
     }
 
     public AxisAlignedBB d(Entity entity) {
-        return entity.z;
+        return entity.boundingBox;
     }
 
     public AxisAlignedBB q() {
-        return this.z;
+        return this.boundingBox;
     }
 
     public boolean u() {
@@ -114,13 +114,13 @@ public class EntityMinecart extends Entity implements IInventory {
                     }
 
                     itemstack.a -= j;
-                    EntityItem entityitem = new EntityItem(this.l, this.p + (double) f, this.q + (double) f1, this.r + (double) f2, new ItemStack(itemstack.c, j, itemstack.d));
+                    EntityItem entityitem = new EntityItem(this.world, this.p + (double) f, this.q + (double) f1, this.r + (double) f2, new ItemStack(itemstack.c, j, itemstack.d));
                     float f3 = 0.05F;
 
                     entityitem.s = (double) ((float) this.V.nextGaussian() * f3);
                     entityitem.t = (double) ((float) this.V.nextGaussian() * f3 + 0.2F);
                     entityitem.u = (double) ((float) this.V.nextGaussian() * f3);
-                    this.l.a((Entity) entityitem);
+                    this.world.a((Entity) entityitem);
                 }
             }
         }
@@ -131,7 +131,7 @@ public class EntityMinecart extends Entity implements IInventory {
     public void b_() {
         double d0;
 
-        if (this.l.z) {
+        if (this.world.z) {
             if (this.am > 0) {
                 double d1 = this.p + (this.an - this.p) / (double) this.am;
                 double d2 = this.q + (this.ao - this.q) / (double) this.am;
@@ -171,7 +171,7 @@ public class EntityMinecart extends Entity implements IInventory {
             int j = MathHelper.b(this.q);
             int k = MathHelper.b(this.r);
 
-            if (this.l.a(i, j - 1, k) == Block.RAILS.bi) {
+            if (this.world.a(i, j - 1, k) == Block.RAILS.bi) {
                 --j;
             }
 
@@ -179,9 +179,9 @@ public class EntityMinecart extends Entity implements IInventory {
             boolean flag = false;
 
             d0 = 0.0078125D;
-            if (this.l.a(i, j, k) == Block.RAILS.bi) {
+            if (this.world.a(i, j, k) == Block.RAILS.bi) {
                 Vec3D vec3d = this.g(this.p, this.q, this.r);
-                int l = this.l.b(i, j, k);
+                int l = this.world.b(i, j, k);
 
                 this.q = (double) j;
                 if (l >= 2 && l <= 5) {
@@ -403,7 +403,7 @@ public class EntityMinecart extends Entity implements IInventory {
             }
 
             this.b(this.v, this.w);
-            List list = this.l.b((Entity) this, this.z.b(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+            List list = this.world.b((Entity) this, this.boundingBox.b(0.20000000298023224D, 0.0D, 0.20000000298023224D));
 
             if (list != null && list.size() > 0) {
                 for (int k1 = 0; k1 < list.size(); ++k1) {
@@ -425,7 +425,7 @@ public class EntityMinecart extends Entity implements IInventory {
                     this.f = this.ai = 0.0D;
                 }
 
-                this.l.a("largesmoke", this.p, this.q + 0.8D, this.r, 0.0D, 0.0D, 0.0D);
+                this.world.a("largesmoke", this.p, this.q + 0.8D, this.r, 0.0D, 0.0D, 0.0D);
             }
         }
     }
@@ -435,12 +435,12 @@ public class EntityMinecart extends Entity implements IInventory {
         int j = MathHelper.b(d1);
         int k = MathHelper.b(d2);
 
-        if (this.l.a(i, j - 1, k) == Block.RAILS.bi) {
+        if (this.world.a(i, j - 1, k) == Block.RAILS.bi) {
             --j;
         }
 
-        if (this.l.a(i, j, k) == Block.RAILS.bi) {
-            int l = this.l.b(i, j, k);
+        if (this.world.a(i, j, k) == Block.RAILS.bi) {
+            int l = this.world.b(i, j, k);
 
             d1 = (double) j;
             if (l >= 2 && l <= 5) {

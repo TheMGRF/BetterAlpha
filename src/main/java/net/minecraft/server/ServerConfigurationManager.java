@@ -67,16 +67,16 @@ public class ServerConfigurationManager {
 
     public void a(EntityPlayer entityplayer) {
         this.b.add(entityplayer);
-        WorldServer worldserver = this.c.a(entityplayer.l.q.e);
+        WorldServer worldserver = this.c.a(entityplayer.world.q.e);
 
         worldserver.A.d((int) entityplayer.p >> 4, (int) entityplayer.r >> 4);
 
-        while (worldserver.a(entityplayer, entityplayer.z).size() != 0) {
+        while (worldserver.a(entityplayer, entityplayer.boundingBox).size() != 0) {
             entityplayer.a(entityplayer.p, entityplayer.q + 1.0D, entityplayer.r);
         }
 
         worldserver.a(entityplayer);
-        this.a(entityplayer.l.q.e).a(entityplayer);
+        this.a(entityplayer.world.q.e).a(entityplayer);
     }
 
     private PlayerManager a(int i) {
@@ -100,7 +100,7 @@ public class ServerConfigurationManager {
 
     public EntityPlayer a(NetLoginHandler netloginhandler, String s, String s1) {
         if (this.f.contains(s.trim().toLowerCase())) {
-            netloginhandler.b("Zbanowany!");
+            netloginhandler.b("Banned!");
             return null;
         } else {
             String s2 = netloginhandler.b.b().toString();
@@ -108,17 +108,17 @@ public class ServerConfigurationManager {
             s2 = s2.substring(s2.indexOf("/") + 1);
             s2 = s2.substring(0, s2.indexOf(":"));
             if (this.g.contains(s2)) {
-                netloginhandler.b("Twoj adres IP jest zbanowany!");
+                netloginhandler.b("Your IP address is banned!");
                 return null;
             } else if (this.b.size() >= this.e) {
-                netloginhandler.b("Serwer pelny!");
+                netloginhandler.b("Server full!");
                 return null;
             } else {
                 for (int i = 0; i < this.b.size(); ++i) {
                     EntityPlayer entityplayer = (EntityPlayer) this.b.get(i);
 
                     if (entityplayer.ar.equalsIgnoreCase(s)) {
-                        netloginhandler.b("Ten nick gra na serwerze!");
+                        netloginhandler.b("This name is already playing on the server!");
                     }
                 }
 
@@ -351,7 +351,7 @@ public class ServerConfigurationManager {
     }
 
     public void a(EntityPlayer entityplayer, WorldServer worldserver) {
-        entityplayer.a.a(new Packet4UpdateTime(worldserver.e));
+        entityplayer.a.a(new Packet4UpdateTime(worldserver.lastUpdate));
     }
 
     public void d() {

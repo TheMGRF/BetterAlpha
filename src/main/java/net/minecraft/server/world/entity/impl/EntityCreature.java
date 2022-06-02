@@ -23,7 +23,7 @@ public class EntityCreature extends EntityLiving {
         if (this.f == null) {
             this.f = this.k();
             if (this.f != null) {
-                this.a = this.l.a(this, this.f, f);
+                this.a = this.world.a(this, this.f, f);
             }
         } else if (!this.f.w()) {
             this.f = null;
@@ -36,7 +36,7 @@ public class EntityCreature extends EntityLiving {
         }
 
         if (!this.ai && this.f != null && (this.a == null || this.V.nextInt(20) == 0)) {
-            this.a = this.l.a(this, this.f, f);
+            this.a = this.world.a(this, this.f, f);
         } else if (this.a == null && this.V.nextInt(80) == 0 || this.V.nextInt(80) == 0) {
             boolean flag = false;
             int i = -1;
@@ -60,11 +60,11 @@ public class EntityCreature extends EntityLiving {
             }
 
             if (flag) {
-                this.a = this.l.a(this, i, j, k, 10.0F);
+                this.a = this.world.a(this, i, j, k, 10.0F);
             }
         }
 
-        int l1 = MathHelper.b(this.z.b);
+        int l1 = MathHelper.b(this.boundingBox.b);
         boolean flag1 = this.r();
         boolean flag2 = this.t();
 
@@ -154,7 +154,7 @@ public class EntityCreature extends EntityLiving {
 
     public boolean a() {
         int i = MathHelper.b(this.p);
-        int j = MathHelper.b(this.z.b);
+        int j = MathHelper.b(this.boundingBox.b);
         int k = MathHelper.b(this.r);
 
         return super.a() && this.a(i, j, k) >= 0.0F;

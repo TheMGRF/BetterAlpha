@@ -57,7 +57,7 @@ public class EntityFireball extends Entity {
         }
 
         if (this.ak) {
-            int i = this.l.a(this.e, this.f, this.ai);
+            int i = this.world.a(this.e, this.f, this.ai);
 
             if (i == this.aj) {
                 ++this.am;
@@ -80,7 +80,7 @@ public class EntityFireball extends Entity {
 
         Vec3D vec3d = Vec3D.b(this.p, this.q, this.r);
         Vec3D vec3d1 = Vec3D.b(this.p + this.s, this.q + this.t, this.r + this.u);
-        MovingObjectPosition movingobjectposition = this.l.a(vec3d, vec3d1);
+        MovingObjectPosition movingobjectposition = this.world.a(vec3d, vec3d1);
 
         vec3d = Vec3D.b(this.p, this.q, this.r);
         vec3d1 = Vec3D.b(this.p + this.s, this.q + this.t, this.r + this.u);
@@ -89,7 +89,7 @@ public class EntityFireball extends Entity {
         }
 
         Entity entity = null;
-        List list = this.l.b((Entity) this, this.z.a(this.s, this.t, this.u).b(1.0D, 1.0D, 1.0D));
+        List list = this.world.b((Entity) this, this.boundingBox.a(this.s, this.t, this.u).b(1.0D, 1.0D, 1.0D));
         double d0 = 0.0D;
 
         float f;
@@ -99,7 +99,7 @@ public class EntityFireball extends Entity {
 
             if (entity1.c_() && (entity1 != this.al || this.an >= 25)) {
                 f = 0.3F;
-                AxisAlignedBB axisalignedbb = entity1.z.b((double) f, (double) f, (double) f);
+                AxisAlignedBB axisalignedbb = entity1.boundingBox.b((double) f, (double) f, (double) f);
                 MovingObjectPosition movingobjectposition1 = axisalignedbb.a(vec3d, vec3d1);
 
                 if (movingobjectposition1 != null) {
@@ -125,7 +125,7 @@ public class EntityFireball extends Entity {
             Explosion explosion = new Explosion();
 
             explosion.a = true;
-            explosion.a(this.l, this, this.p, this.q, this.r, 1.0F);
+            explosion.a(this.world, this, this.p, this.q, this.r, 1.0F);
             this.l();
         }
 
@@ -161,7 +161,7 @@ public class EntityFireball extends Entity {
             for (int k = 0; k < 4; ++k) {
                 float f3 = 0.25F;
 
-                this.l.a("bubble", this.p - this.s * (double) f3, this.q - this.t * (double) f3, this.r - this.u * (double) f3, this.s, this.t, this.u);
+                this.world.a("bubble", this.p - this.s * (double) f3, this.q - this.t * (double) f3, this.r - this.u * (double) f3, this.s, this.t, this.u);
             }
 
             f2 = 0.8F;
@@ -173,7 +173,7 @@ public class EntityFireball extends Entity {
         this.s *= (double) f2;
         this.t *= (double) f2;
         this.u *= (double) f2;
-        this.l.a("smoke", this.p, this.q + 0.5D, this.r, 0.0D, 0.0D, 0.0D);
+        this.world.a("smoke", this.p, this.q + 0.5D, this.r, 0.0D, 0.0D, 0.0D);
         this.a(this.p, this.q, this.r);
     }
 

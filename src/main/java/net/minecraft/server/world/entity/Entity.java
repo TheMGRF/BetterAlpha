@@ -24,7 +24,7 @@ public abstract class Entity {
     public boolean i;
     public Entity j;
     public Entity k;
-    public World l;
+    public World world;
     public double m;
     public double n;
     public double o;
@@ -38,7 +38,7 @@ public abstract class Entity {
     public float w;
     public float x;
     public float y;
-    public final AxisAlignedBB z;
+    public final AxisAlignedBB boundingBox;
     public boolean A;
     public boolean B;
     public boolean C;
@@ -82,7 +82,7 @@ public abstract class Entity {
         this.g = a++;
         this.h = 1.0D;
         this.i = false;
-        this.z = AxisAlignedBB.a(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
+        this.boundingBox = AxisAlignedBB.a(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
         this.A = false;
         this.D = false;
         this.E = true;
@@ -111,7 +111,7 @@ public abstract class Entity {
         this.c = true;
         this.ad = false;
         this.ae = false;
-        this.l = world;
+        this.world = world;
         this.a(0.0D, 0.0D, 0.0D);
     }
 
@@ -144,7 +144,7 @@ public abstract class Entity {
         float f = this.H / 2.0F;
         float f1 = this.I;
 
-        this.z.c(d0 - (double) f, d1 - (double) this.G + (double) this.Q, d2 - (double) f, d0 + (double) f, d1 - (double) this.G + (double) this.Q + (double) f1, d2 + (double) f);
+        this.boundingBox.c(d0 - (double) f, d1 - (double) this.G + (double) this.Q, d2 - (double) f, d0 + (double) f, d1 - (double) this.G + (double) this.Q + (double) f1, d2 + (double) f);
     }
 
     public void b_() {
@@ -171,8 +171,8 @@ public abstract class Entity {
                     f = 1.0F;
                 }
 
-                this.l.a(this, "random.splash", f, 1.0F + (this.V.nextFloat() - this.V.nextFloat()) * 0.4F);
-                float f1 = (float) MathHelper.b(this.z.b);
+                this.world.a(this, "random.splash", f, 1.0F + (this.V.nextFloat() - this.V.nextFloat()) * 0.4F);
+                float f1 = (float) MathHelper.b(this.boundingBox.b);
 
                 int i;
                 float f2;
@@ -181,13 +181,13 @@ public abstract class Entity {
                 for (i = 0; (float) i < 1.0F + this.H * 20.0F; ++i) {
                     f2 = (this.V.nextFloat() * 2.0F - 1.0F) * this.H;
                     f3 = (this.V.nextFloat() * 2.0F - 1.0F) * this.H;
-                    this.l.a("bubble", this.p + (double) f2, (double) (f1 + 1.0F), this.r + (double) f3, this.s, this.t - (double) (this.V.nextFloat() * 0.2F), this.u);
+                    this.world.a("bubble", this.p + (double) f2, (double) (f1 + 1.0F), this.r + (double) f3, this.s, this.t - (double) (this.V.nextFloat() * 0.2F), this.u);
                 }
 
                 for (i = 0; (float) i < 1.0F + this.H * 20.0F; ++i) {
                     f2 = (this.V.nextFloat() * 2.0F - 1.0F) * this.H;
                     f3 = (this.V.nextFloat() * 2.0F - 1.0F) * this.H;
-                    this.l.a("splash", this.p + (double) f2, (double) (f1 + 1.0F), this.r + (double) f3, this.s, this.t, this.u);
+                    this.world.a("splash", this.p + (double) f2, (double) (f1 + 1.0F), this.r + (double) f3, this.s, this.t, this.u);
                 }
             }
 
@@ -238,31 +238,31 @@ public abstract class Entity {
     }
 
     public boolean b(double d0, double d1, double d2) {
-        AxisAlignedBB axisalignedbb = this.z.c(d0, d1, d2);
-        List list = this.l.a(this, axisalignedbb);
+        AxisAlignedBB axisalignedbb = this.boundingBox.c(d0, d1, d2);
+        List list = this.world.a(this, axisalignedbb);
 
-        return list.size() > 0 ? false : !this.l.b(axisalignedbb);
+        return list.size() > 0 ? false : !this.world.b(axisalignedbb);
     }
 
     public void c(double d0, double d1, double d2) {
         if (this.S) {
-            this.z.d(d0, d1, d2);
-            this.p = (this.z.a + this.z.d) / 2.0D;
-            this.q = this.z.b + (double) this.G - (double) this.Q;
-            this.r = (this.z.c + this.z.f) / 2.0D;
+            this.boundingBox.d(d0, d1, d2);
+            this.p = (this.boundingBox.a + this.boundingBox.d) / 2.0D;
+            this.q = this.boundingBox.b + (double) this.G - (double) this.Q;
+            this.r = (this.boundingBox.c + this.boundingBox.f) / 2.0D;
         } else {
             double d3 = this.p;
             double d4 = this.r;
             double d5 = d0;
             double d6 = d1;
             double d7 = d2;
-            AxisAlignedBB axisalignedbb = this.z.b();
+            AxisAlignedBB axisalignedbb = this.boundingBox.b();
             boolean flag = this.A && this.p();
 
             if (flag) {
                 double d8;
 
-                for (d8 = 0.05D; d0 != 0.0D && this.l.a(this, this.z.c(d0, -1.0D, 0.0D)).size() == 0; d5 = d0) {
+                for (d8 = 0.05D; d0 != 0.0D && this.world.a(this, this.boundingBox.c(d0, -1.0D, 0.0D)).size() == 0; d5 = d0) {
                     if (d0 < d8 && d0 >= -d8) {
                         d0 = 0.0D;
                     } else if (d0 > 0.0D) {
@@ -272,7 +272,7 @@ public abstract class Entity {
                     }
                 }
 
-                for (; d2 != 0.0D && this.l.a(this, this.z.c(0.0D, -1.0D, d2)).size() == 0; d7 = d2) {
+                for (; d2 != 0.0D && this.world.a(this, this.boundingBox.c(0.0D, -1.0D, d2)).size() == 0; d7 = d2) {
                     if (d2 < d8 && d2 >= -d8) {
                         d2 = 0.0D;
                     } else if (d2 > 0.0D) {
@@ -283,13 +283,13 @@ public abstract class Entity {
                 }
             }
 
-            List list = this.l.a(this, this.z.a(d0, d1, d2));
+            List list = this.world.a(this, this.boundingBox.a(d0, d1, d2));
 
             for (int i = 0; i < list.size(); ++i) {
-                d1 = ((AxisAlignedBB) list.get(i)).b(this.z, d1);
+                d1 = ((AxisAlignedBB) list.get(i)).b(this.boundingBox, d1);
             }
 
-            this.z.d(0.0D, d1, 0.0D);
+            this.boundingBox.d(0.0D, d1, 0.0D);
             if (!this.E && d6 != d1) {
                 d2 = 0.0D;
                 d1 = 0.0D;
@@ -301,10 +301,10 @@ public abstract class Entity {
             int j;
 
             for (j = 0; j < list.size(); ++j) {
-                d0 = ((AxisAlignedBB) list.get(j)).a(this.z, d0);
+                d0 = ((AxisAlignedBB) list.get(j)).a(this.boundingBox, d0);
             }
 
-            this.z.d(d0, 0.0D, 0.0D);
+            this.boundingBox.d(d0, 0.0D, 0.0D);
             if (!this.E && d5 != d0) {
                 d2 = 0.0D;
                 d1 = 0.0D;
@@ -312,10 +312,10 @@ public abstract class Entity {
             }
 
             for (j = 0; j < list.size(); ++j) {
-                d2 = ((AxisAlignedBB) list.get(j)).c(this.z, d2);
+                d2 = ((AxisAlignedBB) list.get(j)).c(this.boundingBox, d2);
             }
 
-            this.z.d(0.0D, 0.0D, d2);
+            this.boundingBox.d(0.0D, 0.0D, d2);
             if (!this.E && d7 != d2) {
                 d2 = 0.0D;
                 d1 = 0.0D;
@@ -334,16 +334,16 @@ public abstract class Entity {
                 d0 = d5;
                 d1 = (double) this.R;
                 d2 = d7;
-                AxisAlignedBB axisalignedbb1 = this.z.b();
+                AxisAlignedBB axisalignedbb1 = this.boundingBox.b();
 
-                this.z.b(axisalignedbb);
-                list = this.l.a(this, this.z.a(d5, d1, d7));
+                this.boundingBox.b(axisalignedbb);
+                list = this.world.a(this, this.boundingBox.a(d5, d1, d7));
 
                 for (k = 0; k < list.size(); ++k) {
-                    d1 = ((AxisAlignedBB) list.get(k)).b(this.z, d1);
+                    d1 = ((AxisAlignedBB) list.get(k)).b(this.boundingBox, d1);
                 }
 
-                this.z.d(0.0D, d1, 0.0D);
+                this.boundingBox.d(0.0D, d1, 0.0D);
                 if (!this.E && d6 != d1) {
                     d2 = 0.0D;
                     d1 = 0.0D;
@@ -351,10 +351,10 @@ public abstract class Entity {
                 }
 
                 for (k = 0; k < list.size(); ++k) {
-                    d0 = ((AxisAlignedBB) list.get(k)).a(this.z, d0);
+                    d0 = ((AxisAlignedBB) list.get(k)).a(this.boundingBox, d0);
                 }
 
-                this.z.d(d0, 0.0D, 0.0D);
+                this.boundingBox.d(d0, 0.0D, 0.0D);
                 if (!this.E && d5 != d0) {
                     d2 = 0.0D;
                     d1 = 0.0D;
@@ -362,10 +362,10 @@ public abstract class Entity {
                 }
 
                 for (k = 0; k < list.size(); ++k) {
-                    d2 = ((AxisAlignedBB) list.get(k)).c(this.z, d2);
+                    d2 = ((AxisAlignedBB) list.get(k)).c(this.boundingBox, d2);
                 }
 
-                this.z.d(0.0D, 0.0D, d2);
+                this.boundingBox.d(0.0D, 0.0D, d2);
                 if (!this.E && d7 != d2) {
                     d2 = 0.0D;
                     d1 = 0.0D;
@@ -376,15 +376,15 @@ public abstract class Entity {
                     d0 = d9;
                     d1 = d10;
                     d2 = d11;
-                    this.z.b(axisalignedbb1);
+                    this.boundingBox.b(axisalignedbb1);
                 } else {
                     this.Q = (float) ((double) this.Q + 0.5D);
                 }
             }
 
-            this.p = (this.z.a + this.z.d) / 2.0D;
-            this.q = this.z.b + (double) this.G - (double) this.Q;
-            this.r = (this.z.c + this.z.f) / 2.0D;
+            this.p = (this.boundingBox.a + this.boundingBox.d) / 2.0D;
+            this.q = this.boundingBox.b + (double) this.G - (double) this.Q;
+            this.r = (this.boundingBox.c + this.boundingBox.f) / 2.0D;
             this.B = d5 != d0 || d7 != d2;
             this.C = d6 != d1;
             this.A = d6 != d1 && d6 < 0.0D;
@@ -421,36 +421,36 @@ public abstract class Entity {
                 l = MathHelper.b(this.p);
                 i1 = MathHelper.b(this.q - 0.20000000298023224D - (double) this.G);
                 j1 = MathHelper.b(this.r);
-                k = this.l.a(l, i1, j1);
+                k = this.world.a(l, i1, j1);
                 if (this.K > (float) this.b && k > 0) {
                     ++this.b;
                     StepSound stepsound = Block.n[k].br;
 
-                    if (this.l.a(l, i1 + 1, j1) == Block.SNOW.bi) {
+                    if (this.world.a(l, i1 + 1, j1) == Block.SNOW.bi) {
                         stepsound = Block.SNOW.br;
-                        this.l.a(this, stepsound.c(), stepsound.a() * 0.15F, stepsound.b());
+                        this.world.a(this, stepsound.c(), stepsound.a() * 0.15F, stepsound.b());
                     } else if (!Block.n[k].bt.d()) {
-                        this.l.a(this, stepsound.c(), stepsound.a() * 0.15F, stepsound.b());
+                        this.world.a(this, stepsound.c(), stepsound.a() * 0.15F, stepsound.b());
                     }
 
-                    Block.n[k].b(this.l, l, i1, j1, this);
+                    Block.n[k].b(this.world, l, i1, j1, this);
                 }
             }
 
-            l = MathHelper.b(this.z.a);
-            i1 = MathHelper.b(this.z.b);
-            j1 = MathHelper.b(this.z.c);
-            k = MathHelper.b(this.z.d);
-            int k1 = MathHelper.b(this.z.e);
-            int l1 = MathHelper.b(this.z.f);
+            l = MathHelper.b(this.boundingBox.a);
+            i1 = MathHelper.b(this.boundingBox.b);
+            j1 = MathHelper.b(this.boundingBox.c);
+            k = MathHelper.b(this.boundingBox.d);
+            int k1 = MathHelper.b(this.boundingBox.e);
+            int l1 = MathHelper.b(this.boundingBox.f);
 
             for (int i2 = l; i2 <= k; ++i2) {
                 for (int j2 = i1; j2 <= k1; ++j2) {
                     for (int k2 = j1; k2 <= l1; ++k2) {
-                        int l2 = this.l.a(i2, j2, k2);
+                        int l2 = this.world.a(i2, j2, k2);
 
                         if (l2 > 0) {
-                            Block.n[l2].a(this.l, i2, j2, k2, this);
+                            Block.n[l2].a(this.world, i2, j2, k2, this);
                         }
                     }
                 }
@@ -459,7 +459,7 @@ public abstract class Entity {
             this.Q *= 0.4F;
             boolean flag2 = this.r();
 
-            if (this.l.c(this.z)) {
+            if (this.world.c(this.boundingBox)) {
                 this.b(1);
                 if (!flag2) {
                     ++this.Y;
@@ -472,7 +472,7 @@ public abstract class Entity {
             }
 
             if (flag2 && this.Y > 0) {
-                this.l.a(this, "random.fizz", 0.7F, 1.6F + (this.V.nextFloat() - this.V.nextFloat()) * 0.4F);
+                this.world.a(this, "random.fizz", 0.7F, 1.6F + (this.V.nextFloat() - this.V.nextFloat()) * 0.4F);
                 this.Y = -this.X;
             }
         }
@@ -494,7 +494,7 @@ public abstract class Entity {
     }
 
     public boolean r() {
-        return this.l.a(this.z.b(0.0D, -0.4000000059604645D, 0.0D), Material.f, this);
+        return this.world.a(this.boundingBox.b(0.0D, -0.4000000059604645D, 0.0D), Material.f, this);
     }
 
     public boolean a(Material material) {
@@ -502,10 +502,10 @@ public abstract class Entity {
         int i = MathHelper.b(this.p);
         int j = MathHelper.d((float) MathHelper.b(d0));
         int k = MathHelper.b(this.r);
-        int l = this.l.a(i, j, k);
+        int l = this.world.a(i, j, k);
 
         if (l != 0 && Block.n[l].bt == material) {
-            float f = BlockFluids.b(this.l.b(i, j, k)) - 0.11111111F;
+            float f = BlockFluids.b(this.world.b(i, j, k)) - 0.11111111F;
             float f1 = (float) (j + 1) - f;
 
             return d0 < (double) f1;
@@ -519,7 +519,7 @@ public abstract class Entity {
     }
 
     public boolean t() {
-        return this.l.a(this.z.b(0.0D, -0.4000000059604645D, 0.0D), Material.g);
+        return this.world.a(this.boundingBox.b(0.0D, -0.4000000059604645D, 0.0D), Material.g);
     }
 
     public void a(float f, float f1, float f2) {
@@ -543,15 +543,15 @@ public abstract class Entity {
 
     public float b(float f) {
         int i = MathHelper.b(this.p);
-        double d0 = (this.z.e - this.z.b) * 0.66D;
+        double d0 = (this.boundingBox.e - this.boundingBox.b) * 0.66D;
         int j = MathHelper.b(this.q - (double) this.G + d0);
         int k = MathHelper.b(this.r);
 
-        return this.l.j(i, j, k);
+        return this.world.j(i, j, k);
     }
 
     public void spawnIn(World world) {
-        this.l = world;
+        this.world = world;
     }
 
     public void b(double d0, double d1, double d2, float f, float f1) {
@@ -753,10 +753,10 @@ public abstract class Entity {
     }
 
     public EntityItem a(int i, int j, float f) {
-        EntityItem entityitem = new EntityItem(this.l, this.p, this.q + (double) f, this.r, new ItemStack(i, j));
+        EntityItem entityitem = new EntityItem(this.world, this.p, this.q + (double) f, this.r, new ItemStack(i, j));
 
         entityitem.c = 10;
-        this.l.a((Entity) entityitem);
+        this.world.a((Entity) entityitem);
         return entityitem;
     }
 
@@ -769,7 +769,7 @@ public abstract class Entity {
         int j = MathHelper.b(this.q + (double) this.s());
         int k = MathHelper.b(this.r);
 
-        return this.l.d(i, j, k);
+        return this.world.d(i, j, k);
     }
 
     public AxisAlignedBB d(Entity entity) {
@@ -848,7 +848,7 @@ public abstract class Entity {
         if (this.k == entity) {
             this.k.j = null;
             this.k = null;
-            this.c(entity.p, entity.z.b + (double) entity.I, entity.r, this.v, this.w);
+            this.c(entity.p, entity.boundingBox.b + (double) entity.I, entity.r, this.v, this.w);
         } else {
             if (this.k != null) {
                 this.k.j = null;

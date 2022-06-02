@@ -171,7 +171,7 @@ public class EntityTrackerEntry {
             } else if (this.a instanceof EntityFishingHook) {
                 return new PacketUnusedFishing(this.a, 1);
             } else {
-                throw new IllegalArgumentException("Don\'t know how to add " + this.a.getClass() + "!");
+                throw new IllegalArgumentException("Don't know how to add " + this.a.getClass() + "!");
             }
         }
     }

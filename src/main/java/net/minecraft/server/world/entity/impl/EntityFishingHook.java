@@ -40,7 +40,7 @@ public class EntityFishingHook extends Entity {
             if (this.c != null) {
                 if (!this.c.F) {
                     this.p = this.c.p;
-                    this.q = this.c.z.b + (double) this.c.I * 0.8D;
+                    this.q = this.c.boundingBox.b + (double) this.c.I * 0.8D;
                     this.r = this.c.r;
                     return;
                 }
@@ -53,7 +53,7 @@ public class EntityFishingHook extends Entity {
             }
 
             if (this.aj) {
-                int i = this.l.a(this.d, this.e, this.f);
+                int i = this.world.a(this.d, this.e, this.f);
 
                 if (i == this.ai) {
                     ++this.ak;
@@ -76,7 +76,7 @@ public class EntityFishingHook extends Entity {
 
             Vec3D vec3d = Vec3D.b(this.p, this.q, this.r);
             Vec3D vec3d1 = Vec3D.b(this.p + this.s, this.q + this.t, this.r + this.u);
-            MovingObjectPosition movingobjectposition = this.l.a(vec3d, vec3d1);
+            MovingObjectPosition movingobjectposition = this.world.a(vec3d, vec3d1);
 
             vec3d = Vec3D.b(this.p, this.q, this.r);
             vec3d1 = Vec3D.b(this.p + this.s, this.q + this.t, this.r + this.u);
@@ -85,7 +85,7 @@ public class EntityFishingHook extends Entity {
             }
 
             Entity entity = null;
-            List list = this.l.b((Entity) this, this.z.a(this.s, this.t, this.u).b(1.0D, 1.0D, 1.0D));
+            List list = this.world.b((Entity) this, this.boundingBox.a(this.s, this.t, this.u).b(1.0D, 1.0D, 1.0D));
             double d0 = 0.0D;
 
             double d1;
@@ -95,7 +95,7 @@ public class EntityFishingHook extends Entity {
 
                 if (entity1.c_() && (entity1 != this.b || this.al >= 5)) {
                     float f = 0.3F;
-                    AxisAlignedBB axisalignedbb = entity1.z.b((double) f, (double) f, (double) f);
+                    AxisAlignedBB axisalignedbb = entity1.boundingBox.b((double) f, (double) f, (double) f);
                     MovingObjectPosition movingobjectposition1 = axisalignedbb.a(vec3d, vec3d1);
 
                     if (movingobjectposition1 != null) {
@@ -156,11 +156,11 @@ public class EntityFishingHook extends Entity {
                 double d2 = 0.0D;
 
                 for (int k = 0; k < b0; ++k) {
-                    double d3 = this.z.b + (this.z.e - this.z.b) * (double) (k + 0) / (double) b0 - 0.125D + 0.125D;
-                    double d4 = this.z.b + (this.z.e - this.z.b) * (double) (k + 1) / (double) b0 - 0.125D + 0.125D;
-                    AxisAlignedBB axisalignedbb1 = AxisAlignedBB.b(this.z.a, d3, this.z.c, this.z.d, d4, this.z.f);
+                    double d3 = this.boundingBox.b + (this.boundingBox.e - this.boundingBox.b) * (double) (k + 0) / (double) b0 - 0.125D + 0.125D;
+                    double d4 = this.boundingBox.b + (this.boundingBox.e - this.boundingBox.b) * (double) (k + 1) / (double) b0 - 0.125D + 0.125D;
+                    AxisAlignedBB axisalignedbb1 = AxisAlignedBB.b(this.boundingBox.a, d3, this.boundingBox.c, this.boundingBox.d, d4, this.boundingBox.f);
 
-                    if (this.l.b(axisalignedbb1, Material.f)) {
+                    if (this.world.b(axisalignedbb1, Material.f)) {
                         d2 += 1.0D / (double) b0;
                     }
                 }
@@ -171,8 +171,8 @@ public class EntityFishingHook extends Entity {
                     } else if (this.V.nextInt(500) == 0) {
                         this.am = this.V.nextInt(30) + 10;
                         this.t -= 0.20000000298023224D;
-                        this.l.a(this, "random.splash", 0.25F, 1.0F + (this.V.nextFloat() - this.V.nextFloat()) * 0.4F);
-                        float f3 = (float) MathHelper.b(this.z.b);
+                        this.world.a(this, "random.splash", 0.25F, 1.0F + (this.V.nextFloat() - this.V.nextFloat()) * 0.4F);
+                        float f3 = (float) MathHelper.b(this.boundingBox.b);
 
                         float f4;
                         int l;
@@ -181,13 +181,13 @@ public class EntityFishingHook extends Entity {
                         for (l = 0; (float) l < 1.0F + this.H * 20.0F; ++l) {
                             f4 = (this.V.nextFloat() * 2.0F - 1.0F) * this.H;
                             f5 = (this.V.nextFloat() * 2.0F - 1.0F) * this.H;
-                            this.l.a("bubble", this.p + (double) f4, (double) (f3 + 1.0F), this.r + (double) f5, this.s, this.t - (double) (this.V.nextFloat() * 0.2F), this.u);
+                            this.world.a("bubble", this.p + (double) f4, (double) (f3 + 1.0F), this.r + (double) f5, this.s, this.t - (double) (this.V.nextFloat() * 0.2F), this.u);
                         }
 
                         for (l = 0; (float) l < 1.0F + this.H * 20.0F; ++l) {
                             f4 = (this.V.nextFloat() * 2.0F - 1.0F) * this.H;
                             f5 = (this.V.nextFloat() * 2.0F - 1.0F) * this.H;
-                            this.l.a("splash", this.p + (double) f4, (double) (f3 + 1.0F), this.r + (double) f5, this.s, this.t, this.u);
+                            this.world.a("splash", this.p + (double) f4, (double) (f3 + 1.0F), this.r + (double) f5, this.s, this.t, this.u);
                         }
                     }
                 }

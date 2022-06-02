@@ -25,7 +25,7 @@ public class EntitySpider extends EntityMonster {
         if (f < 0.5F) {
             double d0 = 16.0D;
 
-            return this.l.a(this, d0);
+            return this.world.a(this, d0);
         } else {
             return null;
         }

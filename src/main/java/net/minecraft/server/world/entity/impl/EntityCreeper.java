@@ -49,8 +49,8 @@ public class EntityCreeper extends EntityMonster {
         return "mob.creeperdeath";
     }
 
-    public void f(Entity entity) {
-        super.f(entity);
+    public void die(Entity entity) {
+        super.die(entity);
         if (entity instanceof EntitySkeleton) {
             this.a(Item.GOLD_RECORD.aW + this.V.nextInt(2), 1);
         }
@@ -59,13 +59,13 @@ public class EntityCreeper extends EntityMonster {
     protected void a(Entity entity, float f) {
         if (this.d <= 0 && f < 3.0F || this.d > 0 && f < 7.0F) {
             if (this.a == 0) {
-                this.l.a(this, "random.fuse", 1.0F, 0.5F);
+                this.world.a(this, "random.fuse", 1.0F, 0.5F);
             }
 
             this.d = 1;
             ++this.a;
             if (this.a == this.c) {
-                this.l.a(this, this.p, this.q, this.r, 3.0F);
+                this.world.a(this, this.p, this.q, this.r, 3.0F);
                 this.l();
             }
 

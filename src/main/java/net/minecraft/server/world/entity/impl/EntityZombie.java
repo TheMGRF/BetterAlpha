@@ -14,10 +14,10 @@ public class EntityZombie extends EntityMonster {
     }
 
     public void D() {
-        if (this.l.b()) {
+        if (this.world.b()) {
             float f = this.b(1.0F);
 
-            if (f > 0.5F && this.l.g(MathHelper.b(this.p), MathHelper.b(this.q), MathHelper.b(this.r)) && this.V.nextFloat() * 30.0F < (f - 0.4F) * 2.0F) {
+            if (f > 0.5F && this.world.g(MathHelper.b(this.p), MathHelper.b(this.q), MathHelper.b(this.r)) && this.V.nextFloat() * 30.0F < (f - 0.4F) * 2.0F) {
                 this.Y = 300;
             }
         }

@@ -37,7 +37,7 @@ public class World implements IBlockAccess {
     private Set D = new HashSet();
     public List c = new ArrayList();
     public List d = new ArrayList();
-    public long e = 0L;
+    public long lastUpdate = 0L;
     private long E = 16777215L;
     public int f = 0;
     protected int g = (new Random()).nextInt();
@@ -110,7 +110,7 @@ public class World implements IBlockAccess {
                 this.m = nbttagcompound1.d("SpawnX");
                 this.n = nbttagcompound1.d("SpawnY");
                 this.o = nbttagcompound1.d("SpawnZ");
-                this.e = nbttagcompound1.e("Time");
+                this.lastUpdate = nbttagcompound1.e("Time");
                 this.v = nbttagcompound1.e("SizeOnDisk");
                 if (nbttagcompound1.a("Player")) {
                     this.H = nbttagcompound1.j("Player");
@@ -191,7 +191,7 @@ public class World implements IBlockAccess {
         nbttagcompound.a("SpawnX", this.m);
         nbttagcompound.a("SpawnY", this.n);
         nbttagcompound.a("SpawnZ", this.o);
-        nbttagcompound.a("Time", this.e);
+        nbttagcompound.a("Time", this.lastUpdate);
         nbttagcompound.a("SizeOnDisk", this.v);
         nbttagcompound.a("LastPlayed", System.currentTimeMillis());
         EntityHuman entityhuman = null;
@@ -875,7 +875,7 @@ public class World implements IBlockAccess {
     }
 
     public float b(float f) {
-        return this.q.a(this.e, f);
+        return this.q.a(this.lastUpdate, f);
     }
 
     public int e(int i, int j) {
@@ -915,7 +915,7 @@ public class World implements IBlockAccess {
         } else {
             if (this.a(i - b0, j - b0, k - b0, i + b0, j + b0, k + b0)) {
                 if (l > 0) {
-                    nextticklistentry.a((long) Block.n[l].b() + this.e);
+                    nextticklistentry.a((long) Block.n[l].b() + this.lastUpdate);
                 }
 
                 if (!this.D.contains(nextticklistentry)) {
@@ -1375,8 +1375,8 @@ public class World implements IBlockAccess {
             }
         }
 
-        ++this.e;
-        if (this.e % (long) this.j == 0L) {
+        ++this.lastUpdate;
+        if (this.lastUpdate % (long) this.j == 0L) {
             this.a(false, (IProgressUpdate) null);
         }
 
@@ -1447,7 +1447,7 @@ public class World implements IBlockAccess {
                 j1 = l & 15;
                 k1 = l >> 8 & 15;
                 l1 = l >> 16 & 127;
-                byte b1 = chunk.b[j1 << 11 | k1 << 7 | l1];
+                byte b1 = chunk.blocks[j1 << 11 | k1 << 7 | l1];
 
                 if (Block.o[b1]) {
                     Block.n[b1].a(this, j1 + i, l1, k1 + j, this.l);
@@ -1469,7 +1469,7 @@ public class World implements IBlockAccess {
             for (int j = 0; j < i; ++j) {
                 NextTickListEntry nextticklistentry = (NextTickListEntry) this.C.first();
 
-                if (!flag && nextticklistentry.e > this.e) {
+                if (!flag && nextticklistentry.e > this.lastUpdate) {
                     break;
                 }
 

@@ -112,7 +112,7 @@ public class EntityPainting extends Entity {
         this.a((double) f3, (double) f4, (double) f5);
         float f7 = -0.00625F;
 
-        this.z.c((double) (f3 - f - f7), (double) (f4 - f1 - f7), (double) (f5 - f2 - f7), (double) (f3 + f + f7), (double) (f4 + f1 + f7), (double) (f5 + f2 + f7));
+        this.boundingBox.c((double) (f3 - f - f7), (double) (f4 - f1 - f7), (double) (f5 - f2 - f7), (double) (f3 + f + f7), (double) (f4 + f1 + f7), (double) (f5 + f2 + f7));
     }
 
     private float c(int i) {
@@ -123,12 +123,12 @@ public class EntityPainting extends Entity {
         if (this.c++ == 100 && !this.c()) {
             this.c = 0;
             this.l();
-            this.l.a((Entity) (new EntityItem(this.l, this.p, this.q, this.r, new ItemStack(Item.PAINTING))));
+            this.world.a((Entity) (new EntityItem(this.world, this.p, this.q, this.r, new ItemStack(Item.PAINTING))));
         }
     }
 
     public boolean c() {
-        if (this.l.a((Entity) this, this.z).size() > 0) {
+        if (this.world.a((Entity) this, this.boundingBox).size() > 0) {
             return false;
         } else {
             int i = this.b.z / 16;
@@ -162,9 +162,9 @@ public class EntityPainting extends Entity {
                     Material material;
 
                     if (this.a != 0 && this.a != 2) {
-                        material = this.l.c(this.d, l + j1, i1 + k1);
+                        material = this.world.c(this.d, l + j1, i1 + k1);
                     } else {
-                        material = this.l.c(k + k1, l + j1, this.f);
+                        material = this.world.c(k + k1, l + j1, this.f);
                     }
 
                     if (!material.a()) {
@@ -173,7 +173,7 @@ public class EntityPainting extends Entity {
                 }
             }
 
-            List list = this.l.b((Entity) this, this.z);
+            List list = this.world.b((Entity) this, this.boundingBox);
 
             for (j1 = 0; j1 < list.size(); ++j1) {
                 if (list.get(j1) instanceof EntityPainting) {
@@ -191,7 +191,7 @@ public class EntityPainting extends Entity {
 
     public boolean a(Entity entity, int i) {
         this.l();
-        this.l.a((Entity) (new EntityItem(this.l, this.p, this.q, this.r, new ItemStack(Item.PAINTING))));
+        this.world.a((Entity) (new EntityItem(this.world, this.p, this.q, this.r, new ItemStack(Item.PAINTING))));
         return true;
     }
 

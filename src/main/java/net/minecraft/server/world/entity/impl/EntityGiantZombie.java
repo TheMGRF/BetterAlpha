@@ -9,12 +9,12 @@ public class EntityGiantZombie extends EntityMonster {
         this.aF = "/mob/zombie.png";
         this.bl = 0.5F;
         this.e = 50;
-        this.aP *= 10;
+        this.health *= 10;
         this.G *= 6.0F;
         this.a(this.H * 6.0F, this.I * 6.0F);
     }
 
     protected float a(int i, int j, int k) {
-        return this.l.j(i, j, k) - 0.5F;
+        return this.world.j(i, j, k) - 0.5F;
     }
 }
