@@ -2,6 +2,9 @@ package net.minecraft.server;
 
 import net.minecraft.server.item.ItemArmor;
 import net.minecraft.server.item.ItemStack;
+import net.minecraft.server.nbt.NBTBase;
+import net.minecraft.server.nbt.NBTTagCompound;
+import net.minecraft.server.nbt.NBTTagList;
 import net.minecraft.server.world.block.Block;
 import net.minecraft.server.world.entity.EntityHuman;
 

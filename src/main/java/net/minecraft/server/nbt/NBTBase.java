@@ -1,4 +1,4 @@
-package net.minecraft.server;
+package net.minecraft.server.nbt;
 
 import java.io.DataInput;
 import java.io.DataOutput;

@@ -1,29 +1,29 @@
-package net.minecraft.server;
+package net.minecraft.server.nbt;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-public class NBTTagByte extends NBTBase {
+public class NBTTagInt extends NBTBase {
 
-    public byte a;
+    public int a;
 
-    public NBTTagByte() {}
+    public NBTTagInt() {}
 
-    public NBTTagByte(byte b0) {
-        this.a = b0;
+    public NBTTagInt(int i) {
+        this.a = i;
     }
 
     void a(DataOutput dataoutput) throws IOException {
-        dataoutput.writeByte(this.a);
+        dataoutput.writeInt(this.a);
     }
 
     void a(DataInput datainput) throws IOException {
-        this.a = datainput.readByte();
+        this.a = datainput.readInt();
     }
 
     public byte a() {
-        return (byte) 1;
+        return (byte) 3;
     }
 
     public String toString() {

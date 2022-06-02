@@ -1,7 +1,7 @@
 package net.minecraft.server.packet;
 
 import net.minecraft.server.CompressedStreamTools;
-import net.minecraft.server.NBTTagCompound;
+import net.minecraft.server.nbt.NBTTagCompound;
 import net.minecraft.server.NetHandler;
 import net.minecraft.server.world.block.tile.TileEntity;
 

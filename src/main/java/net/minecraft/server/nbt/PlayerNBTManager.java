@@ -1,5 +1,7 @@
-package net.minecraft.server;
+package net.minecraft.server.nbt;
 
+import net.minecraft.server.CompressedStreamTools;
+import net.minecraft.server.nbt.NBTTagCompound;
 import net.minecraft.server.world.entity.EntityHuman;
 import net.minecraft.server.world.entity.EntityPlayer;
 

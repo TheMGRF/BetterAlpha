@@ -1,6 +1,6 @@
 package net.minecraft.server.item;
 
-import net.minecraft.server.NBTTagCompound;
+import net.minecraft.server.nbt.NBTTagCompound;
 import net.minecraft.server.world.World;
 import net.minecraft.server.world.block.Block;
 import net.minecraft.server.world.entity.EntityHuman;

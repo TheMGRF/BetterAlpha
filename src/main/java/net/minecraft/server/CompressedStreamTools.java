@@ -1,5 +1,8 @@
 package net.minecraft.server;
 
+import net.minecraft.server.nbt.NBTBase;
+import net.minecraft.server.nbt.NBTTagCompound;
+
 import java.io.*;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;

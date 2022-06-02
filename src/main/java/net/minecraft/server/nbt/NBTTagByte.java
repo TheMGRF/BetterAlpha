@@ -1,29 +1,29 @@
-package net.minecraft.server;
+package net.minecraft.server.nbt;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-public class NBTTagFloat extends NBTBase {
+public class NBTTagByte extends NBTBase {
 
-    public float a;
+    public byte a;
 
-    public NBTTagFloat() {}
+    public NBTTagByte() {}
 
-    public NBTTagFloat(float f) {
-        this.a = f;
+    public NBTTagByte(byte b0) {
+        this.a = b0;
     }
 
     void a(DataOutput dataoutput) throws IOException {
-        dataoutput.writeFloat(this.a);
+        dataoutput.writeByte(this.a);
     }
 
     void a(DataInput datainput) throws IOException {
-        this.a = datainput.readFloat();
+        this.a = datainput.readByte();
     }
 
     public byte a() {
-        return (byte) 5;
+        return (byte) 1;
     }
 
     public String toString() {
