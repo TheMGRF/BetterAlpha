@@ -1,5 +1,8 @@
 package net.minecraft.server;
 
+import net.minecraft.server.item.ItemInWorldManager;
+import net.minecraft.server.item.ItemStack;
+import net.minecraft.server.packet.*;
 import net.minecraft.server.world.WorldServer;
 import net.minecraft.server.world.block.tile.TileEntity;
 import net.minecraft.server.world.entity.Entity;

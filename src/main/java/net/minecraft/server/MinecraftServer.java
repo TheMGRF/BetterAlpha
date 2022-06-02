@@ -1,5 +1,10 @@
 package net.minecraft.server;
 
+import net.minecraft.server.item.Item;
+import net.minecraft.server.item.ItemStack;
+import net.minecraft.server.packet.Packet;
+import net.minecraft.server.packet.Packet3Chat;
+import net.minecraft.server.packet.Packet4UpdateTime;
 import net.minecraft.server.world.SecondaryWorldServer;
 import net.minecraft.server.world.WorldManager;
 import net.minecraft.server.world.WorldServer;

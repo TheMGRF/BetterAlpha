@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import net.minecraft.server.packet.Packet1Login;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;

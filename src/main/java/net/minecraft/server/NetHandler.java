@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import net.minecraft.server.packet.*;
+
 public class NetHandler {
 
     public NetHandler() {}

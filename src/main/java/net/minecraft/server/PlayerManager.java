@@ -1,5 +1,6 @@
 package net.minecraft.server;
 
+import net.minecraft.server.packet.Packet;
 import net.minecraft.server.world.WorldServer;
 import net.minecraft.server.world.entity.EntityPlayer;
 
