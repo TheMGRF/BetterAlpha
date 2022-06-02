@@ -1,6 +1,8 @@
 package net.minecraft.server;
 
 import net.minecraft.server.block.Block;
+import net.minecraft.server.entity.EntityHuman;
+import net.minecraft.server.entity.EntityLiving;
 
 public class ItemBlock extends Item {
 

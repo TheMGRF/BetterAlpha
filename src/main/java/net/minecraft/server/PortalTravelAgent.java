@@ -1,6 +1,7 @@
 package net.minecraft.server;
 
 import net.minecraft.server.block.Block;
+import net.minecraft.server.entity.Entity;
 
 import java.util.Random;
 

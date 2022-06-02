@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import net.minecraft.server.entity.EntityPlayer;
+
 import java.util.Vector;
 import javax.swing.JList;
 

@@ -1,5 +1,8 @@
 package net.minecraft.server;
 
+import net.minecraft.server.entity.EntityHuman;
+import net.minecraft.server.entity.EntityPlayer;
+
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;

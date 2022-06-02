@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import net.minecraft.server.entity.Entity;
+
 public class WorldManager implements IWorldAccess {
 
     private MinecraftServer a;

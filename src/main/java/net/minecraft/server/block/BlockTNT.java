@@ -1,7 +1,7 @@
 package net.minecraft.server.block;
 
-import net.minecraft.server.Entity;
-import net.minecraft.server.EntityTNTPrimed;
+import net.minecraft.server.entity.Entity;
+import net.minecraft.server.entity.EntityTNTPrimed;
 import net.minecraft.server.Material;
 import net.minecraft.server.World;
 

@@ -1,6 +1,7 @@
 package net.minecraft.server.block;
 
 import net.minecraft.server.*;
+import net.minecraft.server.entity.EntityHuman;
 
 public class BlockLever extends Block {
 

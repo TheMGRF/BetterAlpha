@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import net.minecraft.server.entity.*;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;

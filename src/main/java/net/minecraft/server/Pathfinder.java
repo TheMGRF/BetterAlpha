@@ -1,5 +1,8 @@
 package net.minecraft.server;
 
+import net.minecraft.server.entity.Entity;
+import net.minecraft.server.entity.EntityList;
+
 public class Pathfinder {
 
     private IBlockAccess a;

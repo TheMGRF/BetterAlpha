@@ -1,6 +1,6 @@
 package net.minecraft.server.block;
 
-import net.minecraft.server.EntityHuman;
+import net.minecraft.server.entity.EntityHuman;
 import net.minecraft.server.Material;
 import net.minecraft.server.World;
 

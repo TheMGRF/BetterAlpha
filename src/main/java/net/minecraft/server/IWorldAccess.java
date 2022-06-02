@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import net.minecraft.server.entity.Entity;
+
 public interface IWorldAccess {
 
     void a(int i, int j, int k);

@@ -1,7 +1,7 @@
 package net.minecraft.server.block;
 
-import net.minecraft.server.Entity;
-import net.minecraft.server.EntityFallingSand;
+import net.minecraft.server.entity.Entity;
+import net.minecraft.server.entity.EntityFallingSand;
 import net.minecraft.server.Material;
 import net.minecraft.server.World;
 

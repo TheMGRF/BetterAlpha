@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import net.minecraft.server.entity.EntityPlayer;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;

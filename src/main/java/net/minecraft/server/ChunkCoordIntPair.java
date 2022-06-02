@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import net.minecraft.server.entity.Entity;
+
 public class ChunkCoordIntPair {
 
     public int a;

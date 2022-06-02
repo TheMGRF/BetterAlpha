@@ -1,6 +1,9 @@
 package net.minecraft.server;
 
 import net.minecraft.server.block.Block;
+import net.minecraft.server.entity.Entity;
+import net.minecraft.server.entity.EntityHuman;
+import net.minecraft.server.entity.EntityItem;
 
 public class ItemHoe extends Item {
 

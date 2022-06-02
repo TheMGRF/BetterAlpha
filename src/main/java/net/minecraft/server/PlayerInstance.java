@@ -1,6 +1,7 @@
 package net.minecraft.server;
 
 import net.minecraft.server.block.Block;
+import net.minecraft.server.entity.EntityPlayer;
 
 import java.util.ArrayList;
 import java.util.List;

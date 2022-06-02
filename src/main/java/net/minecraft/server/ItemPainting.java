@@ -1,5 +1,9 @@
 package net.minecraft.server;
 
+import net.minecraft.server.entity.Entity;
+import net.minecraft.server.entity.EntityHuman;
+import net.minecraft.server.entity.EntityPainting;
+
 public class ItemPainting extends Item {
 
     public ItemPainting(int i) {
