@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import net.minecraft.server.world.block.tile.TileEntity;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;

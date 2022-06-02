@@ -2,6 +2,7 @@ package net.minecraft.server;
 
 import net.minecraft.server.world.WorldServer;
 import net.minecraft.server.world.block.Block;
+import net.minecraft.server.world.block.tile.TileEntity;
 import net.minecraft.server.world.chunk.ChunkCoordIntPair;
 import net.minecraft.server.world.entity.EntityPlayer;
 

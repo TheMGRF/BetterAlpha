@@ -1,6 +1,7 @@
 package net.minecraft.server;
 
 import net.minecraft.server.world.WorldServer;
+import net.minecraft.server.world.block.tile.TileEntity;
 import net.minecraft.server.world.entity.Entity;
 import net.minecraft.server.world.entity.EntityItem;
 import net.minecraft.server.world.entity.EntityPlayer;
