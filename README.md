@@ -1,6 +1,6 @@
 # BetterAlpha
 
-A Minecraft Alpha v1.2.1 server implementation.
+A Minecraft Alpha v1.2.6 server implementation.
 
 ## Useful Stuff
 
