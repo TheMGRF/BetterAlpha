@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 public class NetworkListenThread {
 
-    public static Logger a = Logger.getLogger("Minecraft");
+    public static final Logger LOGGER = Logger.getLogger("Minecraft");
     private ServerSocket d;
     private Thread e;
     public volatile boolean b = false;
@@ -53,7 +53,7 @@ public class NetworkListenThread {
                 netloginhandler.a();
             } catch (Exception exception) {
                 netloginhandler.b("Internal server error");
-                a.log(Level.WARNING, "Failed to handle packet: " + exception, exception);
+                LOGGER.log(Level.WARNING, "Failed to handle packet: " + exception, exception);
             }
 
             if (netloginhandler.c) {
@@ -68,7 +68,7 @@ public class NetworkListenThread {
                 netserverhandler.a();
             } catch (Exception exception1) {
                 netserverhandler.c("Internal server error");
-                a.log(Level.WARNING, "Failed to handle packet: " + exception1, exception1);
+                LOGGER.log(Level.WARNING, "Failed to handle packet: " + exception1, exception1);
             }
 
             if (netserverhandler.c) {

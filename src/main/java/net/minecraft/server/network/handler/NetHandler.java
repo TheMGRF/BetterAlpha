@@ -24,6 +24,10 @@ public class NetHandler {
         this.a((Packet) packet1login);
     }
 
+    public void a(Packet7UseEntity packet7UseEntity) {
+        this.a((Packet) packet7UseEntity);
+    }
+
     public void a(Packet10Flying packet10flying) {
         this.a((Packet) packet10flying);
     }

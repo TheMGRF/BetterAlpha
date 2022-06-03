@@ -10,27 +10,27 @@ import java.util.Map;
 
 public abstract class Packet {
 
-    private static Map a = new HashMap();
-    private static Map b = new HashMap();
+    private static final Map<Integer, Class<? extends Packet>> ID_TO_PACKET = new HashMap<>();
+    private static final Map<Class<? extends Packet>, Integer> PACKET_TO_ID = new HashMap<>();
     public boolean j = false;
 
     public Packet() {
     }
 
-    static void a(int i, Class oclass) {
-        if (a.containsKey(Integer.valueOf(i))) {
-            throw new IllegalArgumentException("Duplicate packet id:" + i);
-        } else if (b.containsKey(oclass)) {
-            throw new IllegalArgumentException("Duplicate packet class:" + oclass);
+    static void register(int id, Class<? extends Packet> packet) {
+        if (ID_TO_PACKET.containsKey(id)) {
+            throw new IllegalArgumentException("Duplicate packet id:" + id);
+        } else if (PACKET_TO_ID.containsKey(packet)) {
+            throw new IllegalArgumentException("Duplicate packet class:" + packet);
         } else {
-            a.put(Integer.valueOf(i), oclass);
-            b.put(oclass, Integer.valueOf(i));
+            ID_TO_PACKET.put(id, packet);
+            PACKET_TO_ID.put(packet, id);
         }
     }
 
     public static Packet a(int i) {
         try {
-            Class oclass = (Class) a.get(Integer.valueOf(i));
+            Class oclass = (Class) ID_TO_PACKET.get(Integer.valueOf(i));
 
             return oclass == null ? null : (Packet) oclass.newInstance();
         } catch (Exception exception) {
@@ -41,7 +41,7 @@ public abstract class Packet {
     }
 
     public final int b() {
-        return ((Integer) b.get(this.getClass())).intValue();
+        return ((Integer) PACKET_TO_ID.get(this.getClass())).intValue();
     }
 
     public static Packet b(DataInputStream datainputstream) throws IOException {
@@ -75,38 +75,39 @@ public abstract class Packet {
     public abstract int a();
 
     static {
-        a(0, Packet0KeepAlive.class);
-        a(1, Packet1Login.class);
-        a(2, Packet2Handshake.class);
-        a(3, Packet3Chat.class);
-        a(4, Packet4UpdateTime.class);
-        a(5, Packet5PlayerInventory.class);
-        a(6, Packet6SpawnPosition.class);
-        a(10, Packet10Flying.class);
-        a(11, Packet11PlayerPosition.class);
-        a(12, Packet12PlayerLook.class);
-        a(13, Packet13PlayerLookMove.class);
-        a(14, Packet14BlockDig.class);
-        a(15, Packet15Place.class);
-        a(16, Packet16BlockItemSwitch.class);
-        a(17, Packet17AddToInventory.class);
-        a(18, Packet18ArmAnimation.class);
-        a(20, Packet20NamedEntitySpawn.class);
-        a(21, Packet21PickupSpawn.class);
-        a(22, Packet22Collect.class);
-        a(23, Packet23VehicleSpawn.class);
-        a(24, Packet24MobSpawn.class);
-        a(29, Packet29DestroyEntity.class);
-        a(30, Packet30Entity.class);
-        a(31, Packet31RelEntityMove.class);
-        a(32, Packet32EntityLook.class);
-        a(33, Packet33RelEntityMoveLook.class);
-        a(34, Packet34EntityTeleport.class);
-        a(50, Packet50PreChunk.class);
-        a(51, Packet51MapChunk.class);
-        a(52, Packet52MultiBlockChange.class);
-        a(53, Packet53BlockChange.class);
-        a(59, Packet59ComplexEntity.class);
-        a(255, Packet255KickDisconnect.class);
+        register(0, Packet0KeepAlive.class);
+        register(1, Packet1Login.class);
+        register(2, Packet2Handshake.class);
+        register(3, Packet3Chat.class);
+        register(4, Packet4UpdateTime.class);
+        register(5, Packet5PlayerInventory.class);
+        register(6, Packet6SpawnPosition.class);
+        register(7, Packet7UseEntity.class);
+        register(10, Packet10Flying.class);
+        register(11, Packet11PlayerPosition.class);
+        register(12, Packet12PlayerLook.class);
+        register(13, Packet13PlayerLookMove.class);
+        register(14, Packet14BlockDig.class);
+        register(15, Packet15Place.class);
+        register(16, Packet16BlockItemSwitch.class);
+        register(17, Packet17AddToInventory.class);
+        register(18, Packet18ArmAnimation.class);
+        register(20, Packet20NamedEntitySpawn.class);
+        register(21, Packet21PickupSpawn.class);
+        register(22, Packet22Collect.class);
+        register(23, Packet23VehicleSpawn.class);
+        register(24, Packet24MobSpawn.class);
+        register(29, Packet29DestroyEntity.class);
+        register(30, Packet30Entity.class);
+        register(31, Packet31RelEntityMove.class);
+        register(32, Packet32EntityLook.class);
+        register(33, Packet33RelEntityMoveLook.class);
+        register(34, Packet34EntityTeleport.class);
+        register(50, Packet50PreChunk.class);
+        register(51, Packet51MapChunk.class);
+        register(52, Packet52MultiBlockChange.class);
+        register(53, Packet53BlockChange.class);
+        register(59, Packet59ComplexEntity.class);
+        register(255, Packet255KickDisconnect.class);
     }
 }
