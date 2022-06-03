@@ -221,7 +221,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
                     long l = k - i;
 
                     if (l > 2000L) {
-                        a.warning("Can\'t keep up! Did the system time change, or is the server overloaded?");
+                        a.warning("Can't keep up! Did the system time change, or is the server overloaded?");
                         l = 2000L;
                     }
 
@@ -302,7 +302,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
                 WorldServer worldserver = this.worlds[j];
 
                 if (this.h % 20 == 0) {
-                    this.f.a((Packet) (new Packet4UpdateTime(worldserver.e)), worldserver.q.e);
+                    this.f.a((Packet) (new Packet4UpdateTime(worldserver.lastUpdate)), worldserver.q.e);
                 }
 
                 // Spawn entities in world?
@@ -426,7 +426,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
                                 entityplayer.a.c("Kicked by admin");
                                 this.a(s1, "Kicking " + entityplayer.ar);
                             } else {
-                                icommandlistener.b("Can\'t find user " + s2 + ". No kick.");
+                                icommandlistener.b("Can't find user " + s2 + ". No kick.");
                             }
                         } else {
                             String[] astring;
@@ -438,9 +438,9 @@ public class MinecraftServer implements ICommandListener, Runnable {
                                     entityplayer = this.f.h(astring[1]);
                                     entityplayer2 = this.f.h(astring[2]);
                                     if (entityplayer == null) {
-                                        icommandlistener.b("Can\'t find user " + astring[1] + ". No tp.");
+                                        icommandlistener.b("Can't find user " + astring[1] + ". No tp.");
                                     } else if (entityplayer2 == null) {
-                                        icommandlistener.b("Can\'t find user " + astring[2] + ". No tp.");
+                                        icommandlistener.b("Can't find user " + astring[2] + ". No tp.");
                                     } else {
                                         entityplayer.a.a(entityplayer2.p, entityplayer2.q, entityplayer2.r, entityplayer2.v, entityplayer2.w);
                                         this.a(s1, "Teleporting " + astring[1] + " to " + astring[2] + ".");
@@ -479,13 +479,13 @@ public class MinecraftServer implements ICommandListener, Runnable {
 
                                             entityplayer2.a(new ItemStack(j, k));
                                         } else {
-                                            icommandlistener.b("There\'s no item with id " + j);
+                                            icommandlistener.b("There's no item with id " + j);
                                         }
                                     } catch (NumberFormatException numberformatexception) {
-                                        icommandlistener.b("There\'s no item with id " + astring[2]);
+                                        icommandlistener.b("There's no item with id " + astring[2]);
                                     }
                                 } else {
-                                    icommandlistener.b("Can\'t find user " + s3);
+                                    icommandlistener.b("Can't find user " + s3);
                                 }
                             } else if (s.toLowerCase().startsWith("say ")) {
                                 s = s.substring(s.indexOf(" ")).trim();
@@ -500,7 +500,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
                                     s = "\u00A77" + s1 + " whispers " + s;
                                     a.info(s);
                                     if (!this.f.a(astring[1], (Packet) (new Packet3Chat(s)))) {
-                                        icommandlistener.b("There\'s no player by that name online.");
+                                        icommandlistener.b("There's no player by that name online.");
                                     }
                                 }
                             } else {

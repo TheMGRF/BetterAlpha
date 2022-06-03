@@ -2,14 +2,14 @@ package net.minecraft.server.world.chunk;
 
 public class NibbleArray {
 
-    public final byte[] a;
+    public final byte[] data;
 
     public NibbleArray(int i) {
-        this.a = new byte[i >> 1];
+        this.data = new byte[i >> 1];
     }
 
     public NibbleArray(byte[] abyte) {
-        this.a = abyte;
+        this.data = abyte;
     }
 
     public int a(int i, int j, int k) {
@@ -17,7 +17,7 @@ public class NibbleArray {
         int i1 = l >> 1;
         int j1 = l & 1;
 
-        return j1 == 0 ? this.a[i1] & 15 : this.a[i1] >> 4 & 15;
+        return j1 == 0 ? this.data[i1] & 15 : this.data[i1] >> 4 & 15;
     }
 
     public void a(int i, int j, int k, int l) {
@@ -26,13 +26,13 @@ public class NibbleArray {
         int k1 = i1 & 1;
 
         if (k1 == 0) {
-            this.a[j1] = (byte) (this.a[j1] & 240 | l & 15);
+            this.data[j1] = (byte) (this.data[j1] & 240 | l & 15);
         } else {
-            this.a[j1] = (byte) (this.a[j1] & 15 | (l & 15) << 4);
+            this.data[j1] = (byte) (this.data[j1] & 15 | (l & 15) << 4);
         }
     }
 
-    public boolean a() {
-        return this.a != null;
+    public boolean hasData() {
+        return this.data != null;
     }
 }

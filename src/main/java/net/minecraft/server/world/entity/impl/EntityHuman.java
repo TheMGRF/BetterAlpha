@@ -35,7 +35,7 @@ public class EntityHuman extends EntityLiving {
         super(world);
         this.G = 1.62F;
         this.c((double) world.m + 0.5D, (double) (world.n + 1), (double) world.o + 0.5D, 0.0F, 0.0F);
-        this.aP = 20;
+        this.health = 20;
         this.aI = "humanoid";
         this.aH = 180.0F;
         this.X = 20;
@@ -63,7 +63,7 @@ public class EntityHuman extends EntityLiving {
     }
 
     public void D() {
-        if (this.l.k == 0 && this.aP < 20 && this.W % 20 * 4 == 0) {
+        if (this.world.k == 0 && this.health < 20 && this.W % 20 * 4 == 0) {
             this.a(1);
         }
 
@@ -77,18 +77,18 @@ public class EntityHuman extends EntityLiving {
             f = 0.1F;
         }
 
-        if (!this.A || this.aP <= 0) {
+        if (!this.A || this.health <= 0) {
             f = 0.0F;
         }
 
-        if (this.A || this.aP <= 0) {
+        if (this.A || this.health <= 0) {
             f1 = 0.0F;
         }
 
         this.ao += (f - this.ao) * 0.4F;
         this.aX += (f1 - this.aX) * 0.8F;
-        if (this.aP > 0) {
-            List list = this.l.b((Entity) this, this.z.b(1.0D, 0.0D, 1.0D));
+        if (this.health > 0) {
+            List list = this.world.b((Entity) this, this.boundingBox.b(1.0D, 0.0D, 1.0D));
 
             if (list != null) {
                 for (int i = 0; i < list.size(); ++i) {
@@ -102,7 +102,9 @@ public class EntityHuman extends EntityLiving {
         entity.a(this);
     }
 
-    public void f(Entity entity) {
+
+    @Override
+    public void die(Entity entity) {
         this.a(0.2F, 0.2F);
         this.a(this.p, this.q, this.r);
         this.t = 0.10000000149011612D;
@@ -131,7 +133,7 @@ public class EntityHuman extends EntityLiving {
 
     public void a(ItemStack itemstack, boolean flag) {
         if (itemstack != null) {
-            EntityItem entityitem = new EntityItem(this.l, this.p, this.q - 0.30000001192092896D + (double) this.s(), this.r, itemstack);
+            EntityItem entityitem = new EntityItem(this.world, this.p, this.q - 0.30000001192092896D + (double) this.s(), this.r, itemstack);
 
             entityitem.c = 40;
             float f = 0.1F;
@@ -162,7 +164,7 @@ public class EntityHuman extends EntityLiving {
     }
 
     protected void a(EntityItem entityitem) {
-        this.l.a((Entity) entityitem);
+        this.world.a((Entity) entityitem);
     }
 
     public float a(Block block) {
@@ -212,19 +214,19 @@ public class EntityHuman extends EntityLiving {
 
     public boolean a(Entity entity, int i) {
         this.bf = 0;
-        if (this.aP <= 0) {
+        if (this.health <= 0) {
             return false;
         } else {
             if (entity instanceof EntityMonster || entity instanceof EntityArrow) {
-                if (this.l.k == 0) {
+                if (this.world.k == 0) {
                     i = 0;
                 }
 
-                if (this.l.k == 1) {
+                if (this.world.k == 1) {
                     i = i / 3 + 1;
                 }
 
-                if (this.l.k == 3) {
+                if (this.world.k == 3) {
                     i = i * 3 / 2;
                 }
             }

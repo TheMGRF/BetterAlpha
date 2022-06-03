@@ -14,8 +14,8 @@ import java.util.Iterator;
 
 public class ChunkLoader implements IChunkLoader {
 
-    private File a;
-    private boolean b;
+    private final File a;
+    private final boolean b;
 
     public ChunkLoader(File file1, boolean flag) {
         this.a = file1;
@@ -55,7 +55,7 @@ public class ChunkLoader implements IChunkLoader {
         if (file1 != null && file1.exists()) {
             try {
                 FileInputStream fileinputstream = new FileInputStream(file1);
-                NBTTagCompound nbttagcompound = CompressedStreamTools.a((InputStream) fileinputstream);
+                NBTTagCompound nbttagcompound = CompressedStreamTools.a(fileinputstream);
 
                 if (!nbttagcompound.a("Level")) {
                     System.out.println("Chunk file at " + i + "," + j + " is missing level data, skipping");
@@ -70,7 +70,7 @@ public class ChunkLoader implements IChunkLoader {
                 Chunk chunk = a(world, nbttagcompound.j("Level"));
 
                 if (!chunk.a(i, j)) {
-                    System.out.println("Chunk file at " + i + "," + j + " is in the wrong location; relocating. (Expected " + i + ", " + j + ", got " + chunk.j + ", " + chunk.k + ")");
+                    System.out.println("Chunk file at " + i + "," + j + " is in the wrong location; relocating. (Expected " + i + ", " + j + ", got " + chunk.x + ", " + chunk.z + ")");
                     nbttagcompound.a("xPos", i);
                     nbttagcompound.a("zPos", j);
                     chunk = a(world, nbttagcompound.j("Level"));
@@ -87,7 +87,7 @@ public class ChunkLoader implements IChunkLoader {
 
     public void a(World world, Chunk chunk) {
         world.h();
-        File file1 = this.a(chunk.j, chunk.k);
+        File file1 = this.a(chunk.x, chunk.z);
 
         if (file1.exists()) {
             world.v -= file1.length();
@@ -101,7 +101,7 @@ public class ChunkLoader implements IChunkLoader {
 
             nbttagcompound.a("Level", (NBTBase) nbttagcompound1);
             this.a(chunk, world, nbttagcompound1);
-            CompressedStreamTools.a(nbttagcompound, (OutputStream) fileoutputstream);
+            CompressedStreamTools.a(nbttagcompound, fileoutputstream);
             fileoutputstream.close();
             if (file1.exists()) {
                 file1.delete();
@@ -116,23 +116,23 @@ public class ChunkLoader implements IChunkLoader {
 
     public void a(Chunk chunk, World world, NBTTagCompound nbttagcompound) {
         world.h();
-        nbttagcompound.a("xPos", chunk.j);
-        nbttagcompound.a("zPos", chunk.k);
-        nbttagcompound.a("LastUpdate", world.e);
-        nbttagcompound.a("Blocks", chunk.b);
-        nbttagcompound.a("Data", chunk.e.a);
-        nbttagcompound.a("SkyLight", chunk.f.a);
-        nbttagcompound.a("BlockLight", chunk.g.a);
-        nbttagcompound.a("HeightMap", chunk.h);
-        nbttagcompound.a("TerrainPopulated", chunk.n);
+        nbttagcompound.a("xPos", chunk.x);
+        nbttagcompound.a("zPos", chunk.z);
+        nbttagcompound.a("LastUpdate", world.lastUpdate);
+        nbttagcompound.a("Blocks", chunk.blocks);
+        nbttagcompound.a("Data", chunk.blockData.data);
+        nbttagcompound.a("SkyLight", chunk.skyLight.data);
+        nbttagcompound.a("BlockLight", chunk.blockLight.data);
+        nbttagcompound.a("HeightMap", chunk.heightMap);
+        nbttagcompound.a("TerrainPopulated", chunk.terrainPopulated);
         chunk.r = false;
         NBTTagList nbttaglist = new NBTTagList();
 
-        Iterator iterator;
+        Iterator<?> iterator;
         NBTTagCompound nbttagcompound1;
 
-        for (int i = 0; i < chunk.m.length; ++i) {
-            iterator = chunk.m[i].iterator();
+        for (int i = 0; i < chunk.entities.length; ++i) {
+            iterator = chunk.entities[i].iterator();
 
             while (iterator.hasNext()) {
                 Entity entity = (Entity) iterator.next();
@@ -140,58 +140,57 @@ public class ChunkLoader implements IChunkLoader {
                 chunk.r = true;
                 nbttagcompound1 = new NBTTagCompound();
                 if (entity.c(nbttagcompound1)) {
-                    nbttaglist.a((NBTBase) nbttagcompound1);
+                    nbttaglist.a(nbttagcompound1);
                 }
             }
         }
 
-        nbttagcompound.a("Entities", (NBTBase) nbttaglist);
+        nbttagcompound.a("Entities", nbttaglist);
         NBTTagList nbttaglist1 = new NBTTagList();
 
-        iterator = chunk.l.values().iterator();
+        iterator = chunk.tileEntities.values().iterator();
 
         while (iterator.hasNext()) {
             TileEntity tileentity = (TileEntity) iterator.next();
 
             nbttagcompound1 = new NBTTagCompound();
             tileentity.b(nbttagcompound1);
-            nbttaglist1.a((NBTBase) nbttagcompound1);
+            nbttaglist1.a(nbttagcompound1);
         }
 
-        nbttagcompound.a("TileEntities", (NBTBase) nbttaglist1);
+        nbttagcompound.a("TileEntities", nbttaglist1);
     }
 
     public static Chunk a(World world, NBTTagCompound nbttagcompound) {
-        int i = nbttagcompound.d("xPos");
-        int j = nbttagcompound.d("zPos");
-        Chunk chunk = new Chunk(world, i, j);
+        int x = nbttagcompound.d("xPos");
+        int z = nbttagcompound.d("zPos");
+        Chunk chunk = new Chunk(world, x, z);
 
-        chunk.b = nbttagcompound.i("Blocks");
-        chunk.e = new NibbleArray(nbttagcompound.i("Data"));
-        chunk.f = new NibbleArray(nbttagcompound.i("SkyLight"));
-        chunk.g = new NibbleArray(nbttagcompound.i("BlockLight"));
-        chunk.h = nbttagcompound.i("HeightMap");
-        chunk.n = nbttagcompound.l("TerrainPopulated");
-        if (!chunk.e.a()) {
-            chunk.e = new NibbleArray(chunk.b.length);
+        chunk.blocks = nbttagcompound.i("Blocks");
+        chunk.blockData = new NibbleArray(nbttagcompound.i("Data"));
+        chunk.skyLight = new NibbleArray(nbttagcompound.i("SkyLight"));
+        chunk.blockLight = new NibbleArray(nbttagcompound.i("BlockLight"));
+        chunk.heightMap = nbttagcompound.i("HeightMap");
+        chunk.terrainPopulated = nbttagcompound.l("TerrainPopulated");
+        if (!chunk.blockData.hasData()) {
+            chunk.blockData = new NibbleArray(chunk.blocks.length);
         }
 
-        if (chunk.h == null || !chunk.f.a()) {
-            chunk.h = new byte[256];
-            chunk.f = new NibbleArray(chunk.b.length);
+        if (chunk.heightMap == null || !chunk.skyLight.hasData()) {
+            chunk.heightMap = new byte[256];
+            chunk.skyLight = new NibbleArray(chunk.blocks.length);
             chunk.b();
         }
 
-        if (!chunk.g.a()) {
-            chunk.g = new NibbleArray(chunk.b.length);
+        if (!chunk.blockLight.hasData()) {
+            chunk.blockLight = new NibbleArray(chunk.blocks.length);
             chunk.a();
         }
 
-        NBTTagList nbttaglist = nbttagcompound.k("Entities");
-
-        if (nbttaglist != null) {
-            for (int k = 0; k < nbttaglist.b(); ++k) {
-                NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.a(k);
+        NBTTagList entities = nbttagcompound.k("Entities");
+        if (entities != null) {
+            for (int k = 0; k < entities.b(); ++k) {
+                NBTTagCompound nbttagcompound1 = (NBTTagCompound) entities.a(k);
                 Entity entity = EntityTypes.a(nbttagcompound1, world);
 
                 chunk.r = true;
@@ -201,11 +200,10 @@ public class ChunkLoader implements IChunkLoader {
             }
         }
 
-        NBTTagList nbttaglist1 = nbttagcompound.k("TileEntities");
-
-        if (nbttaglist1 != null) {
-            for (int l = 0; l < nbttaglist1.b(); ++l) {
-                NBTTagCompound nbttagcompound2 = (NBTTagCompound) nbttaglist1.a(l);
+        NBTTagList tileEntities = nbttagcompound.k("TileEntities");
+        if (tileEntities != null) {
+            for (int l = 0; l < tileEntities.b(); ++l) {
+                NBTTagCompound nbttagcompound2 = (NBTTagCompound) tileEntities.a(l);
                 TileEntity tileentity = TileEntity.c(nbttagcompound2);
 
                 if (tileentity != null) {

@@ -100,7 +100,7 @@ public class Explosion {
                 d3 /= d11;
                 d4 /= d11;
                 d5 /= d11;
-                d10 = (double) world.a(vec3d, entity1.z);
+                d10 = (double) world.a(vec3d, entity1.boundingBox);
                 d12 = (1.0D - d13) * d10;
                 entity1.a(entity, (int) ((d12 * d12 + d12) / 2.0D * 8.0D * (double) f + 1.0D));
                 entity1.s += d3 * d12;

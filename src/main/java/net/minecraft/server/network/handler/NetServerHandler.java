@@ -102,7 +102,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
             double d4 = d1 - this.e.q;
             double d5 = d2 - this.e.r;
             float f2 = 0.0625F;
-            boolean flag = worldserver.a(this.e, this.e.z.b().e((double) f2, (double) f2, (double) f2)).size() == 0;
+            boolean flag = worldserver.a(this.e, this.e.boundingBox.b().e((double) f2, (double) f2, (double) f2)).size() == 0;
 
             this.e.c(d3, d4, d5);
             d3 = d0 - this.e.p;
@@ -122,7 +122,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
             }
 
             this.e.b(d0, d1, d2, f, f1);
-            boolean flag2 = worldserver.a(this.e, this.e.z.b().e((double) f2, (double) f2, (double) f2)).size() == 0;
+            boolean flag2 = worldserver.a(this.e, this.e.boundingBox.b().e((double) f2, (double) f2, (double) f2)).size() == 0;
 
             if (flag && (flag1 || !flag2)) {
                 this.a(this.g, this.h, this.i, f, f1);
@@ -258,7 +258,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
             double d4 = d1 * d1 + d2 * d2 + d3 * d3;
 
             if (d4 < 256.0D) {
-                this.e.a.b((Packet) (new Packet53BlockChange(i, j, k, worldserver)));
+                this.e.a.b(new Packet53BlockChange(i, j, k, worldserver));
             }
         }
 
@@ -296,7 +296,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
     }
 
     public void a(Packet packet) {
-        a.warning(this.getClass() + " wasn\'t prepared to deal with a " + packet.getClass());
+        a.warning(this.getClass() + " wasn't prepared to deal with a " + packet.getClass());
         this.c("Protocol error, unexpected packet");
     }
 
@@ -379,7 +379,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
                 s = "\u00A77" + this.e.ar + " whispers " + s;
                 a.info(s + " to " + astring[1]);
                 if (!this.minecraftServer.f.a(astring[1], (Packet) (new Packet3Chat(s)))) {
-                    this.b((Packet) (new Packet3Chat("\u00A7cThere\'s no player by that name online.")));
+                    this.b((Packet) (new Packet3Chat("\u00A7cThere's no player by that name online.")));
                 }
             }
         } else if (s.toLowerCase().startsWith("/list")) {

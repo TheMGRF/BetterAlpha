@@ -34,7 +34,7 @@ public class EntityFlying extends EntityLiving {
 
             if (this.A) {
                 f2 = 0.54600006F;
-                int i = this.l.a(MathHelper.b(this.p), MathHelper.b(this.z.b) - 1, MathHelper.b(this.r));
+                int i = this.world.a(MathHelper.b(this.p), MathHelper.b(this.boundingBox.b) - 1, MathHelper.b(this.r));
 
                 if (i > 0) {
                     f2 = Block.n[i].bu * 0.91F;
@@ -47,7 +47,7 @@ public class EntityFlying extends EntityLiving {
             f2 = 0.91F;
             if (this.A) {
                 f2 = 0.54600006F;
-                int j = this.l.a(MathHelper.b(this.p), MathHelper.b(this.z.b) - 1, MathHelper.b(this.r));
+                int j = this.world.a(MathHelper.b(this.p), MathHelper.b(this.boundingBox.b) - 1, MathHelper.b(this.r));
 
                 if (j > 0) {
                     f2 = Block.n[j].bu * 0.91F;

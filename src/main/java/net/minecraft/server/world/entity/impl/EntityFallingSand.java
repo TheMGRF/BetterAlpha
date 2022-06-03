@@ -51,8 +51,8 @@ public class EntityFallingSand extends Entity {
             int j = MathHelper.b(this.q);
             int k = MathHelper.b(this.r);
 
-            if (this.l.a(i, j, k) == this.a) {
-                this.l.d(i, j, k, 0);
+            if (this.world.a(i, j, k) == this.a) {
+                this.world.d(i, j, k, 0);
             }
 
             if (this.A) {
@@ -60,7 +60,7 @@ public class EntityFallingSand extends Entity {
                 this.u *= 0.699999988079071D;
                 this.t *= -0.5D;
                 this.l();
-                if (!this.l.a(this.a, i, j, k, true) || !this.l.d(i, j, k, this.a)) {
+                if (!this.world.a(this.a, i, j, k, true) || !this.world.d(i, j, k, this.a)) {
                     this.a(this.a, 1);
                 }
             } else if (this.b > 100) {

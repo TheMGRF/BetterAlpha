@@ -55,14 +55,14 @@ public class EntityTNTPrimed extends Entity {
             this.l();
             this.c();
         } else {
-            this.l.a("smoke", this.p, this.q + 0.5D, this.r, 0.0D, 0.0D, 0.0D);
+            this.world.a("smoke", this.p, this.q + 0.5D, this.r, 0.0D, 0.0D, 0.0D);
         }
     }
 
     private void c() {
         float f = 4.0F;
 
-        this.l.a((Entity) null, this.p, this.q, this.r, f);
+        this.world.a((Entity) null, this.p, this.q, this.r, f);
     }
 
     public void a(NBTTagCompound nbttagcompound) {

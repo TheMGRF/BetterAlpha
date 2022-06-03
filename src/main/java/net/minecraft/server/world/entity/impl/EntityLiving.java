@@ -35,14 +35,14 @@ public class EntityLiving extends Entity {
     public boolean aM = false;
     public float aN;
     public float aO;
-    public int aP = 10;
+    public int health = 10;
     public int aQ;
     private int a;
-    public int aR;
+    public int hurtTime;
     public int aS;
     public float aT = 0.0F;
-    public int aU = 0;
-    public int aV = 0;
+    public int deathTime = 0;
+    public int attackTime = 0;
     public float aW;
     public float aX;
     protected boolean aY = false;
@@ -80,7 +80,7 @@ public class EntityLiving extends Entity {
     }
 
     protected boolean g(Entity entity) {
-        return this.l.a(Vec3D.b(this.p, this.q + (double) this.s(), this.r), Vec3D.b(entity.p, entity.q + (double) entity.s(), entity.r)) == null;
+        return this.world.a(Vec3D.b(this.p, this.q + (double) this.s(), this.r), Vec3D.b(entity.p, entity.q + (double) entity.s(), entity.r)) == null;
     }
 
     public boolean c_() {
@@ -107,7 +107,7 @@ public class EntityLiving extends Entity {
             String s = this.d();
 
             if (s != null) {
-                this.l.a(this, s, this.h(), (this.V.nextFloat() - this.V.nextFloat()) * 0.2F + 1.0F);
+                this.world.a(this, s, this.h(), (this.V.nextFloat() - this.V.nextFloat()) * 0.2F + 1.0F);
             }
         }
 
@@ -127,7 +127,7 @@ public class EntityLiving extends Entity {
                     float f1 = this.V.nextFloat() - this.V.nextFloat();
                     float f2 = this.V.nextFloat() - this.V.nextFloat();
 
-                    this.l.a("bubble", this.p + (double) f, this.q + (double) f1, this.r + (double) f2, this.s, this.t, this.u);
+                    this.world.a("bubble", this.p + (double) f, this.q + (double) f1, this.r + (double) f2, this.s, this.t, this.u);
                 }
 
                 this.a((Entity) null, 2);
@@ -139,21 +139,21 @@ public class EntityLiving extends Entity {
         }
 
         this.aW = this.aX;
-        if (this.aV > 0) {
-            --this.aV;
+        if (this.attackTime > 0) {
+            --this.attackTime;
         }
 
-        if (this.aR > 0) {
-            --this.aR;
+        if (this.hurtTime > 0) {
+            --this.hurtTime;
         }
 
         if (this.ab > 0) {
             --this.ab;
         }
 
-        if (this.aP <= 0) {
-            ++this.aU;
-            if (this.aU > 20) {
+        if (this.health <= 0) {
+            ++this.deathTime;
+            if (this.deathTime > 20) {
                 this.K();
                 this.l();
 
@@ -162,7 +162,7 @@ public class EntityLiving extends Entity {
                     double d1 = this.V.nextGaussian() * 0.02D;
                     double d2 = this.V.nextGaussian() * 0.02D;
 
-                    this.l.a("explode", this.p + (double) (this.V.nextFloat() * this.H * 2.0F) - (double) this.H, this.q + (double) (this.V.nextFloat() * this.I), this.r + (double) (this.V.nextFloat() * this.H * 2.0F) - (double) this.H, d0, d1, d2);
+                    this.world.a("explode", this.p + (double) (this.V.nextFloat() * this.H * 2.0F) - (double) this.H, this.q + (double) (this.V.nextFloat() * this.I), this.r + (double) (this.V.nextFloat() * this.H * 2.0F) - (double) this.H, d0, d1, d2);
                 }
             }
         }
@@ -180,7 +180,7 @@ public class EntityLiving extends Entity {
             double d2 = this.V.nextGaussian() * 0.02D;
             double d3 = 10.0D;
 
-            this.l.a("explode", this.p + (double) (this.V.nextFloat() * this.H * 2.0F) - (double) this.H - d0 * d3, this.q + (double) (this.V.nextFloat() * this.I) - d1 * d3, this.r + (double) (this.V.nextFloat() * this.H * 2.0F) - (double) this.H - d2 * d3, d0, d1, d2);
+            this.world.a("explode", this.p + (double) (this.V.nextFloat() * this.H * 2.0F) - (double) this.H - d0 * d3, this.q + (double) (this.V.nextFloat() * this.I) - d1 * d3, this.r + (double) (this.V.nextFloat() * this.H * 2.0F) - (double) this.H - d2 * d3, d0, d1, d2);
         }
     }
 
@@ -291,10 +291,10 @@ public class EntityLiving extends Entity {
     }
 
     public void a(int i) {
-        if (this.aP > 0) {
-            this.aP += i;
-            if (this.aP > 20) {
-                this.aP = 20;
+        if (this.health > 0) {
+            this.health += i;
+            if (this.health > 20) {
+                this.health = 20;
             }
 
             this.ab = this.au / 2;
@@ -302,26 +302,26 @@ public class EntityLiving extends Entity {
     }
 
     public boolean a(Entity entity, int i) {
-        if (this.l.z) {
+        if (this.world.z) {
             i = 0;
         }
 
         this.bf = 0;
-        if (this.aP <= 0) {
+        if (this.health <= 0) {
             return false;
         } else {
             this.bc = 1.5F;
             if ((float) this.ab > (float) this.au / 2.0F) {
-                if (this.aQ - i >= this.aP) {
+                if (this.aQ - i >= this.health) {
                     return false;
                 }
 
-                this.aP = this.aQ - i;
+                this.health = this.aQ - i;
             } else {
-                this.aQ = this.aP;
+                this.aQ = this.health;
                 this.ab = this.au;
-                this.aP -= i;
-                this.aR = this.aS = 10;
+                this.health -= i;
+                this.hurtTime = this.aS = 10;
             }
 
             this.aT = 0.0F;
@@ -340,11 +340,11 @@ public class EntityLiving extends Entity {
                 this.aT = (float) ((int) (Math.random() * 2.0D) * 180);
             }
 
-            if (this.aP <= 0) {
-                this.l.a(this, this.f(), this.h(), (this.V.nextFloat() - this.V.nextFloat()) * 0.2F + 1.0F);
-                this.f(entity);
+            if (this.health <= 0) {
+                this.world.a(this, this.f(), this.h(), (this.V.nextFloat() - this.V.nextFloat()) * 0.2F + 1.0F);
+                this.die(entity);
             } else {
-                this.l.a(this, this.e(), this.h(), (this.V.nextFloat() - this.V.nextFloat()) * 0.2F + 1.0F);
+                this.world.a(this, this.e(), this.h(), (this.V.nextFloat() - this.V.nextFloat()) * 0.2F + 1.0F);
             }
 
             return true;
@@ -382,7 +382,7 @@ public class EntityLiving extends Entity {
         }
     }
 
-    public void f(Entity entity) {
+    public void die(Entity entity) {
         if (this.aK > 0 && entity != null) {
             entity.b(this, this.aK);
         }
@@ -408,12 +408,12 @@ public class EntityLiving extends Entity {
 
         if (i > 0) {
             this.a((Entity) null, i);
-            int j = this.l.a(MathHelper.b(this.p), MathHelper.b(this.q - 0.20000000298023224D - (double) this.G), MathHelper.b(this.r));
+            int j = this.world.a(MathHelper.b(this.p), MathHelper.b(this.q - 0.20000000298023224D - (double) this.G), MathHelper.b(this.r));
 
             if (j > 0) {
                 StepSound stepsound = Block.n[j].br;
 
-                this.l.a(this, stepsound.c(), stepsound.a() * 0.5F, stepsound.b() * 0.75F);
+                this.world.a(this, stepsound.c(), stepsound.a() * 0.5F, stepsound.b() * 0.75F);
             }
         }
     }
@@ -448,7 +448,7 @@ public class EntityLiving extends Entity {
 
             if (this.A) {
                 f2 = 0.54600006F;
-                int i = this.l.a(MathHelper.b(this.p), MathHelper.b(this.z.b) - 1, MathHelper.b(this.r));
+                int i = this.world.a(MathHelper.b(this.p), MathHelper.b(this.boundingBox.b) - 1, MathHelper.b(this.r));
 
                 if (i > 0) {
                     f2 = Block.n[i].bu * 0.91F;
@@ -461,7 +461,7 @@ public class EntityLiving extends Entity {
             f2 = 0.91F;
             if (this.A) {
                 f2 = 0.54600006F;
-                int j = this.l.a(MathHelper.b(this.p), MathHelper.b(this.z.b) - 1, MathHelper.b(this.r));
+                int j = this.world.a(MathHelper.b(this.p), MathHelper.b(this.boundingBox.b) - 1, MathHelper.b(this.r));
 
                 if (j > 0) {
                     f2 = Block.n[j].bu * 0.91F;
@@ -501,32 +501,32 @@ public class EntityLiving extends Entity {
 
     public boolean d_() {
         int i = MathHelper.b(this.p);
-        int j = MathHelper.b(this.z.b);
+        int j = MathHelper.b(this.boundingBox.b);
         int k = MathHelper.b(this.r);
 
-        return this.l.a(i, j, k) == Block.LADDER.bi || this.l.a(i, j + 1, k) == Block.LADDER.bi;
+        return this.world.a(i, j, k) == Block.LADDER.bi || this.world.a(i, j + 1, k) == Block.LADDER.bi;
     }
 
     public void a(NBTTagCompound nbttagcompound) {
-        nbttagcompound.a("Health", (short) this.aP);
-        nbttagcompound.a("HurtTime", (short) this.aR);
-        nbttagcompound.a("DeathTime", (short) this.aU);
-        nbttagcompound.a("AttackTime", (short) this.aV);
+        nbttagcompound.a("Health", (short) this.health);
+        nbttagcompound.a("HurtTime", (short) this.hurtTime);
+        nbttagcompound.a("DeathTime", (short) this.deathTime);
+        nbttagcompound.a("AttackTime", (short) this.attackTime);
     }
 
     public void b(NBTTagCompound nbttagcompound) {
-        this.aP = nbttagcompound.c("Health");
+        this.health = nbttagcompound.c("Health");
         if (!nbttagcompound.a("Health")) {
-            this.aP = 10;
+            this.health = 10;
         }
 
-        this.aR = nbttagcompound.c("HurtTime");
-        this.aU = nbttagcompound.c("DeathTime");
-        this.aV = nbttagcompound.c("AttackTime");
+        this.hurtTime = nbttagcompound.c("HurtTime");
+        this.deathTime = nbttagcompound.c("DeathTime");
+        this.attackTime = nbttagcompound.c("AttackTime");
     }
 
     public boolean w() {
-        return !this.F && this.aP > 0;
+        return !this.F && this.health > 0;
     }
 
     public void D() {
@@ -552,7 +552,7 @@ public class EntityLiving extends Entity {
             this.b(this.v, this.w);
         }
 
-        if (this.aP <= 0) {
+        if (this.health <= 0) {
             this.bj = false;
             this.bg = 0.0F;
             this.bh = 0.0F;
@@ -578,7 +578,7 @@ public class EntityLiving extends Entity {
         this.bh *= 0.98F;
         this.bi *= 0.9F;
         this.c(this.bg, this.bh);
-        List list = this.l.b((Entity) this, this.z.b(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+        List list = this.world.b((Entity) this, this.boundingBox.b(0.20000000298023224D, 0.0D, 0.20000000298023224D));
 
         if (list != null && list.size() > 0) {
             for (int i = 0; i < list.size(); ++i) {
@@ -597,7 +597,7 @@ public class EntityLiving extends Entity {
 
     protected void c() {
         ++this.bf;
-        EntityHuman entityhuman = this.l.a(this, -1.0D);
+        EntityHuman entityhuman = this.world.a(this, -1.0D);
 
         if (entityhuman != null) {
             double d0 = entityhuman.p - this.p;
@@ -623,7 +623,7 @@ public class EntityLiving extends Entity {
         float f = 8.0F;
 
         if (this.V.nextFloat() < 0.02F) {
-            entityhuman = this.l.a(this, (double) f);
+            entityhuman = this.world.a(this, (double) f);
             if (entityhuman != null) {
                 this.aj = entityhuman;
                 this.ak = 10 + this.V.nextInt(20);
@@ -664,7 +664,7 @@ public class EntityLiving extends Entity {
 
             d2 = entityliving.q + (double) entityliving.s() - (this.q + (double) this.s());
         } else {
-            d2 = (entity.z.b + entity.z.e) / 2.0D - (this.q + (double) this.s());
+            d2 = (entity.boundingBox.b + entity.boundingBox.e) / 2.0D - (this.q + (double) this.s());
         }
 
         double d3 = (double) MathHelper.a(d0 * d0 + d1 * d1);
@@ -701,7 +701,7 @@ public class EntityLiving extends Entity {
     }
 
     public boolean a() {
-        return this.l.a(this.z) && this.l.a((Entity) this, this.z).size() == 0 && !this.l.b(this.z);
+        return this.world.a(this.boundingBox) && this.world.a((Entity) this, this.boundingBox).size() == 0 && !this.world.b(this.boundingBox);
     }
 
     public void o() {
@@ -753,7 +753,7 @@ public class EntityLiving extends Entity {
         Vec3D vec3d1 = this.d(f);
         Vec3D vec3d2 = vec3d.c(vec3d1.a * d0, vec3d1.b * d0, vec3d1.c * d0);
 
-        return this.l.a(vec3d, vec3d2);
+        return this.world.a(vec3d, vec3d2);
     }
 
     public int i() {

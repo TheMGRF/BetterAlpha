@@ -19,7 +19,7 @@ public class EntityChicken extends EntityAnimal {
         super(world);
         this.aF = "/mob/chicken.png";
         this.a(0.3F, 0.4F);
-        this.aP = 4;
+        this.health = 4;
         this.ak = this.V.nextInt(6000) + 6000;
     }
 
@@ -46,8 +46,8 @@ public class EntityChicken extends EntityAnimal {
         }
 
         this.b += this.aj * 2.0F;
-        if (!this.l.z && --this.ak <= 0) {
-            this.l.a(this, "mob.chickenplop", 1.0F, (this.V.nextFloat() - this.V.nextFloat()) * 0.2F + 1.0F);
+        if (!this.world.z && --this.ak <= 0) {
+            this.world.a(this, "mob.chickenplop", 1.0F, (this.V.nextFloat() - this.V.nextFloat()) * 0.2F + 1.0F);
             this.a(Item.EGG.aW, 1);
             this.ak = this.V.nextInt(6000) + 6000;
         }

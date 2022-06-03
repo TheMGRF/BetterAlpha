@@ -12,11 +12,11 @@ import java.util.List;
 
 class PlayerInstance {
 
-    private List b;
-    private int c;
-    private int d;
-    private ChunkCoordIntPair e;
-    private short[] f;
+    private final List b;
+    private final int c;
+    private final int d;
+    private final ChunkCoordIntPair e;
+    private final short[] f;
     private int g;
     private int h;
     private int i;
@@ -43,7 +43,7 @@ class PlayerInstance {
             new IllegalStateException("Failed to add player. " + entityplayer + " already is in chunk " + this.c + ", " + this.d);
         } else {
             entityplayer.ai.add(this.e);
-            entityplayer.a.b((Packet) (new Packet50PreChunk(this.e.a, this.e.b, true)));
+            entityplayer.a.b(new Packet50PreChunk(this.e.a, this.e.b, true));
             this.b.add(entityplayer);
             entityplayer.f.add(this.e);
         }
@@ -51,7 +51,7 @@ class PlayerInstance {
 
     public void b(EntityPlayer entityplayer) {
         if (!this.b.contains(entityplayer)) {
-            (new IllegalStateException("Failed to remove player. " + entityplayer + " isn\'t in chunk " + this.c + ", " + this.d)).printStackTrace();
+            (new IllegalStateException("Failed to remove player. " + entityplayer + " isn't in chunk " + this.c + ", " + this.d)).printStackTrace();
         } else {
             this.b.remove(entityplayer);
             if (this.b.size() == 0) {
@@ -67,7 +67,7 @@ class PlayerInstance {
 
             entityplayer.f.remove(this.e);
             if (entityplayer.ai.contains(this.e)) {
-                entityplayer.a.b((Packet) (new Packet50PreChunk(this.c, this.d, false)));
+                entityplayer.a.b(new Packet50PreChunk(this.c, this.d, false));
             }
         }
     }
@@ -138,9 +138,9 @@ class PlayerInstance {
                 i = this.c * 16 + this.h;
                 j = this.j;
                 k = this.d * 16 + this.l;
-                this.a((Packet) (new Packet53BlockChange(i, j, k, world)));
+                this.a(new Packet53BlockChange(i, j, k, world));
                 if (Block.q[world.a(i, j, k)]) {
-                    this.a((Packet) (new Packet59ComplexEntity(i, j, k, world.k(i, j, k))));
+                    this.a(new Packet59ComplexEntity(i, j, k, world.k(i, j, k)));
                 }
             } else {
                 int l;
@@ -155,23 +155,23 @@ class PlayerInstance {
                     int i1 = this.k - this.j + 2;
                     int j1 = this.m - this.l + 1;
 
-                    this.a((Packet) (new Packet51MapChunk(i, j, k, l, i1, j1, world)));
+                    this.a(new Packet51MapChunk(i, j, k, l, i1, j1, world));
                     List list = world.d(i, j, k, i + l, j + i1, k + j1);
 
                     for (int k1 = 0; k1 < list.size(); ++k1) {
                         TileEntity tileentity = (TileEntity) list.get(k1);
 
-                        this.a((Packet) (new Packet59ComplexEntity(tileentity.x, tileentity.y, tileentity.z, tileentity)));
+                        this.a(new Packet59ComplexEntity(tileentity.x, tileentity.y, tileentity.z, tileentity));
                     }
                 } else {
-                    this.a((Packet) (new Packet52MultiBlockChange(this.c, this.d, this.f, this.g, world)));
+                    this.a(new Packet52MultiBlockChange(this.c, this.d, this.f, this.g, world));
 
                     for (i = 0; i < this.g; ++i) {
                         j = this.c * 16 + (this.g >> 12 & 15);
                         k = this.g & 255;
                         l = this.d * 16 + (this.g >> 8 & 15);
                         if (Block.q[world.a(j, k, l)]) {
-                            this.a((Packet) (new Packet59ComplexEntity(j, k, l, world.k(j, k, l))));
+                            this.a(new Packet59ComplexEntity(j, k, l, world.k(j, k, l)));
                         }
                     }
                 }

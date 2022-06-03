@@ -61,19 +61,19 @@ public class ChunkProviderServer implements IChunkProvider {
                 chunk.d();
             }
 
-            if (!chunk.n && this.a(i + 1, j + 1) && this.a(i, j + 1) && this.a(i + 1, j)) {
+            if (!chunk.terrainPopulated && this.a(i + 1, j + 1) && this.a(i, j + 1) && this.a(i + 1, j)) {
                 this.a(this, i, j);
             }
 
-            if (this.a(i - 1, j) && !this.b(i - 1, j).n && this.a(i - 1, j + 1) && this.a(i, j + 1) && this.a(i - 1, j)) {
+            if (this.a(i - 1, j) && !this.b(i - 1, j).terrainPopulated && this.a(i - 1, j + 1) && this.a(i, j + 1) && this.a(i - 1, j)) {
                 this.a(this, i - 1, j);
             }
 
-            if (this.a(i, j - 1) && !this.b(i, j - 1).n && this.a(i + 1, j - 1) && this.a(i, j - 1) && this.a(i + 1, j)) {
+            if (this.a(i, j - 1) && !this.b(i, j - 1).terrainPopulated && this.a(i + 1, j - 1) && this.a(i, j - 1) && this.a(i + 1, j)) {
                 this.a(this, i, j - 1);
             }
 
-            if (this.a(i - 1, j - 1) && !this.b(i - 1, j - 1).n && this.a(i - 1, j - 1) && this.a(i, j - 1) && this.a(i - 1, j)) {
+            if (this.a(i - 1, j - 1) && !this.b(i - 1, j - 1).terrainPopulated && this.a(i - 1, j - 1) && this.a(i, j - 1) && this.a(i - 1, j)) {
                 this.a(this, i - 1, j - 1);
             }
         }
@@ -95,7 +95,7 @@ public class ChunkProviderServer implements IChunkProvider {
                 Chunk chunk = this.d.a(this.g, i, j);
 
                 if (chunk != null) {
-                    chunk.s = this.g.e;
+                    chunk.s = this.g.lastUpdate;
                 }
 
                 return chunk;
@@ -119,7 +119,7 @@ public class ChunkProviderServer implements IChunkProvider {
     private void b(Chunk chunk) {
         if (this.d != null) {
             try {
-                chunk.s = this.g.e;
+                chunk.s = this.g.lastUpdate;
                 this.d.a(this.g, chunk);
             } catch (Exception ioexception) {
                 ioexception.printStackTrace();
@@ -130,8 +130,8 @@ public class ChunkProviderServer implements IChunkProvider {
     public void a(IChunkProvider ichunkprovider, int i, int j) {
         Chunk chunk = this.b(i, j);
 
-        if (!chunk.n) {
-            chunk.n = true;
+        if (!chunk.terrainPopulated) {
+            chunk.terrainPopulated = true;
             if (this.c != null) {
                 this.c.a(ichunkprovider, i, j);
                 chunk.f();

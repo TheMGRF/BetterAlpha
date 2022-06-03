@@ -25,11 +25,11 @@ public class EntityBoat extends Entity {
     }
 
     public AxisAlignedBB d(Entity entity) {
-        return entity.z;
+        return entity.boundingBox;
     }
 
     public AxisAlignedBB q() {
-        return this.z;
+        return this.boundingBox;
     }
 
     public boolean u() {
@@ -82,11 +82,11 @@ public class EntityBoat extends Entity {
         double d0 = 0.0D;
 
         for (int i = 0; i < b0; ++i) {
-            double d1 = this.z.b + (this.z.e - this.z.b) * (double) (i + 0) / (double) b0 - 0.125D;
-            double d2 = this.z.b + (this.z.e - this.z.b) * (double) (i + 1) / (double) b0 - 0.125D;
-            AxisAlignedBB axisalignedbb = AxisAlignedBB.b(this.z.a, d1, this.z.c, this.z.d, d2, this.z.f);
+            double d1 = this.boundingBox.b + (this.boundingBox.e - this.boundingBox.b) * (double) (i + 0) / (double) b0 - 0.125D;
+            double d2 = this.boundingBox.b + (this.boundingBox.e - this.boundingBox.b) * (double) (i + 1) / (double) b0 - 0.125D;
+            AxisAlignedBB axisalignedbb = AxisAlignedBB.b(this.boundingBox.a, d1, this.boundingBox.c, this.boundingBox.d, d2, this.boundingBox.f);
 
-            if (this.l.b(axisalignedbb, Material.f)) {
+            if (this.world.b(axisalignedbb, Material.f)) {
                 d0 += 1.0D / (double) b0;
             }
         }
@@ -141,11 +141,11 @@ public class EntityBoat extends Entity {
                 if (this.V.nextBoolean()) {
                     d10 = this.p - d6 * d8 * 0.8D + d7 * d9;
                     d11 = this.r - d7 * d8 * 0.8D - d6 * d9;
-                    this.l.a("splash", d10, this.q - 0.125D, d11, this.s, this.t, this.u);
+                    this.world.a("splash", d10, this.q - 0.125D, d11, this.s, this.t, this.u);
                 } else {
                     d10 = this.p + d6 + d7 * d8 * 0.7D;
                     d11 = this.r + d7 - d6 * d8 * 0.7D;
-                    this.l.a("splash", d10, this.q - 0.125D, d11, this.s, this.t, this.u);
+                    this.world.a("splash", d10, this.q - 0.125D, d11, this.s, this.t, this.u);
                 }
             }
         }
@@ -197,7 +197,7 @@ public class EntityBoat extends Entity {
 
         this.v = (float) ((double) this.v + d13);
         this.b(this.v, this.w);
-        List list = this.l.b((Entity) this, this.z.b(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+        List list = this.world.b((Entity) this, this.boundingBox.b(0.20000000298023224D, 0.0D, 0.20000000298023224D));
 
         if (list != null && list.size() > 0) {
             for (int l = 0; l < list.size(); ++l) {
