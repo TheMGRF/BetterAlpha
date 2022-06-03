@@ -22,7 +22,7 @@ public class PlayerManager {
     }
 
     public WorldServer aworld() {
-        return this.d.a(this.e);
+        return this.d.getWorldByDimension(this.e);
     }
 
     public void a() {

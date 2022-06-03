@@ -78,7 +78,7 @@ public class NetLoginHandler extends NetHandler {
 
     public void b(Packet1Login packet1login) {
         EntityPlayer entityplayer = this.e.f.a(this, packet1login.b, packet1login.c);
-        WorldServer worldserver = this.e.a(entityplayer.dimension);
+        WorldServer worldserver = this.e.getWorldByDimension(entityplayer.dimension);
 
         if (entityplayer != null) {
             LOGGER.info(this.b() + " logged in");

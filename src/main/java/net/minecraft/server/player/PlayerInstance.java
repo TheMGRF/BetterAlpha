@@ -161,7 +161,7 @@ class PlayerInstance {
                     for (int k1 = 0; k1 < list.size(); ++k1) {
                         TileEntity tileentity = (TileEntity) list.get(k1);
 
-                        this.a((Packet) (new Packet59ComplexEntity(tileentity.b, tileentity.c, tileentity.d, tileentity)));
+                        this.a((Packet) (new Packet59ComplexEntity(tileentity.x, tileentity.y, tileentity.z, tileentity)));
                     }
                 } else {
                     this.a((Packet) (new Packet52MultiBlockChange(this.c, this.d, this.f, this.g, world)));

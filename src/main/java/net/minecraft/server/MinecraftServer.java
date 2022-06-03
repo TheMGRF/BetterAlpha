@@ -41,7 +41,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
     public static HashMap b = new HashMap();
     public NetworkListenThread c;
     public PropertyManager d;
-    public WorldServer[] e;
+    public WorldServer[] worlds;
     public ServerConfigurationManager f;
     private boolean m = true;
     public boolean g = false;
@@ -117,27 +117,27 @@ public class MinecraftServer implements ICommandListener, Runnable {
     }
 
     private void c(String s, long i) {
-        this.e = new WorldServer[2];
+        this.worlds = new WorldServer[2];
 
-        for (int j = 0; j < this.e.length; ++j) {
+        for (int j = 0; j < this.worlds.length; ++j) {
             if (j == 0) {
-                this.e[j] = new WorldServer(this, new File("."), s, j == 0 ? 0 : -1, i);
+                this.worlds[j] = new WorldServer(this, new File("."), s, j == 0 ? 0 : -1, i);
             } else {
-                this.e[j] = new SecondaryWorldServer(this, new File("."), s + "_nether", j == 0 ? 0 : -1, i, this.e[0]);
+                this.worlds[j] = new SecondaryWorldServer(this, new File("."), s + "_nether", j == 0 ? 0 : -1, i, this.worlds[0]);
             }
 
-            this.e[j].a(new WorldManager(this, this.e[j]));
-            this.e[j].k = this.d.a("spawn-monsters", true) ? 1 : 0;
-            this.f.a(this.e);
+            this.worlds[j].a(new WorldManager(this, this.worlds[j]));
+            this.worlds[j].k = this.d.a("spawn-monsters", true) ? 1 : 0;
+            this.f.a(this.worlds);
         }
 
         short short1 = 196;
         long k = System.currentTimeMillis();
 
-        for (int l = 0; l < this.e.length; ++l) {
+        for (int l = 0; l < this.worlds.length; ++l) {
             a.info("Preparing start region for level " + l + " - " + s + " (Seed: " + i + ")");
             if (l == 0 || this.d.a("allow-nether", true)) {
-                WorldServer worldserver = this.e[l];
+                WorldServer worldserver = this.worlds[l];
                 ChunkCoordinates chunkcoordinates = worldserver.getSpawn();
 
                 for (int i1 = -short1; i1 <= short1 && this.m; i1 += 16) {
@@ -183,8 +183,8 @@ public class MinecraftServer implements ICommandListener, Runnable {
     private void f() {
         a.info("Saving chunks");
 
-        for (int i = 0; i < this.e.length; ++i) {
-            WorldServer worldserver = this.e[i];
+        for (int i = 0; i < this.worlds.length; ++i) {
+            WorldServer worldserver = this.worlds[i];
 
             worldserver.a(true, (IProgressUpdate) null);
             worldserver.h();
@@ -197,8 +197,8 @@ public class MinecraftServer implements ICommandListener, Runnable {
             this.f.d();
         }
 
-        for (int i = 0; i < this.e.length; ++i) {
-            WorldServer worldserver = this.e[i];
+        for (int i = 0; i < this.worlds.length; ++i) {
+            WorldServer worldserver = this.worlds[i];
 
             if (worldserver != null) {
                 this.f();
@@ -296,20 +296,24 @@ public class MinecraftServer implements ICommandListener, Runnable {
         Vec3D.a();
         ++this.h;
 
-        for (j = 0; j < this.e.length; ++j) {
+        // Tick worlds
+        for (j = 0; j < this.worlds.length; ++j) {
             if (j == 0 || this.d.a("allow-nether", true)) {
-                WorldServer worldserver = this.e[j];
+                WorldServer worldserver = this.worlds[j];
 
                 if (this.h % 20 == 0) {
                     this.f.a((Packet) (new Packet4UpdateTime(worldserver.e)), worldserver.q.e);
                 }
 
+                // Spawn entities in world?
                 worldserver.f();
+
 
                 while (worldserver.d()) {
                     ;
                 }
 
+                // Tick entities and tile entities
                 worldserver.c();
             }
         }
@@ -356,16 +360,16 @@ public class MinecraftServer implements ICommandListener, Runnable {
                     this.a(s1, "Save complete.");
                 } else if (s.toLowerCase().startsWith("save-off")) {
                     this.a(s1, "Disabling level saving..");
-                    this.e[0].C = true;
+                    this.worlds[0].C = true;
                 } else if (s.toLowerCase().startsWith("save-on")) {
                     this.a(s1, "Enabling level saving..");
-                    this.e[0].C = false;
+                    this.worlds[0].C = false;
                 } else if (s.toLowerCase().startsWith("clearentity")) {
                     int i = 0;
-                    for (int j = 0; j < this.e[0].b.size(); ++j) {
-                        Entity e = ((Entity) this.e[0].b.get(j));
+                    for (int j = 0; j < this.worlds[0].b.size(); ++j) {
+                        Entity e = ((Entity) this.worlds[0].b.get(j));
                         if (!(e instanceof EntityHuman) || !(e instanceof EntityPlayer)) {
-                            this.e[0].d(e);
+                            this.worlds[0].d(e);
                             i++;
                         }
                     }
@@ -575,8 +579,8 @@ public class MinecraftServer implements ICommandListener, Runnable {
         return "CONSOLE";
     }
 
-    public WorldServer a(int i) {
-        return i == -1 ? this.e[1] : this.e[0];
+    public WorldServer getWorldByDimension(int dimension) {
+        return dimension == -1 ? this.worlds[1] : this.worlds[0];
     }
 
     public EntityTracker b(int i) {

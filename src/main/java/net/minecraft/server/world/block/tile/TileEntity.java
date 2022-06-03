@@ -10,10 +10,10 @@ public class TileEntity {
 
     private static Map e = new HashMap();
     private static Map f = new HashMap();
-    public World a;
-    public int b;
-    public int c;
-    public int d;
+    public World world;
+    public int x;
+    public int y;
+    public int z;
 
     public TileEntity() {
     }
@@ -28,9 +28,9 @@ public class TileEntity {
     }
 
     public void a(NBTTagCompound nbttagcompound) {
-        this.b = nbttagcompound.d("x");
-        this.c = nbttagcompound.d("y");
-        this.d = nbttagcompound.d("z");
+        this.x = nbttagcompound.d("x");
+        this.y = nbttagcompound.d("y");
+        this.z = nbttagcompound.d("z");
     }
 
     public void b(NBTTagCompound nbttagcompound) {
@@ -40,9 +40,9 @@ public class TileEntity {
             throw new RuntimeException(this.getClass() + " is missing a mapping! This is a bug!");
         } else {
             nbttagcompound.a("id", s);
-            nbttagcompound.a("x", this.b);
-            nbttagcompound.a("y", this.c);
-            nbttagcompound.a("z", this.d);
+            nbttagcompound.a("x", this.x);
+            nbttagcompound.a("y", this.y);
+            nbttagcompound.a("z", this.z);
         }
     }
 
@@ -72,7 +72,7 @@ public class TileEntity {
     }
 
     public void c() {
-        this.a.b(this.b, this.c, this.d, this);
+        this.world.b(this.x, this.y, this.z, this);
     }
 
     static {
