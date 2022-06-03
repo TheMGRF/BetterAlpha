@@ -38,7 +38,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
         this.b = networkmanager;
         networkmanager.a(this);
         this.e = entityplayer;
-        entityplayer.a = this;
+        entityplayer.networkHandler = this;
     }
 
     public void a() {
@@ -89,7 +89,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
                 d3 = packet10flying.d - packet10flying.b;
                 if (d3 > 1.65D || d3 < 0.1D) {
                     this.c("Illegal stance");
-                    LOGGER.warning(this.e.ar + " had an illegal stance: " + d3);
+                    LOGGER.warning(this.e.username + " had an illegal stance: " + d3);
                 }
 
                 this.e.aj = packet10flying.d;
@@ -122,7 +122,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 
             if (d6 > 0.0625D) {
                 flag1 = true;
-                LOGGER.warning(this.e.ar + " moved wrongly!");
+                LOGGER.warning(this.e.username + " moved wrongly!");
                 this.c("You moved too quickly :( (Hacking?)");
             }
 
@@ -189,11 +189,11 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
         this.minecraftServer.f.ass(player);
         this.a(player.p, player.q, player.r, player.v, player.w);
         player.spawnIn(toTp);
-        player.c = new ItemInWorldManager(toTp);
-        player.c.a = player;
+        player.worldItems = new ItemInWorldManager(toTp);
+        player.worldItems.entityHuman = player;
         for (int j = 0; j < world.b.size(); ++j) {
             Entity en = ((Entity) world.b.get(j));
-            this.e.a.b(new Packet29DestroyEntity(en.g));
+            this.e.networkHandler.b(new Packet29DestroyEntity(en.g));
         }
     }
 
@@ -203,12 +203,12 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
         this.h = d1;
         this.i = d2;
         this.e.b(d0, d1, d2, f, f1);
-        this.e.a.b(new Packet13PlayerLookMove(d0, d1 + 1.6200000047683716D, d1, d2, f, f1, false));
+        this.e.networkHandler.b(new Packet13PlayerLookMove(d0, d1 + 1.6200000047683716D, d1, d2, f, f1, false));
     }
 
     public void a(Packet14BlockDig packet14blockdig) {
         WorldServer worldserver = this.minecraftServer.getWorldByDimension(this.e.dimension);
-        this.e.ak.a[this.e.ak.d] = this.k;
+        this.e.inventory.inventorySlots[this.e.inventory.d] = this.k;
         //boolean flag = worldserver.B = worldserver.q.e != 0 || this.minecraftServer.f.g(this.e.ar);
         boolean flag1 = packet14blockdig.e == 0;
 
@@ -244,14 +244,11 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
         }
 
         if (packet14blockdig.e == 0) {
-            //System.out.println("break 0");
-            this.e.c.a(i, j, k);
+            this.e.worldItems.a(i, j, k);
         } else if (packet14blockdig.e == 2) {
-            //System.out.println("break 2");
-            this.e.c.a();
+            this.e.worldItems.a();
         } else if (packet14blockdig.e == 1) {
-            //System.out.println("break 1");
-            this.e.c.a(i, j, k, l);
+            this.e.worldItems.a(i, j, k, l);
         } else if (packet14blockdig.e == 3) {
             double d1 = this.e.p - ((double) i + 0.5D);
             double d2 = this.e.q - ((double) j + 0.5D);
@@ -259,7 +256,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
             double d4 = d1 * d1 + d2 * d2 + d3 * d3;
 
             if (d4 < 256.0D) {
-                this.e.a.b(new Packet53BlockChange(i, j, k, worldserver));
+                this.e.networkHandler.b(new Packet53BlockChange(i, j, k, worldserver));
             }
         }
 
@@ -268,7 +265,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 
     public void a(Packet15Place packet15place) {
         WorldServer worldserver = this.minecraftServer.getWorldByDimension(this.e.dimension);
-        boolean flag = worldserver.B = worldserver.q.e != 0 || this.minecraftServer.f.g(this.e.ar);
+        boolean flag = worldserver.B = worldserver.q.e != 0 || this.minecraftServer.f.g(this.e.username);
         int i = packet15place.b;
         int j = packet15place.c;
         int k = packet15place.d;
@@ -283,15 +280,15 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
         if (j1 > 16 || flag) {
             ItemStack itemstack = packet15place.a >= 0 ? new ItemStack(packet15place.a) : null;
 
-            this.e.c.a(this.e, worldserver, itemstack, i, j, k, l);
+            this.e.worldItems.a(this.e, worldserver, itemstack, i, j, k, l);
         }
 
-        this.e.a.b(new Packet53BlockChange(i, j, k, worldserver));
+        this.e.networkHandler.b(new Packet53BlockChange(i, j, k, worldserver));
         worldserver.B = false;
     }
 
     public void a(String s) {
-        LOGGER.info(this.e.ar + " lost connection: " + s);
+        LOGGER.info(this.e.username + " lost connection: " + s);
         this.minecraftServer.f.c(this.e);
         this.c = true;
     }
@@ -314,14 +311,14 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 
         int i = packet16blockitemswitch.b;
 
-        this.e.ak.d = this.e.ak.a.length - 1;
+        this.e.inventory.d = this.e.inventory.inventorySlots.length - 1;
         if (i == 0) {
             this.k = null;
         } else {
             this.k = new ItemStack(i);
         }
 
-        this.e.ak.a[this.e.ak.d] = this.k;
+        this.e.inventory.inventorySlots[this.e.inventory.d] = this.k;
         for (int j = 0; j < this.minecraftServer.k.length; ++j) {
             this.minecraftServer.k[j].a(this.e, new Packet16BlockItemSwitch(this.e.g, i));
         }
@@ -359,7 +356,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
             if (s.startsWith("/")) {
                 this.d(s);
             } else {
-                s = "<" + this.e.ar + "> " + s;
+                s = "<" + this.e.username + "> " + s;
                 LOGGER.info(s);
                 this.minecraftServer.f.a(new Packet3Chat(s));
             }
@@ -368,7 +365,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 
     private void d(String s) {
         if (s.toLowerCase().startsWith("/me ")) {
-            s = "* " + this.e.ar + " " + s.substring(s.indexOf(" ")).trim();
+            s = "* " + this.e.username + " " + s.substring(s.indexOf(" ")).trim();
             LOGGER.info(s);
             this.minecraftServer.f.a(new Packet3Chat(s));
         } else if (s.toLowerCase().startsWith("/tell ")) {
@@ -377,7 +374,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
             if (astring.length >= 3) {
                 s = s.substring(s.indexOf(" ")).trim();
                 s = s.substring(s.indexOf(" ")).trim();
-                s = "\u00A77" + this.e.ar + " whispers " + s;
+                s = "\u00A77" + this.e.username + " whispers " + s;
                 LOGGER.info(s + " to " + astring[1]);
                 if (!this.minecraftServer.f.a(astring[1], new Packet3Chat(s))) {
                     this.b(new Packet3Chat("\u00A7cThere's no player by that name online."));
@@ -388,13 +385,13 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
         } else {
             String s1;
 
-            if (this.minecraftServer.f.g(this.e.ar)) {
+            if (this.minecraftServer.f.g(this.e.username)) {
                 s1 = s.substring(1);
-                LOGGER.info(this.e.ar + " issued server command: " + s1);
+                LOGGER.info(this.e.username + " issued server command: " + s1);
                 this.minecraftServer.a(s1, this);
             } else {
                 s1 = s.substring(1);
-                LOGGER.info(this.e.ar + " tried command: " + s1);
+                LOGGER.info(this.e.username + " tried command: " + s1);
             }
         }
     }
@@ -418,27 +415,27 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
     }
 
     public String c() {
-        return this.e.ar;
+        return this.e.username;
     }
 
     public void a(Packet5PlayerInventory packet5playerinventory) {
         if (packet5playerinventory.a == -1) {
-            this.e.ak.a = packet5playerinventory.b;
+            this.e.inventory.inventorySlots = packet5playerinventory.b;
         }
 
         if (packet5playerinventory.a == -2) {
-            this.e.ak.c = packet5playerinventory.b;
+            this.e.inventory.craftingSlots = packet5playerinventory.b;
         }
 
         if (packet5playerinventory.a == -3) {
-            this.e.ak.b = packet5playerinventory.b;
+            this.e.inventory.armourSlots = packet5playerinventory.b;
         }
     }
 
     public void d() {
-        this.b.a(new Packet5PlayerInventory(-1, this.e.ak.a));
-        this.b.a(new Packet5PlayerInventory(-2, this.e.ak.c));
-        this.b.a(new Packet5PlayerInventory(-3, this.e.ak.b));
+        this.b.a(new Packet5PlayerInventory(-1, this.e.inventory.inventorySlots));
+        this.b.a(new Packet5PlayerInventory(-2, this.e.inventory.craftingSlots));
+        this.b.a(new Packet5PlayerInventory(-3, this.e.inventory.armourSlots));
     }
 
     public void a(Packet59ComplexEntity packet59complexentity) {

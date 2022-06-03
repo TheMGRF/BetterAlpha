@@ -7,7 +7,7 @@ import net.minecraft.server.world.entity.impl.EntityHuman;
 public class ItemInWorldManager {
 
     private World world;
-    public EntityHuman a;
+    public EntityHuman entityHuman;
     private float c;
     private float d = 0.0F;
     private int e = 0;
@@ -25,10 +25,10 @@ public class ItemInWorldManager {
         int l = this.world.a(i, j, k);
 
         if (l > 0 && this.d == 0.0F) {
-            Block.n[l].b(this.world, i, j, k, this.a);
+            Block.n[l].b(this.world, i, j, k, this.entityHuman);
         }
 
-        if (l > 0 && Block.n[l].a(this.a) >= 1.0F) {
+        if (l > 0 && Block.n[l].a(this.entityHuman) >= 1.0F) {
             this.c(i, j, k);
         }
     }
@@ -51,7 +51,7 @@ public class ItemInWorldManager {
 
                 Block block = Block.n[i1];
 
-                this.d += block.a(this.a);
+                this.d += block.a(this.entityHuman);
                 ++this.f;
                 if (this.d >= 1.0F) {
                     this.c(i, j, k);
@@ -87,17 +87,17 @@ public class ItemInWorldManager {
         int l = this.world.a(i, j, k);
         int i1 = this.world.b(i, j, k);
         boolean flag = this.b(i, j, k);
-        ItemStack itemstack = this.a.G();
+        ItemStack itemstack = this.entityHuman.G();
 
         if (itemstack != null) {
             itemstack.a(l, i, j, k);
             if (itemstack.a == 0) {
-                itemstack.a(this.a);
-                this.a.H();
+                itemstack.a(this.entityHuman);
+                this.entityHuman.H();
             }
         }
 
-        if (flag && this.a.b(Block.n[l])) {
+        if (flag && this.entityHuman.b(Block.n[l])) {
             Block.n[l].a_(this.world, i, j, k, i1);
         }
 

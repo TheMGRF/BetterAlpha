@@ -20,16 +20,16 @@ import java.util.Set;
 
 public class EntityPlayer extends EntityHuman {
 
-    public NetServerHandler a;
+    public NetServerHandler networkHandler;
     public MinecraftServer minecraftServer;
-    public ItemInWorldManager c;
+    public ItemInWorldManager worldItems;
     public double d;
     public double e;
     public List f = new LinkedList();
     public Set ai = new HashSet();
     public double aj;
 
-    public EntityPlayer(MinecraftServer minecraftserver, World world, String s, ItemInWorldManager iteminworldmanager) {
+    public EntityPlayer(MinecraftServer minecraftserver, World world, String username, ItemInWorldManager worldItems) {
         super(world);
         int i = world.m;
         int j = world.o;
@@ -44,16 +44,16 @@ public class EntityPlayer extends EntityHuman {
         this.c((double) i + 0.5D, (double) k, (double) j + 0.5D, 0.0F, 0.0F);
         this.minecraftServer = minecraftserver;
         this.R = 0.0F;
-        iteminworldmanager.a = this;
-        this.ar = s;
-        this.c = iteminworldmanager;
+        worldItems.entityHuman = this;
+        super.username = username;
+        this.worldItems = worldItems;
         this.G = 0.0F;
     }
 
     public void a(World world) {
         this.world = world;
-        this.c = new ItemInWorldManager((WorldServer) world);
-        this.c.a = this;
+        this.worldItems = new ItemInWorldManager((WorldServer) world);
+        this.worldItems.entityHuman = this;
     }
 
     public void b_() {
@@ -91,20 +91,20 @@ public class EntityPlayer extends EntityHuman {
                 flag = true;
             }
 
-            if (this.a.b() < 2) {
+            if (this.networkHandler.b() < 2) {
                 flag = true;
             }
 
             if (flag) {
                 WorldServer worldserver = this.minecraftServer.getWorldByDimension(this.dimension);
                 this.f.remove(chunkcoordintpair);
-                this.a.b((Packet) (new Packet51MapChunk(chunkcoordintpair.a * 16, 0, chunkcoordintpair.b * 16, 16, 128, 16, worldserver)));
+                this.networkHandler.b((Packet) (new Packet51MapChunk(chunkcoordintpair.a * 16, 0, chunkcoordintpair.b * 16, 16, 128, 16, worldserver)));
                 List list = worldserver.d(chunkcoordintpair.a * 16, 0, chunkcoordintpair.b * 16, chunkcoordintpair.a * 16 + 16, 128, chunkcoordintpair.b * 16 + 16);
 
                 for (int j = 0; j < list.size(); ++j) {
                     TileEntity tileentity = (TileEntity) list.get(j);
 
-                    this.a.b((Packet) (new Packet59ComplexEntity(tileentity.x, tileentity.y, tileentity.z, tileentity)));
+                    this.networkHandler.b((Packet) (new Packet59ComplexEntity(tileentity.x, tileentity.y, tileentity.z, tileentity)));
                 }
             }
         }
@@ -121,12 +121,12 @@ public class EntityPlayer extends EntityHuman {
             EntityTracker entitytracker = this.minecraftServer.b(this.dimension);
 
             if (entity instanceof EntityItem) {
-                this.a.b((Packet) (new Packet17AddToInventory(((EntityItem) entity).a, i)));
+                this.networkHandler.b((Packet) (new Packet17AddToInventory(((EntityItem) entity).a, i)));
                 entitytracker.a(entity, new Packet22Collect(entity.g, this.g));
             }
 
             if (entity instanceof EntityArrow) {
-                this.a.b((Packet) (new Packet17AddToInventory(new ItemStack(Item.ARROW, 1), i)));
+                this.networkHandler.b((Packet) (new Packet17AddToInventory(new ItemStack(Item.ARROW, 1), i)));
                 entitytracker.a(entity, new Packet22Collect(entity.g, this.g));
             }
         }
@@ -136,7 +136,7 @@ public class EntityPlayer extends EntityHuman {
 
     public void mount(Entity entity) {
         super.e(entity);
-        this.a.a(this.p, this.q, this.r, this.v, this.w);
+        this.networkHandler.a(this.p, this.q, this.r, this.v, this.w);
     }
 
     public void E() {

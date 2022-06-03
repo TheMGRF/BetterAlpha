@@ -11,24 +11,24 @@ import net.minecraft.server.world.entity.impl.EntityHuman;
 
 public class InventoryPlayer implements IInventory {
 
-    public ItemStack[] a = new ItemStack[37];
-    public ItemStack[] b = new ItemStack[4];
-    public ItemStack[] c = new ItemStack[4];
+    public ItemStack[] inventorySlots = new ItemStack[37];
+    public ItemStack[] armourSlots = new ItemStack[4];
+    public ItemStack[] craftingSlots = new ItemStack[4];
     public int d = 0;
-    private EntityHuman f;
+    private EntityHuman entityHuman;
     public boolean e = false;
 
-    public InventoryPlayer(EntityHuman entityhuman) {
-        this.f = entityhuman;
+    public InventoryPlayer(EntityHuman entityHuman) {
+        this.entityHuman = entityHuman;
     }
 
     public ItemStack b() {
-        return this.a[this.d];
+        return this.inventorySlots[this.d];
     }
 
     private int c(int i) {
-        for (int j = 0; j < this.a.length; ++j) {
-            if (this.a[j] != null && this.a[j].c == i && this.a[j].a < this.a[j].b() && this.a[j].a < this.d()) {
+        for (int j = 0; j < this.inventorySlots.length; ++j) {
+            if (this.inventorySlots[j] != null && this.inventorySlots[j].c == i && this.inventorySlots[j].a < this.inventorySlots[j].b() && this.inventorySlots[j].a < this.d()) {
                 return j;
             }
         }
@@ -37,8 +37,8 @@ public class InventoryPlayer implements IInventory {
     }
 
     private int g() {
-        for (int i = 0; i < this.a.length; ++i) {
-            if (this.a[i] == null) {
+        for (int i = 0; i < this.inventorySlots.length; ++i) {
+            if (this.inventorySlots[i] == null) {
                 return i;
             }
         }
@@ -56,35 +56,35 @@ public class InventoryPlayer implements IInventory {
         if (k < 0) {
             return j;
         } else {
-            if (this.a[k] == null) {
-                this.a[k] = new ItemStack(i, 0);
+            if (this.inventorySlots[k] == null) {
+                this.inventorySlots[k] = new ItemStack(i, 0);
             }
 
             int l = j;
 
-            if (j > this.a[k].b() - this.a[k].a) {
-                l = this.a[k].b() - this.a[k].a;
+            if (j > this.inventorySlots[k].b() - this.inventorySlots[k].a) {
+                l = this.inventorySlots[k].b() - this.inventorySlots[k].a;
             }
 
-            if (l > this.d() - this.a[k].a) {
-                l = this.d() - this.a[k].a;
+            if (l > this.d() - this.inventorySlots[k].a) {
+                l = this.d() - this.inventorySlots[k].a;
             }
 
             if (l == 0) {
                 return j;
             } else {
                 j -= l;
-                this.a[k].a += l;
-                this.a[k].b = 5;
+                this.inventorySlots[k].a += l;
+                this.inventorySlots[k].b = 5;
                 return j;
             }
         }
     }
 
     public void c() {
-        for (int i = 0; i < this.a.length; ++i) {
-            if (this.a[i] != null && this.a[i].b > 0) {
-                --this.a[i].b;
+        for (int i = 0; i < this.inventorySlots.length; ++i) {
+            if (this.inventorySlots[i] != null && this.inventorySlots[i].b > 0) {
+                --this.inventorySlots[i].b;
             }
         }
     }
@@ -100,35 +100,35 @@ public class InventoryPlayer implements IInventory {
         int i = this.g();
 
         if (i >= 0) {
-            this.a[i] = itemstack;
-            this.a[i].b = 5;
+            this.inventorySlots[i] = itemstack;
+            this.inventorySlots[i].b = 5;
             return true;
         } else {
             return false;
         }
     }
 
-    public void a(int i, ItemStack itemstack) {
-        ItemStack[] aitemstack = this.a;
+    public void setItem(int i, ItemStack itemstack) {
+        ItemStack[] slots = this.inventorySlots;
 
-        if (i >= aitemstack.length) {
-            i -= aitemstack.length;
-            aitemstack = this.b;
+        if (i >= slots.length) {
+            i -= slots.length;
+            slots = this.armourSlots;
         }
 
-        if (i >= aitemstack.length) {
-            i -= aitemstack.length;
-            aitemstack = this.c;
+        if (i >= slots.length) {
+            i -= slots.length;
+            slots = this.craftingSlots;
         }
 
-        aitemstack[i] = itemstack;
+        slots[i] = itemstack;
     }
 
     public float a(Block block) {
         float f = 1.0F;
 
-        if (this.a[this.d] != null) {
-            f *= this.a[this.d].a(block);
+        if (this.inventorySlots[this.d] != null) {
+            f *= this.inventorySlots[this.d].a(block);
         }
 
         return f;
@@ -138,29 +138,29 @@ public class InventoryPlayer implements IInventory {
         int i;
         NBTTagCompound nbttagcompound;
 
-        for (i = 0; i < this.a.length; ++i) {
-            if (this.a[i] != null) {
+        for (i = 0; i < this.inventorySlots.length; ++i) {
+            if (this.inventorySlots[i] != null) {
                 nbttagcompound = new NBTTagCompound();
                 nbttagcompound.a("Slot", (byte) i);
-                this.a[i].a(nbttagcompound);
+                this.inventorySlots[i].a(nbttagcompound);
                 nbttaglist.a((NBTBase) nbttagcompound);
             }
         }
 
-        for (i = 0; i < this.b.length; ++i) {
-            if (this.b[i] != null) {
+        for (i = 0; i < this.armourSlots.length; ++i) {
+            if (this.armourSlots[i] != null) {
                 nbttagcompound = new NBTTagCompound();
                 nbttagcompound.a("Slot", (byte) (i + 100));
-                this.b[i].a(nbttagcompound);
+                this.armourSlots[i].a(nbttagcompound);
                 nbttaglist.a((NBTBase) nbttagcompound);
             }
         }
 
-        for (i = 0; i < this.c.length; ++i) {
-            if (this.c[i] != null) {
+        for (i = 0; i < this.craftingSlots.length; ++i) {
+            if (this.craftingSlots[i] != null) {
                 nbttagcompound = new NBTTagCompound();
                 nbttagcompound.a("Slot", (byte) (i + 80));
-                this.c[i].a(nbttagcompound);
+                this.craftingSlots[i].a(nbttagcompound);
                 nbttaglist.a((NBTBase) nbttagcompound);
             }
         }
@@ -169,43 +169,43 @@ public class InventoryPlayer implements IInventory {
     }
 
     public void b(NBTTagList nbttaglist) {
-        this.a = new ItemStack[36];
-        this.b = new ItemStack[4];
-        this.c = new ItemStack[4];
+        this.inventorySlots = new ItemStack[36];
+        this.armourSlots = new ItemStack[4];
+        this.craftingSlots = new ItemStack[4];
 
         for (int i = 0; i < nbttaglist.b(); ++i) {
             NBTTagCompound nbttagcompound = (NBTTagCompound) nbttaglist.a(i);
             int j = nbttagcompound.b("Slot") & 255;
 
-            if (j >= 0 && j < this.a.length) {
-                this.a[j] = new ItemStack(nbttagcompound);
+            if (j >= 0 && j < this.inventorySlots.length) {
+                this.inventorySlots[j] = new ItemStack(nbttagcompound);
             }
 
-            if (j >= 80 && j < this.c.length + 80) {
-                this.c[j - 80] = new ItemStack(nbttagcompound);
+            if (j >= 80 && j < this.craftingSlots.length + 80) {
+                this.craftingSlots[j - 80] = new ItemStack(nbttagcompound);
             }
 
-            if (j >= 100 && j < this.b.length + 100) {
-                this.b[j - 100] = new ItemStack(nbttagcompound);
+            if (j >= 100 && j < this.armourSlots.length + 100) {
+                this.armourSlots[j - 100] = new ItemStack(nbttagcompound);
             }
         }
     }
 
     public int a() {
-        return this.a.length + 4;
+        return this.inventorySlots.length + 4;
     }
 
     public ItemStack a(int i) {
-        ItemStack[] aitemstack = this.a;
+        ItemStack[] aitemstack = this.inventorySlots;
 
         if (i >= aitemstack.length) {
             i -= aitemstack.length;
-            aitemstack = this.b;
+            aitemstack = this.armourSlots;
         }
 
         if (i >= aitemstack.length) {
             i -= aitemstack.length;
-            aitemstack = this.c;
+            aitemstack = this.craftingSlots;
         }
 
         return aitemstack[i];
@@ -230,15 +230,15 @@ public class InventoryPlayer implements IInventory {
         int j = 0;
         int k = 0;
 
-        for (int l = 0; l < this.b.length; ++l) {
-            if (this.b[l] != null && this.b[l].a() instanceof ItemArmor) {
-                int i1 = this.b[l].c();
-                int j1 = this.b[l].d;
+        for (int l = 0; l < this.armourSlots.length; ++l) {
+            if (this.armourSlots[l] != null && this.armourSlots[l].a() instanceof ItemArmor) {
+                int i1 = this.armourSlots[l].c();
+                int j1 = this.armourSlots[l].d;
                 int k1 = i1 - j1;
 
                 j += k1;
                 k += i1;
-                int l1 = ((ItemArmor) this.b[l].a()).bc;
+                int l1 = ((ItemArmor) this.armourSlots[l].a()).bc;
 
                 i += l1;
             }
@@ -252,31 +252,31 @@ public class InventoryPlayer implements IInventory {
     }
 
     public void b(int i) {
-        for (int j = 0; j < this.b.length; ++j) {
-            if (this.b[j] != null && this.b[j].a() instanceof ItemArmor) {
-                this.b[j].a(i);
-                if (this.b[j].a == 0) {
-                    this.b[j].a(this.f);
-                    this.b[j] = null;
+        for (int j = 0; j < this.armourSlots.length; ++j) {
+            if (this.armourSlots[j] != null && this.armourSlots[j].a() instanceof ItemArmor) {
+                this.armourSlots[j].a(i);
+                if (this.armourSlots[j].a == 0) {
+                    this.armourSlots[j].a(this.entityHuman);
+                    this.armourSlots[j] = null;
                 }
             }
         }
     }
 
-    public void f() {
+    public void dropAll() {
         int i;
 
-        for (i = 0; i < this.a.length; ++i) {
-            if (this.a[i] != null) {
-                this.f.a(this.a[i], true);
-                this.a[i] = null;
+        for (i = 0; i < this.inventorySlots.length; ++i) {
+            if (this.inventorySlots[i] != null) {
+                this.entityHuman.dropItem(this.inventorySlots[i], true);
+                this.inventorySlots[i] = null;
             }
         }
 
-        for (i = 0; i < this.b.length; ++i) {
-            if (this.b[i] != null) {
-                this.f.a(this.b[i], true);
-                this.b[i] = null;
+        for (i = 0; i < this.armourSlots.length; ++i) {
+            if (this.armourSlots[i] != null) {
+                this.entityHuman.dropItem(this.armourSlots[i], true);
+                this.armourSlots[i] = null;
             }
         }
     }

@@ -194,7 +194,7 @@ public class EntityItem extends Entity {
         if (!this.world.z) {
             int i = this.a.a;
 
-            if (this.c == 0 && entityhuman.ak.a(this.a)) {
+            if (this.c == 0 && entityhuman.inventory.a(this.a)) {
                 this.world.a(this, "random.pop", 0.2F, ((this.V.nextFloat() - this.V.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 entityhuman.c(this, i);
                 this.l();

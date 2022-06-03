@@ -102,7 +102,7 @@ public class EntityTrackerEntry {
         while (iterator.hasNext()) {
             EntityPlayer entityplayer = (EntityPlayer) iterator.next();
 
-            entityplayer.a.b(packet);
+            entityplayer.networkHandler.b(packet);
         }
     }
 
@@ -118,11 +118,11 @@ public class EntityTrackerEntry {
             if (d0 >= (double) (-this.b) && d0 <= (double) this.b && d1 >= (double) (-this.b) && d1 <= (double) this.b) {
                 if (!this.k.contains(entityplayer)) {
                     this.k.add(entityplayer);
-                    entityplayer.a.b(this.b());
+                    entityplayer.networkHandler.b(this.b());
                 }
             } else if (this.k.contains(entityplayer)) {
                 this.k.remove(entityplayer);
-                entityplayer.a.b((Packet) (new Packet29DestroyEntity(this.a.g)));
+                entityplayer.networkHandler.b((Packet) (new Packet29DestroyEntity(this.a.g)));
             }
         }
     }
