@@ -1,6 +1,7 @@
-package net.minecraft.server.player;
+package net.minecraft.server.gui;
 
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.player.IUpdatePlayerListBox;
 import net.minecraft.server.world.entity.impl.EntityPlayer;
 
 import javax.swing.*;
