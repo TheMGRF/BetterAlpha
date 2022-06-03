@@ -12,10 +12,10 @@ import java.util.List;
 
 class PlayerInstance {
 
-    private final List b;
-    private final int c;
-    private final int d;
-    private final ChunkCoordIntPair e;
+    private final List<EntityPlayer> playersInChunk = new ArrayList<>();
+    private final int chunkX;
+    private final int chunkZ;
+    private final ChunkCoordIntPair chunkCoordPair;
     private final short[] f;
     private int g;
     private int h;
@@ -25,56 +25,55 @@ class PlayerInstance {
     private int l;
     private int m;
 
-    final PlayerManager a;
+    final PlayerManager playerManager;
 
-    public PlayerInstance(PlayerManager playermanager, int i, int j) {
-        this.a = playermanager;
-        this.b = new ArrayList();
+    public PlayerInstance(PlayerManager playermanager, int chunkX, int chunkZ) {
+        this.playerManager = playermanager;
         this.f = new short[10];
         this.g = 0;
-        this.c = i;
-        this.d = j;
-        this.e = new ChunkCoordIntPair(i, j);
-        a.aworld().A.d(i, j);
+        this.chunkX = chunkX;
+        this.chunkZ = chunkZ;
+        this.chunkCoordPair = new ChunkCoordIntPair(chunkX, chunkZ);
+        playerManager.getWorld().A.d(chunkX, chunkZ);
     }
 
     public void a(EntityPlayer entityplayer) {
-        if (this.b.contains(entityplayer)) {
-            new IllegalStateException("Failed to add player. " + entityplayer + " already is in chunk " + this.c + ", " + this.d);
+        if (this.playersInChunk.contains(entityplayer)) {
+            new IllegalStateException("Failed to add player. " + entityplayer + " already is in chunk " + this.chunkX + ", " + this.chunkZ);
         } else {
-            entityplayer.ai.add(this.e);
-            entityplayer.a.b(new Packet50PreChunk(this.e.a, this.e.b, true));
-            this.b.add(entityplayer);
-            entityplayer.f.add(this.e);
+            entityplayer.ai.add(this.chunkCoordPair);
+            entityplayer.networkHandler.b(new Packet50PreChunk(this.chunkCoordPair.a, this.chunkCoordPair.b, true));
+            this.playersInChunk.add(entityplayer);
+            entityplayer.f.add(this.chunkCoordPair);
         }
     }
 
     public void b(EntityPlayer entityplayer) {
-        if (!this.b.contains(entityplayer)) {
-            (new IllegalStateException("Failed to remove player. " + entityplayer + " isn't in chunk " + this.c + ", " + this.d)).printStackTrace();
+        if (!this.playersInChunk.contains(entityplayer)) {
+            (new IllegalStateException("Failed to remove player. " + entityplayer + " isn't in chunk " + this.chunkX + ", " + this.chunkZ)).printStackTrace();
         } else {
-            this.b.remove(entityplayer);
-            if (this.b.size() == 0) {
-                long i = (long) this.c + 2147483647L | (long) this.d + 2147483647L << 32;
+            this.playersInChunk.remove(entityplayer);
+            if (this.playersInChunk.size() == 0) {
+                long i = (long) this.chunkX + 2147483647L | (long) this.chunkZ + 2147483647L << 32;
 
-                PlayerManager.b(this.a).b(i);
+                PlayerManager.getPlayerList(this.playerManager).b(i);
                 if (this.g > 0) {
-                    PlayerManager.c(this.a).remove(this);
+                    PlayerManager.getPlayerInstances(this.playerManager).remove(this);
                 }
 
-                this.a.aworld().A.c(this.c, this.d);
+                this.playerManager.getWorld().A.c(this.chunkX, this.chunkZ);
             }
 
-            entityplayer.f.remove(this.e);
-            if (entityplayer.ai.contains(this.e)) {
-                entityplayer.a.b(new Packet50PreChunk(this.c, this.d, false));
+            entityplayer.f.remove(this.chunkCoordPair);
+            if (entityplayer.ai.contains(this.chunkCoordPair)) {
+                entityplayer.networkHandler.b(new Packet50PreChunk(this.chunkX, this.chunkZ, false));
             }
         }
     }
 
     public void a(int i, int j, int k) {
         if (this.g == 0) {
-            PlayerManager.c(this.a).add(this);
+            PlayerManager.getPlayerInstances(this.playerManager).add(this);
             this.h = this.i = i;
             this.j = this.k = j;
             this.l = this.m = k;
@@ -118,26 +117,26 @@ class PlayerInstance {
     }
 
     public void a(Packet packet) {
-        for (int i = 0; i < this.b.size(); ++i) {
-            EntityPlayer entityplayer = (EntityPlayer) this.b.get(i);
+        for (int i = 0; i < this.playersInChunk.size(); ++i) {
+            EntityPlayer entityplayer = (EntityPlayer) this.playersInChunk.get(i);
 
-            if (entityplayer.ai.contains(this.e)) {
-                entityplayer.a.b(packet);
+            if (entityplayer.ai.contains(this.chunkCoordPair)) {
+                entityplayer.networkHandler.b(packet);
             }
         }
     }
 
     public void a() {
-        WorldServer world = this.a.aworld();
+        WorldServer world = this.playerManager.getWorld();
         if (this.g != 0) {
             int i;
             int j;
             int k;
 
             if (this.g == 1) {
-                i = this.c * 16 + this.h;
+                i = this.chunkX * 16 + this.h;
                 j = this.j;
-                k = this.d * 16 + this.l;
+                k = this.chunkZ * 16 + this.l;
                 this.a(new Packet53BlockChange(i, j, k, world));
                 if (Block.q[world.a(i, j, k)]) {
                     this.a(new Packet59ComplexEntity(i, j, k, world.k(i, j, k)));
@@ -148,9 +147,9 @@ class PlayerInstance {
                 if (this.g == 10) {
                     this.j = this.j / 2 * 2;
                     this.k = (this.k / 2 + 1) * 2;
-                    i = this.h + this.c * 16;
+                    i = this.h + this.chunkX * 16;
                     j = this.j;
-                    k = this.l + this.d * 16;
+                    k = this.l + this.chunkZ * 16;
                     l = this.i - this.h + 1;
                     int i1 = this.k - this.j + 2;
                     int j1 = this.m - this.l + 1;
@@ -164,12 +163,12 @@ class PlayerInstance {
                         this.a(new Packet59ComplexEntity(tileentity.x, tileentity.y, tileentity.z, tileentity));
                     }
                 } else {
-                    this.a(new Packet52MultiBlockChange(this.c, this.d, this.f, this.g, world));
+                    this.a(new Packet52MultiBlockChange(this.chunkX, this.chunkZ, this.f, this.g, world));
 
                     for (i = 0; i < this.g; ++i) {
-                        j = this.c * 16 + (this.g >> 12 & 15);
+                        j = this.chunkX * 16 + (this.g >> 12 & 15);
                         k = this.g & 255;
-                        l = this.d * 16 + (this.g >> 8 & 15);
+                        l = this.chunkZ * 16 + (this.g >> 8 & 15);
                         if (Block.q[world.a(j, k, l)]) {
                             this.a(new Packet59ComplexEntity(j, k, l, world.k(j, k, l)));
                         }

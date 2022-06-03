@@ -173,7 +173,7 @@ public class EntitySnowball extends Entity {
     }
 
     public void a(EntityHuman entityhuman) {
-        if (this.f && this.ai == entityhuman && this.a <= 0 && entityhuman.ak.a(new ItemStack(Item.ARROW.aW, 1))) {
+        if (this.f && this.ai == entityhuman && this.a <= 0 && entityhuman.inventory.a(new ItemStack(Item.ARROW.aW, 1))) {
             this.world.a(this, "random.pop", 0.2F, ((this.V.nextFloat() - this.V.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             entityhuman.c(this, 1);
             this.l();
