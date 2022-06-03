@@ -108,7 +108,7 @@ public class InventoryPlayer implements IInventory {
         }
     }
 
-    public void setItem(int i, ItemStack itemstack) {
+    public void setItem(int i, ItemStack itemstack) { // Not entirely sure this is setItem because server-side inventories don't exist
         ItemStack[] slots = this.inventorySlots;
 
         if (i >= slots.length) {
