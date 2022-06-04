@@ -18,7 +18,7 @@ public class Pathfinder {
     }
 
     public PathEntity a(Entity entity, Entity entity1, float f) {
-        return this.a(entity, entity1.p, entity1.boundingBox.b, entity1.r, f);
+        return this.a(entity, entity1.locX, entity1.boundingBox.b, entity1.locZ, f);
     }
 
     public PathEntity a(Entity entity, int i, int j, int k, float f) {

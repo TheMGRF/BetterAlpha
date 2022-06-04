@@ -50,14 +50,14 @@ public class EntitySpider extends EntityMonster {
             this.f = null;
         } else {
             if (f > 2.0F && f < 6.0F && this.V.nextInt(10) == 0) {
-                if (this.A) {
-                    double d0 = entity.p - this.p;
-                    double d1 = entity.r - this.r;
+                if (this.onGround) {
+                    double d0 = entity.locX - this.locX;
+                    double d1 = entity.locZ - this.locZ;
                     float f2 = MathHelper.a(d0 * d0 + d1 * d1);
 
-                    this.s = d0 / (double) f2 * 0.5D * 0.800000011920929D + this.s * 0.20000000298023224D;
-                    this.u = d1 / (double) f2 * 0.5D * 0.800000011920929D + this.u * 0.20000000298023224D;
-                    this.t = 0.4000000059604645D;
+                    this.motX = d0 / (double) f2 * 0.5D * 0.800000011920929D + this.motX * 0.20000000298023224D;
+                    this.motZ = d1 / (double) f2 * 0.5D * 0.800000011920929D + this.motZ * 0.20000000298023224D;
+                    this.motY = 0.4000000059604645D;
                 }
             } else {
                 super.a(entity, f);

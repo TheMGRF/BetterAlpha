@@ -77,6 +77,6 @@ public class BlockCactus extends Block {
     }
 
     public void a(World world, int i, int j, int k, Entity entity) {
-        entity.a((Entity) null, 1);
+        entity.hurt((Entity) null, 1);
     }
 }

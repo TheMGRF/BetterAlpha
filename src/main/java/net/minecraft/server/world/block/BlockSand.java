@@ -36,7 +36,7 @@ public class BlockSand extends Block {
                     entityfallingsand.b_();
                 }
             } else {
-                world.a((Entity) entityfallingsand);
+                world.trackEntity((Entity) entityfallingsand);
             }
         }
     }

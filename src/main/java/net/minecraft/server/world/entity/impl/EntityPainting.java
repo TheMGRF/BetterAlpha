@@ -57,7 +57,7 @@ public class EntityPainting extends Entity {
 
     public void a(int i) {
         this.a = i;
-        this.x = this.v = (float) (i * 90);
+        this.lastYaw = this.yaw = (float) (i * 90);
         float f = (float) this.b.z;
         float f1 = (float) this.b.A;
         float f2 = (float) this.b.z;
@@ -123,7 +123,7 @@ public class EntityPainting extends Entity {
         if (this.c++ == 100 && !this.c()) {
             this.c = 0;
             this.l();
-            this.world.a((Entity) (new EntityItem(this.world, this.p, this.q, this.r, new ItemStack(Item.PAINTING))));
+            this.world.trackEntity((Entity) (new EntityItem(this.world, this.locX, this.locY, this.locZ, new ItemStack(Item.PAINTING))));
         }
     }
 
@@ -138,22 +138,22 @@ public class EntityPainting extends Entity {
             int i1 = this.f;
 
             if (this.a == 0) {
-                k = MathHelper.b(this.p - (double) ((float) this.b.z / 32.0F));
+                k = MathHelper.b(this.locX - (double) ((float) this.b.z / 32.0F));
             }
 
             if (this.a == 1) {
-                i1 = MathHelper.b(this.r - (double) ((float) this.b.z / 32.0F));
+                i1 = MathHelper.b(this.locZ - (double) ((float) this.b.z / 32.0F));
             }
 
             if (this.a == 2) {
-                k = MathHelper.b(this.p - (double) ((float) this.b.z / 32.0F));
+                k = MathHelper.b(this.locX - (double) ((float) this.b.z / 32.0F));
             }
 
             if (this.a == 3) {
-                i1 = MathHelper.b(this.r - (double) ((float) this.b.z / 32.0F));
+                i1 = MathHelper.b(this.locZ - (double) ((float) this.b.z / 32.0F));
             }
 
-            l = MathHelper.b(this.q - (double) ((float) this.b.A / 32.0F));
+            l = MathHelper.b(this.locY - (double) ((float) this.b.A / 32.0F));
 
             int j1;
 
@@ -189,9 +189,9 @@ public class EntityPainting extends Entity {
         return true;
     }
 
-    public boolean a(Entity entity, int i) {
+    public boolean hurt(Entity entity, int i) {
         this.l();
-        this.world.a((Entity) (new EntityItem(this.world, this.p, this.q, this.r, new ItemStack(Item.PAINTING))));
+        this.world.trackEntity((Entity) (new EntityItem(this.world, this.locX, this.locY, this.locZ, new ItemStack(Item.PAINTING))));
         return true;
     }
 

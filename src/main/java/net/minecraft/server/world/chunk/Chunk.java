@@ -371,14 +371,14 @@ public class Chunk {
     public void a(Entity entity) {
         if (!this.q) {
             this.r = true;
-            int i = MathHelper.b(entity.p / 16.0D);
-            int j = MathHelper.b(entity.r / 16.0D);
+            int i = MathHelper.b(entity.locX / 16.0D);
+            int j = MathHelper.b(entity.locZ / 16.0D);
 
             if (i != this.x || j != this.z) {
                 System.out.println("Wrong location! " + entity);
             }
 
-            int k = MathHelper.b(entity.q / 16.0D);
+            int k = MathHelper.b(entity.locY / 16.0D);
 
             if (k < 0) {
                 k = 0;

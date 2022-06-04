@@ -40,7 +40,7 @@ public class BlockJukeBox extends Block {
         EntityItem entityitem = new EntityItem(world, (double) i + d0, (double) j + d1, (double) k + d2, new ItemStack(i1));
 
         entityitem.c = 10;
-        world.a((Entity) entityitem);
+        world.trackEntity((Entity) entityitem);
     }
 
     public void a(World world, int i, int j, int k, int l, float f) {

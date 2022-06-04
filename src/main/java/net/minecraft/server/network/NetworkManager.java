@@ -52,7 +52,7 @@ public class NetworkManager {
         this.l = nethandler;
     }
 
-    public void a(Packet packet) {
+    public void sendPacket(Packet packet) {
         if (!this.m) {
             Object object = this.d;
 

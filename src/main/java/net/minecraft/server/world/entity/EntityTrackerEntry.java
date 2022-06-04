@@ -31,11 +31,11 @@ public class EntityTrackerEntry {
         this.a = entity;
         this.b = i;
         this.c = j;
-        this.d = MathHelper.b(entity.p * 32.0D);
-        this.e = MathHelper.b(entity.q * 32.0D);
-        this.f = MathHelper.b(entity.r * 32.0D);
-        this.g = MathHelper.d(entity.v * 256.0F / 360.0F);
-        this.h = MathHelper.d(entity.w * 256.0F / 360.0F);
+        this.d = MathHelper.b(entity.locX * 32.0D);
+        this.e = MathHelper.b(entity.locY * 32.0D);
+        this.f = MathHelper.b(entity.locZ * 32.0D);
+        this.g = MathHelper.d(entity.yaw * 256.0F / 360.0F);
+        this.h = MathHelper.d(entity.pitch * 256.0F / 360.0F);
     }
 
     public boolean equals(Object object) {
@@ -50,19 +50,19 @@ public class EntityTrackerEntry {
         this.j = false;
         if (!this.o || this.a.d(this.l, this.m, this.n) > 16.0D) {
             this.b(list);
-            this.l = this.a.p;
-            this.m = this.a.q;
-            this.n = this.a.r;
+            this.l = this.a.locX;
+            this.m = this.a.locY;
+            this.n = this.a.locZ;
             this.o = true;
             this.j = true;
         }
 
         if (this.i++ % this.c == 0) {
-            int i = MathHelper.b(this.a.p * 32.0D);
-            int j = MathHelper.b(this.a.q * 32.0D);
-            int k = MathHelper.b(this.a.r * 32.0D);
-            int l = MathHelper.d(this.a.v * 256.0F / 360.0F);
-            int i1 = MathHelper.d(this.a.w * 256.0F / 360.0F);
+            int i = MathHelper.b(this.a.locX * 32.0D);
+            int j = MathHelper.b(this.a.locY * 32.0D);
+            int k = MathHelper.b(this.a.locZ * 32.0D);
+            int l = MathHelper.d(this.a.yaw * 256.0F / 360.0F);
+            int i1 = MathHelper.d(this.a.pitch * 256.0F / 360.0F);
             boolean flag = i != this.d || j != this.e || k != this.f;
             boolean flag1 = l != this.g || i1 != this.h;
             int j1 = i - this.d;
@@ -102,7 +102,7 @@ public class EntityTrackerEntry {
         while (iterator.hasNext()) {
             EntityPlayer entityplayer = (EntityPlayer) iterator.next();
 
-            entityplayer.a.b(packet);
+            entityplayer.netServerHandler.sendPacket(packet);
         }
     }
 
@@ -112,17 +112,17 @@ public class EntityTrackerEntry {
 
     public void a(EntityPlayer entityplayer) {
         if (entityplayer != this.a) {
-            double d0 = entityplayer.p - (double) (this.d / 32);
-            double d1 = entityplayer.r - (double) (this.f / 32);
+            double d0 = entityplayer.locX - (double) (this.d / 32);
+            double d1 = entityplayer.locZ - (double) (this.f / 32);
 
             if (d0 >= (double) (-this.b) && d0 <= (double) this.b && d1 >= (double) (-this.b) && d1 <= (double) this.b) {
                 if (!this.k.contains(entityplayer)) {
                     this.k.add(entityplayer);
-                    entityplayer.a.b(this.b());
+                    entityplayer.netServerHandler.sendPacket(this.b());
                 }
             } else if (this.k.contains(entityplayer)) {
                 this.k.remove(entityplayer);
-                entityplayer.a.b((Packet) (new Packet29DestroyEntity(this.a.g)));
+                entityplayer.netServerHandler.sendPacket((Packet) (new Packet29DestroyEntity(this.a.g)));
             }
         }
     }
@@ -138,12 +138,12 @@ public class EntityTrackerEntry {
             EntityItem entityitem = (EntityItem) this.a;
             Packet21PickupSpawn packet21pickupspawn = new Packet21PickupSpawn(entityitem);
 
-            entityitem.p = (double) packet21pickupspawn.b / 32.0D;
-            entityitem.q = (double) packet21pickupspawn.c / 32.0D;
-            entityitem.r = (double) packet21pickupspawn.d / 32.0D;
-            entityitem.s = (double) packet21pickupspawn.e / 128.0D;
-            entityitem.t = (double) packet21pickupspawn.f / 128.0D;
-            entityitem.u = (double) packet21pickupspawn.g / 128.0D;
+            entityitem.locX = (double) packet21pickupspawn.b / 32.0D;
+            entityitem.locY = (double) packet21pickupspawn.c / 32.0D;
+            entityitem.locZ = (double) packet21pickupspawn.d / 32.0D;
+            entityitem.motX = (double) packet21pickupspawn.e / 128.0D;
+            entityitem.motY = (double) packet21pickupspawn.f / 128.0D;
+            entityitem.motZ = (double) packet21pickupspawn.g / 128.0D;
             return packet21pickupspawn;
         } else if (this.a instanceof EntityPlayer) {
             return new Packet20NamedEntitySpawn((EntityHuman) this.a);

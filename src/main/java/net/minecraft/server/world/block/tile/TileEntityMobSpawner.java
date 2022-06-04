@@ -65,7 +65,7 @@ public class TileEntityMobSpawner extends TileEntity {
 
                         entityliving.c(d3, d4, d5, this.world.l.nextFloat() * 360.0F, 0.0F);
                         if (entityliving.a()) {
-                            this.world.a((Entity) entityliving);
+                            this.world.trackEntity((Entity) entityliving);
 
                             for (int k = 0; k < 20; ++k) {
                                 d0 = (double) this.x + 0.5D + ((double) this.world.l.nextFloat() - 0.5D) * 2.0D;

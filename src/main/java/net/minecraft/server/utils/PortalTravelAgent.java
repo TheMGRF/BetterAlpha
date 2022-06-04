@@ -18,7 +18,7 @@ public class PortalTravelAgent {
             this.c(world, entity);
             this.b(world, entity);
         }
-        entity.p = entity.p + 3D;
+        entity.locX = entity.locX + 3D;
     }
 
     public boolean b(World world, Entity entity) {
@@ -27,16 +27,16 @@ public class PortalTravelAgent {
         int i = 0;
         int j = 0;
         int k = 0;
-        int l = MathHelper.b(entity.p);
-        int i1 = MathHelper.b(entity.r);
+        int l = MathHelper.b(entity.locX);
+        int i1 = MathHelper.b(entity.locZ);
 
         double d1;
 
         for (int j1 = l - short1; j1 <= l + short1; ++j1) {
-            double d2 = (double) j1 + 0.5D - entity.p;
+            double d2 = (double) j1 + 0.5D - entity.locX;
 
             for (int k1 = i1 - short1; k1 <= i1 + short1; ++k1) {
-                double d3 = (double) k1 + 0.5D - entity.r;
+                double d3 = (double) k1 + 0.5D - entity.locZ;
 
                 for (int l1 = 127; l1 >= 0; --l1) {
                     if (world.a(j1, l1, k1) == Block.PORTAL.bi) {
@@ -44,7 +44,7 @@ public class PortalTravelAgent {
                             --l1;
                         }
 
-                        d1 = (double) l1 + 0.5D - entity.q;
+                        d1 = (double) l1 + 0.5D - entity.locY;
                         double d4 = d2 * d2 + d1 * d1 + d3 * d3;
 
                         if (d0 < 0.0D || d4 < d0) {
@@ -79,8 +79,8 @@ public class PortalTravelAgent {
                 d1 += 0.5D;
             }
 
-            entity.c(d5, d6, d1, entity.v, 0.0F);
-            entity.s = entity.t = entity.u = 0.0D;
+            entity.c(d5, d6, d1, entity.yaw, 0.0F);
+            entity.motX = entity.motY = entity.motZ = 0.0D;
             return true;
         } else {
             return false;
@@ -90,9 +90,9 @@ public class PortalTravelAgent {
     public boolean c(World world, Entity entity) {
         byte b0 = 16;
         double d0 = -1.0D;
-        int i = MathHelper.b(entity.p);
-        int j = MathHelper.b(entity.q);
-        int k = MathHelper.b(entity.r);
+        int i = MathHelper.b(entity.locX);
+        int j = MathHelper.b(entity.locY);
+        int k = MathHelper.b(entity.locZ);
         int l = i;
         int i1 = j;
         int j1 = k;
@@ -116,10 +116,10 @@ public class PortalTravelAgent {
         double d4;
 
         for (i2 = i - b0; i2 <= i + b0; ++i2) {
-            d1 = (double) i2 + 0.5D - entity.p;
+            d1 = (double) i2 + 0.5D - entity.locX;
 
             for (j2 = k - b0; j2 <= k + b0; ++j2) {
-                d2 = (double) j2 + 0.5D - entity.r;
+                d2 = (double) j2 + 0.5D - entity.locZ;
 
                 label271:
                 for (l2 = 127; l2 >= 0; --l2) {
@@ -150,7 +150,7 @@ public class PortalTravelAgent {
                                 }
                             }
 
-                            d3 = (double) l2 + 0.5D - entity.q;
+                            d3 = (double) l2 + 0.5D - entity.locY;
                             d4 = d1 * d1 + d3 * d3 + d2 * d2;
                             if (d0 < 0.0D || d4 < d0) {
                                 d0 = d4;
@@ -167,10 +167,10 @@ public class PortalTravelAgent {
 
         if (d0 < 0.0D) {
             for (i2 = i - b0; i2 <= i + b0; ++i2) {
-                d1 = (double) i2 + 0.5D - entity.p;
+                d1 = (double) i2 + 0.5D - entity.locX;
 
                 for (j2 = k - b0; j2 <= k + b0; ++j2) {
-                    d2 = (double) j2 + 0.5D - entity.r;
+                    d2 = (double) j2 + 0.5D - entity.locZ;
 
                     label219:
                     for (l2 = 127; l2 >= 0; --l2) {
@@ -194,7 +194,7 @@ public class PortalTravelAgent {
                                     }
                                 }
 
-                                d3 = (double) l2 + 0.5D - entity.q;
+                                d3 = (double) l2 + 0.5D - entity.locY;
                                 d4 = d1 * d1 + d3 * d3 + d2 * d2;
                                 if (d0 < 0.0D || d4 < d0) {
                                     d0 = d4;

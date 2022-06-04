@@ -65,7 +65,7 @@ public class EntityCreeper extends EntityMonster {
             this.d = 1;
             ++this.a;
             if (this.a == this.c) {
-                this.world.a(this, this.p, this.q, this.r, 3.0F);
+                this.world.a(this, this.locX, this.locY, this.locZ, 3.0F);
                 this.l();
             }
 

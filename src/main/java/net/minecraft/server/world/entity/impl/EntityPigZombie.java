@@ -53,7 +53,7 @@ public class EntityPigZombie extends EntityZombie {
         super.D();
     }
 
-    public boolean a(Entity entity, int i) {
+    public boolean hurt(Entity entity, int i) {
         if (entity instanceof EntityHuman) {
             List list = this.world.b((Entity) this, this.boundingBox.b(32.0D, 32.0D, 32.0D));
 
@@ -70,7 +70,7 @@ public class EntityPigZombie extends EntityZombie {
             this.h(entity);
         }
 
-        return super.a(entity, i);
+        return super.hurt(entity, i);
     }
 
     private void h(Entity entity) {

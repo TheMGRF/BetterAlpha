@@ -20,12 +20,12 @@ public class EntityTracker {
     public EntityTracker(MinecraftServer minecraftserver, int i) {
         this.c = minecraftserver;
         this.e = i;
-        this.d = minecraftserver.f.a();
+        this.d = minecraftserver.serverConfigurationManager.a();
     }
 
-    public void a(Entity entity) {
+    public void addEntity(Entity entity) {
         if (entity instanceof EntityPlayer) {
-            this.a(entity, 512, 2);
+            this.addEntity(entity, 512, 2);
             EntityPlayer entityplayer = (EntityPlayer) entity;
             Iterator iterator = this.a.iterator();
 
@@ -37,19 +37,19 @@ public class EntityTracker {
                 }
             }
         } else if (entity instanceof EntityFishingHook) {
-            this.a(entity, 64, 20);
+            this.addEntity(entity, 64, 20);
         } else if (entity instanceof EntityItem) {
-            this.a(entity, 64, 20);
+            this.addEntity(entity, 64, 20);
         } else if (entity instanceof EntityMinecart) {
-            this.a(entity, 160, 4);
+            this.addEntity(entity, 160, 4);
         } else if (entity instanceof EntityBoat) {
-            this.a(entity, 160, 4);
+            this.addEntity(entity, 160, 4);
         } else if (entity instanceof IAnimal) {
-            this.a(entity, 160, 2);
+            this.addEntity(entity, 160, 2);
         }
     }
 
-    public void a(Entity entity, int i, int j) {
+    public void addEntity(Entity entity, int i, int j) {
 /*    	if (entity instanceof EntityPlayer) {
     		System.out.println("Tracking player");
     	}*/
@@ -68,7 +68,7 @@ public class EntityTracker {
         }
     }
 
-    public void b(Entity entity) {
+    public void removeEntity(Entity entity) {
         if (entity instanceof EntityPlayer) {
             EntityPlayer entityplayer = (EntityPlayer) entity;
             Iterator iterator = this.a.iterator();

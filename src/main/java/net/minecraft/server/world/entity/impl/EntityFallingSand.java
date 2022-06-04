@@ -21,13 +21,13 @@ public class EntityFallingSand extends Entity {
         this.a(0.98F, 0.98F);
         this.G = this.I / 2.0F;
         this.a((double) f, (double) f1, (double) f2);
-        this.s = 0.0D;
-        this.t = 0.0D;
-        this.u = 0.0D;
+        this.motX = 0.0D;
+        this.motY = 0.0D;
+        this.motZ = 0.0D;
         this.L = false;
-        this.m = (double) f;
-        this.n = (double) f1;
-        this.o = (double) f2;
+        this.lastX = (double) f;
+        this.lastY = (double) f1;
+        this.lastZ = (double) f2;
     }
 
     public boolean c_() {
@@ -38,27 +38,27 @@ public class EntityFallingSand extends Entity {
         if (this.a == 0) {
             this.l();
         } else {
-            this.m = this.p;
-            this.n = this.q;
-            this.o = this.r;
+            this.lastX = this.locX;
+            this.lastY = this.locY;
+            this.lastZ = this.locZ;
             ++this.b;
-            this.t -= 0.03999999910593033D;
-            this.c(this.s, this.t, this.u);
-            this.s *= 0.9800000190734863D;
-            this.t *= 0.9800000190734863D;
-            this.u *= 0.9800000190734863D;
-            int i = MathHelper.b(this.p);
-            int j = MathHelper.b(this.q);
-            int k = MathHelper.b(this.r);
+            this.motY -= 0.03999999910593033D;
+            this.c(this.motX, this.motY, this.motZ);
+            this.motX *= 0.9800000190734863D;
+            this.motY *= 0.9800000190734863D;
+            this.motZ *= 0.9800000190734863D;
+            int i = MathHelper.b(this.locX);
+            int j = MathHelper.b(this.locY);
+            int k = MathHelper.b(this.locZ);
 
             if (this.world.a(i, j, k) == this.a) {
                 this.world.d(i, j, k, 0);
             }
 
-            if (this.A) {
-                this.s *= 0.699999988079071D;
-                this.u *= 0.699999988079071D;
-                this.t *= -0.5D;
+            if (this.onGround) {
+                this.motX *= 0.699999988079071D;
+                this.motZ *= 0.699999988079071D;
+                this.motY *= -0.5D;
                 this.l();
                 if (!this.world.a(this.a, i, j, k, true) || !this.world.d(i, j, k, this.a)) {
                     this.a(this.a, 1);

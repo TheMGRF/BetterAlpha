@@ -62,12 +62,12 @@ public class EntityMinecart extends Entity implements IInventory {
     public EntityMinecart(World world, double d0, double d1, double d2, int i) {
         this(world);
         this.a(d0, d1 + (double) this.G, d2);
-        this.s = 0.0D;
-        this.t = 0.0D;
-        this.u = 0.0D;
-        this.m = d0;
-        this.n = d1;
-        this.o = d2;
+        this.motX = 0.0D;
+        this.motY = 0.0D;
+        this.motZ = 0.0D;
+        this.lastX = d0;
+        this.lastY = d1;
+        this.lastZ = d2;
         this.d = i;
     }
 
@@ -75,7 +75,7 @@ public class EntityMinecart extends Entity implements IInventory {
         return (double) this.I * 0.0D - 0.30000001192092896D;
     }
 
-    public boolean a(Entity entity, int i) {
+    public boolean hurt(Entity entity, int i) {
         this.c = -this.c;
         this.b = 10;
         this.a += i * 10;
@@ -114,13 +114,13 @@ public class EntityMinecart extends Entity implements IInventory {
                     }
 
                     itemstack.a -= j;
-                    EntityItem entityitem = new EntityItem(this.world, this.p + (double) f, this.q + (double) f1, this.r + (double) f2, new ItemStack(itemstack.c, j, itemstack.d));
+                    EntityItem entityitem = new EntityItem(this.world, this.locX + (double) f, this.locY + (double) f1, this.locZ + (double) f2, new ItemStack(itemstack.c, j, itemstack.d));
                     float f3 = 0.05F;
 
-                    entityitem.s = (double) ((float) this.V.nextGaussian() * f3);
-                    entityitem.t = (double) ((float) this.V.nextGaussian() * f3 + 0.2F);
-                    entityitem.u = (double) ((float) this.V.nextGaussian() * f3);
-                    this.world.a((Entity) entityitem);
+                    entityitem.motX = (double) ((float) this.V.nextGaussian() * f3);
+                    entityitem.motY = (double) ((float) this.V.nextGaussian() * f3 + 0.2F);
+                    entityitem.motZ = (double) ((float) this.V.nextGaussian() * f3);
+                    this.world.trackEntity((Entity) entityitem);
                 }
             }
         }
@@ -133,11 +133,11 @@ public class EntityMinecart extends Entity implements IInventory {
 
         if (this.world.z) {
             if (this.am > 0) {
-                double d1 = this.p + (this.an - this.p) / (double) this.am;
-                double d2 = this.q + (this.ao - this.q) / (double) this.am;
-                double d3 = this.r + (this.ap - this.r) / (double) this.am;
+                double d1 = this.locX + (this.an - this.locX) / (double) this.am;
+                double d2 = this.locY + (this.ao - this.locY) / (double) this.am;
+                double d3 = this.locZ + (this.ap - this.locZ) / (double) this.am;
 
-                for (d0 = this.aq - (double) this.v; d0 < -180.0D; d0 += 360.0D) {
+                for (d0 = this.aq - (double) this.yaw; d0 < -180.0D; d0 += 360.0D) {
                     ;
                 }
 
@@ -145,14 +145,14 @@ public class EntityMinecart extends Entity implements IInventory {
                     d0 -= 360.0D;
                 }
 
-                this.v = (float) ((double) this.v + d0 / (double) this.am);
-                this.w = (float) ((double) this.w + (this.ar - (double) this.w) / (double) this.am);
+                this.yaw = (float) ((double) this.yaw + d0 / (double) this.am);
+                this.pitch = (float) ((double) this.pitch + (this.ar - (double) this.pitch) / (double) this.am);
                 --this.am;
                 this.a(d1, d2, d3);
-                this.b(this.v, this.w);
+                this.b(this.yaw, this.pitch);
             } else {
-                this.a(this.p, this.q, this.r);
-                this.b(this.v, this.w);
+                this.a(this.locX, this.locY, this.locZ);
+                this.b(this.yaw, this.pitch);
             }
         } else {
             if (this.b > 0) {
@@ -163,13 +163,13 @@ public class EntityMinecart extends Entity implements IInventory {
                 --this.a;
             }
 
-            this.m = this.p;
-            this.n = this.q;
-            this.o = this.r;
-            this.t -= 0.03999999910593033D;
-            int i = MathHelper.b(this.p);
-            int j = MathHelper.b(this.q);
-            int k = MathHelper.b(this.r);
+            this.lastX = this.locX;
+            this.lastY = this.locY;
+            this.lastZ = this.locZ;
+            this.motY -= 0.03999999910593033D;
+            int i = MathHelper.b(this.locX);
+            int j = MathHelper.b(this.locY);
+            int k = MathHelper.b(this.locZ);
 
             if (this.world.a(i, j - 1, k) == Block.RAILS.bi) {
                 --j;
@@ -180,45 +180,45 @@ public class EntityMinecart extends Entity implements IInventory {
 
             d0 = 0.0078125D;
             if (this.world.a(i, j, k) == Block.RAILS.bi) {
-                Vec3D vec3d = this.g(this.p, this.q, this.r);
+                Vec3D vec3d = this.g(this.locX, this.locY, this.locZ);
                 int l = this.world.b(i, j, k);
 
-                this.q = (double) j;
+                this.locY = (double) j;
                 if (l >= 2 && l <= 5) {
-                    this.q = (double) (j + 1);
+                    this.locY = (double) (j + 1);
                 }
 
                 if (l == 2) {
-                    this.s -= d0;
+                    this.motX -= d0;
                 }
 
                 if (l == 3) {
-                    this.s += d0;
+                    this.motX += d0;
                 }
 
                 if (l == 4) {
-                    this.u += d0;
+                    this.motZ += d0;
                 }
 
                 if (l == 5) {
-                    this.u -= d0;
+                    this.motZ -= d0;
                 }
 
                 int[][] aint = al[l];
                 double d5 = (double) (aint[1][0] - aint[0][0]);
                 double d6 = (double) (aint[1][2] - aint[0][2]);
                 double d7 = Math.sqrt(d5 * d5 + d6 * d6);
-                double d8 = this.s * d5 + this.u * d6;
+                double d8 = this.motX * d5 + this.motZ * d6;
 
                 if (d8 < 0.0D) {
                     d5 = -d5;
                     d6 = -d6;
                 }
 
-                double d9 = Math.sqrt(this.s * this.s + this.u * this.u);
+                double d9 = Math.sqrt(this.motX * this.motX + this.motZ * this.motZ);
 
-                this.s = d9 * d5 / d7;
-                this.u = d9 * d6 / d7;
+                this.motX = d9 * d5 / d7;
+                this.motZ = d9 * d6 / d7;
                 double d10 = 0.0D;
                 double d11 = (double) i + 0.5D + (double) aint[0][0] * 0.5D;
                 double d12 = (double) k + 0.5D + (double) aint[0][2] * 0.5D;
@@ -232,23 +232,23 @@ public class EntityMinecart extends Entity implements IInventory {
                 double d17;
 
                 if (d5 == 0.0D) {
-                    this.p = (double) i + 0.5D;
-                    d10 = this.r - (double) k;
+                    this.locX = (double) i + 0.5D;
+                    d10 = this.locZ - (double) k;
                 } else if (d6 == 0.0D) {
-                    this.r = (double) k + 0.5D;
-                    d10 = this.p - (double) i;
+                    this.locZ = (double) k + 0.5D;
+                    d10 = this.locX - (double) i;
                 } else {
-                    d15 = this.p - d11;
-                    d17 = this.r - d12;
+                    d15 = this.locX - d11;
+                    d17 = this.locZ - d12;
                     d16 = (d15 * d5 + d17 * d6) * 2.0D;
                     d10 = d16;
                 }
 
-                this.p = d11 + d5 * d10;
-                this.r = d12 + d6 * d10;
-                this.a(this.p, this.q + (double) this.G, this.r);
-                d15 = this.s;
-                d17 = this.u;
+                this.locX = d11 + d5 * d10;
+                this.locZ = d12 + d6 * d10;
+                this.a(this.locX, this.locY + (double) this.G, this.locZ);
+                d15 = this.motX;
+                d17 = this.motZ;
                 if (this.j != null) {
                     d15 *= 0.75D;
                     d17 *= 0.75D;
@@ -271,16 +271,16 @@ public class EntityMinecart extends Entity implements IInventory {
                 }
 
                 this.c(d15, 0.0D, d17);
-                if (aint[0][1] != 0 && MathHelper.b(this.p) - i == aint[0][0] && MathHelper.b(this.r) - k == aint[0][2]) {
-                    this.a(this.p, this.q + (double) aint[0][1], this.r);
-                } else if (aint[1][1] != 0 && MathHelper.b(this.p) - i == aint[1][0] && MathHelper.b(this.r) - k == aint[1][2]) {
-                    this.a(this.p, this.q + (double) aint[1][1], this.r);
+                if (aint[0][1] != 0 && MathHelper.b(this.locX) - i == aint[0][0] && MathHelper.b(this.locZ) - k == aint[0][2]) {
+                    this.a(this.locX, this.locY + (double) aint[0][1], this.locZ);
+                } else if (aint[1][1] != 0 && MathHelper.b(this.locX) - i == aint[1][0] && MathHelper.b(this.locZ) - k == aint[1][2]) {
+                    this.a(this.locX, this.locY + (double) aint[1][1], this.locZ);
                 }
 
                 if (this.j != null) {
-                    this.s *= 0.996999979019165D;
-                    this.t *= 0.0D;
-                    this.u *= 0.996999979019165D;
+                    this.motX *= 0.996999979019165D;
+                    this.motY *= 0.0D;
+                    this.motZ *= 0.996999979019165D;
                 } else {
                     if (this.d == 2) {
                         d16 = (double) MathHelper.a(this.f * this.f + this.ai * this.ai);
@@ -290,106 +290,106 @@ public class EntityMinecart extends Entity implements IInventory {
                             this.ai /= d16;
                             double d18 = 0.04D;
 
-                            this.s *= 0.800000011920929D;
-                            this.t *= 0.0D;
-                            this.u *= 0.800000011920929D;
-                            this.s += this.f * d18;
-                            this.u += this.ai * d18;
+                            this.motX *= 0.800000011920929D;
+                            this.motY *= 0.0D;
+                            this.motZ *= 0.800000011920929D;
+                            this.motX += this.f * d18;
+                            this.motZ += this.ai * d18;
                         } else {
-                            this.s *= 0.8999999761581421D;
-                            this.t *= 0.0D;
-                            this.u *= 0.8999999761581421D;
+                            this.motX *= 0.8999999761581421D;
+                            this.motY *= 0.0D;
+                            this.motZ *= 0.8999999761581421D;
                         }
                     }
 
-                    this.s *= 0.9599999785423279D;
-                    this.t *= 0.0D;
-                    this.u *= 0.9599999785423279D;
+                    this.motX *= 0.9599999785423279D;
+                    this.motY *= 0.0D;
+                    this.motZ *= 0.9599999785423279D;
                 }
 
-                Vec3D vec3d1 = this.g(this.p, this.q, this.r);
+                Vec3D vec3d1 = this.g(this.locX, this.locY, this.locZ);
 
                 if (vec3d1 != null && vec3d != null) {
                     double d19 = (vec3d.b - vec3d1.b) * 0.05D;
 
-                    d9 = Math.sqrt(this.s * this.s + this.u * this.u);
+                    d9 = Math.sqrt(this.motX * this.motX + this.motZ * this.motZ);
                     if (d9 > 0.0D) {
-                        this.s = this.s / d9 * (d9 + d19);
-                        this.u = this.u / d9 * (d9 + d19);
+                        this.motX = this.motX / d9 * (d9 + d19);
+                        this.motZ = this.motZ / d9 * (d9 + d19);
                     }
 
-                    this.a(this.p, vec3d1.b, this.r);
+                    this.a(this.locX, vec3d1.b, this.locZ);
                 }
 
-                int i1 = MathHelper.b(this.p);
-                int j1 = MathHelper.b(this.r);
+                int i1 = MathHelper.b(this.locX);
+                int j1 = MathHelper.b(this.locZ);
 
                 if (i1 != i || j1 != k) {
-                    d9 = Math.sqrt(this.s * this.s + this.u * this.u);
-                    this.s = d9 * (double) (i1 - i);
-                    this.u = d9 * (double) (j1 - k);
+                    d9 = Math.sqrt(this.motX * this.motX + this.motZ * this.motZ);
+                    this.motX = d9 * (double) (i1 - i);
+                    this.motZ = d9 * (double) (j1 - k);
                 }
 
                 if (this.d == 2) {
                     double d20 = (double) MathHelper.a(this.f * this.f + this.ai * this.ai);
 
-                    if (d20 > 0.01D && this.s * this.s + this.u * this.u > 0.0010D) {
+                    if (d20 > 0.01D && this.motX * this.motX + this.motZ * this.motZ > 0.0010D) {
                         this.f /= d20;
                         this.ai /= d20;
-                        if (this.f * this.s + this.ai * this.u < 0.0D) {
+                        if (this.f * this.motX + this.ai * this.motZ < 0.0D) {
                             this.f = 0.0D;
                             this.ai = 0.0D;
                         } else {
-                            this.f = this.s;
-                            this.ai = this.u;
+                            this.f = this.motX;
+                            this.ai = this.motZ;
                         }
                     }
                 }
             } else {
-                if (this.s < -d4) {
-                    this.s = -d4;
+                if (this.motX < -d4) {
+                    this.motX = -d4;
                 }
 
-                if (this.s > d4) {
-                    this.s = d4;
+                if (this.motX > d4) {
+                    this.motX = d4;
                 }
 
-                if (this.u < -d4) {
-                    this.u = -d4;
+                if (this.motZ < -d4) {
+                    this.motZ = -d4;
                 }
 
-                if (this.u > d4) {
-                    this.u = d4;
+                if (this.motZ > d4) {
+                    this.motZ = d4;
                 }
 
-                if (this.A) {
-                    this.s *= 0.5D;
-                    this.t *= 0.5D;
-                    this.u *= 0.5D;
+                if (this.onGround) {
+                    this.motX *= 0.5D;
+                    this.motY *= 0.5D;
+                    this.motZ *= 0.5D;
                 }
 
-                this.c(this.s, this.t, this.u);
-                if (!this.A) {
-                    this.s *= 0.949999988079071D;
-                    this.t *= 0.949999988079071D;
-                    this.u *= 0.949999988079071D;
+                this.c(this.motX, this.motY, this.motZ);
+                if (!this.onGround) {
+                    this.motX *= 0.949999988079071D;
+                    this.motY *= 0.949999988079071D;
+                    this.motZ *= 0.949999988079071D;
                 }
             }
 
-            this.w = 0.0F;
-            double d21 = this.m - this.p;
-            double d22 = this.o - this.r;
+            this.pitch = 0.0F;
+            double d21 = this.lastX - this.locX;
+            double d22 = this.lastZ - this.locZ;
 
             if (d21 * d21 + d22 * d22 > 0.0010D) {
-                this.v = (float) (Math.atan2(d22, d21) * 180.0D / 3.141592653589793D);
+                this.yaw = (float) (Math.atan2(d22, d21) * 180.0D / 3.141592653589793D);
                 if (this.ak) {
-                    this.v += 180.0F;
+                    this.yaw += 180.0F;
                 }
             }
 
             double d23;
 
-            for (d23 = (double) (this.v - this.x); d23 >= 180.0D; d23 -= 360.0D) {
+            for (d23 = (double) (this.yaw - this.lastYaw); d23 >= 180.0D; d23 -= 360.0D) {
                 ;
             }
 
@@ -398,11 +398,11 @@ public class EntityMinecart extends Entity implements IInventory {
             }
 
             if (d23 < -170.0D || d23 >= 170.0D) {
-                this.v += 180.0F;
+                this.yaw += 180.0F;
                 this.ak = !this.ak;
             }
 
-            this.b(this.v, this.w);
+            this.b(this.yaw, this.pitch);
             List list = this.world.b((Entity) this, this.boundingBox.b(0.20000000298023224D, 0.0D, 0.20000000298023224D));
 
             if (list != null && list.size() > 0) {
@@ -425,7 +425,7 @@ public class EntityMinecart extends Entity implements IInventory {
                     this.f = this.ai = 0.0D;
                 }
 
-                this.world.a("largesmoke", this.p, this.q + 0.8D, this.r, 0.0D, 0.0D, 0.0D);
+                this.world.a("largesmoke", this.locX, this.locY + 0.8D, this.locZ, 0.0D, 0.0D, 0.0D);
             }
         }
     }
@@ -537,12 +537,12 @@ public class EntityMinecart extends Entity implements IInventory {
 
     public void c(Entity entity) {
         if (entity != this.j) {
-            if (entity instanceof EntityLiving && !(entity instanceof EntityHuman) && this.d == 0 && this.s * this.s + this.u * this.u > 0.01D && this.j == null && entity.k == null) {
+            if (entity instanceof EntityLiving && !(entity instanceof EntityHuman) && this.d == 0 && this.motX * this.motX + this.motZ * this.motZ > 0.01D && this.j == null && entity.k == null) {
                 entity.e((Entity) this);
             }
 
-            double d0 = entity.p - this.p;
-            double d1 = entity.r - this.r;
+            double d0 = entity.locX - this.locX;
+            double d1 = entity.locZ - this.locZ;
             double d2 = d0 * d0 + d1 * d1;
 
             if (d2 >= 9.999999747378752E-5D) {
@@ -564,29 +564,29 @@ public class EntityMinecart extends Entity implements IInventory {
                 d0 *= 0.5D;
                 d1 *= 0.5D;
                 if (entity instanceof EntityMinecart) {
-                    double d4 = entity.s + this.s;
-                    double d5 = entity.u + this.u;
+                    double d4 = entity.motX + this.motX;
+                    double d5 = entity.motZ + this.motZ;
 
                     if (((EntityMinecart) entity).d == 2 && this.d != 2) {
-                        this.s *= 0.20000000298023224D;
-                        this.u *= 0.20000000298023224D;
-                        this.f(entity.s - d0, 0.0D, entity.u - d1);
-                        entity.s *= 0.699999988079071D;
-                        entity.u *= 0.699999988079071D;
+                        this.motX *= 0.20000000298023224D;
+                        this.motZ *= 0.20000000298023224D;
+                        this.f(entity.motX - d0, 0.0D, entity.motZ - d1);
+                        entity.motX *= 0.699999988079071D;
+                        entity.motZ *= 0.699999988079071D;
                     } else if (((EntityMinecart) entity).d != 2 && this.d == 2) {
-                        entity.s *= 0.20000000298023224D;
-                        entity.u *= 0.20000000298023224D;
-                        entity.f(this.s + d0, 0.0D, this.u + d1);
-                        this.s *= 0.699999988079071D;
-                        this.u *= 0.699999988079071D;
+                        entity.motX *= 0.20000000298023224D;
+                        entity.motZ *= 0.20000000298023224D;
+                        entity.f(this.motX + d0, 0.0D, this.motZ + d1);
+                        this.motX *= 0.699999988079071D;
+                        this.motZ *= 0.699999988079071D;
                     } else {
                         d4 /= 2.0D;
                         d5 /= 2.0D;
-                        this.s *= 0.20000000298023224D;
-                        this.u *= 0.20000000298023224D;
+                        this.motX *= 0.20000000298023224D;
+                        this.motZ *= 0.20000000298023224D;
                         this.f(d4 - d0, 0.0D, d5 - d1);
-                        entity.s *= 0.20000000298023224D;
-                        entity.u *= 0.20000000298023224D;
+                        entity.motX *= 0.20000000298023224D;
+                        entity.motZ *= 0.20000000298023224D;
                         entity.f(d4 + d0, 0.0D, d5 + d1);
                     }
                 } else {

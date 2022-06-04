@@ -92,7 +92,7 @@ public class BlockCrops extends BlockFlower {
                 EntityItem entityitem = new EntityItem(world, (double) ((float) i + f1), (double) ((float) j + f2), (double) ((float) k + f3), new ItemStack(Item.SEEDS));
 
                 entityitem.c = 10;
-                world.a((Entity) entityitem);
+                world.trackEntity((Entity) entityitem);
             }
         }
     }

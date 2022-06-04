@@ -45,9 +45,9 @@ public class EntityCreature extends EntityLiving {
             float f2 = -99999.0F;
 
             for (int l = 0; l < 10; ++l) {
-                int i1 = MathHelper.b(this.p + (double) this.V.nextInt(13) - 6.0D);
-                int j1 = MathHelper.b(this.q + (double) this.V.nextInt(7) - 3.0D);
-                int k1 = MathHelper.b(this.r + (double) this.V.nextInt(13) - 6.0D);
+                int i1 = MathHelper.b(this.locX + (double) this.V.nextInt(13) - 6.0D);
+                int j1 = MathHelper.b(this.locY + (double) this.V.nextInt(7) - 3.0D);
+                int k1 = MathHelper.b(this.locZ + (double) this.V.nextInt(13) - 6.0D);
                 float f3 = this.a(i1, j1, k1);
 
                 if (f3 > f2) {
@@ -68,12 +68,12 @@ public class EntityCreature extends EntityLiving {
         boolean flag1 = this.r();
         boolean flag2 = this.t();
 
-        this.w = 0.0F;
+        this.pitch = 0.0F;
         if (this.a != null && this.V.nextInt(100) != 0) {
             Vec3D vec3d = this.a.a(this);
             double d0 = (double) (this.H * 2.0F);
 
-            while (vec3d != null && vec3d.d(this.p, vec3d.b, this.r) < d0 * d0) {
+            while (vec3d != null && vec3d.d(this.locX, vec3d.b, this.locZ) < d0 * d0) {
                 this.a.a();
                 if (this.a.b()) {
                     vec3d = null;
@@ -85,11 +85,11 @@ public class EntityCreature extends EntityLiving {
 
             this.bj = false;
             if (vec3d != null) {
-                double d1 = vec3d.a - this.p;
-                double d2 = vec3d.c - this.r;
+                double d1 = vec3d.a - this.locX;
+                double d2 = vec3d.c - this.locZ;
                 double d3 = vec3d.b - (double) l1;
                 float f4 = (float) (Math.atan2(d2, d1) * 180.0D / 3.1415927410125732D) - 90.0F;
-                float f5 = f4 - this.v;
+                float f5 = f4 - this.yaw;
 
                 for (this.bh = this.bl; f5 < -180.0F; f5 += 360.0F) {
                     ;
@@ -107,14 +107,14 @@ public class EntityCreature extends EntityLiving {
                     f5 = -30.0F;
                 }
 
-                this.v += f5;
+                this.yaw += f5;
                 if (this.ai && this.f != null) {
-                    double d4 = this.f.p - this.p;
-                    double d5 = this.f.r - this.r;
-                    float f6 = this.v;
+                    double d4 = this.f.locX - this.locX;
+                    double d5 = this.f.locZ - this.locZ;
+                    float f6 = this.yaw;
 
-                    this.v = (float) (Math.atan2(d5, d4) * 180.0D / 3.1415927410125732D) - 90.0F;
-                    f5 = (f6 - this.v + 90.0F) * 3.1415927F / 180.0F;
+                    this.yaw = (float) (Math.atan2(d5, d4) * 180.0D / 3.1415927410125732D) - 90.0F;
+                    f5 = (f6 - this.yaw + 90.0F) * 3.1415927F / 180.0F;
                     this.bg = -MathHelper.a(f5) * this.bh * 1.0F;
                     this.bh = MathHelper.b(f5) * this.bh * 1.0F;
                 }
@@ -128,7 +128,7 @@ public class EntityCreature extends EntityLiving {
                 this.b(this.f, 30.0F);
             }
 
-            if (this.B) {
+            if (this.positionChanged) {
                 this.bj = true;
             }
 
@@ -153,9 +153,9 @@ public class EntityCreature extends EntityLiving {
     }
 
     public boolean a() {
-        int i = MathHelper.b(this.p);
+        int i = MathHelper.b(this.locX);
         int j = MathHelper.b(this.boundingBox.b);
-        int k = MathHelper.b(this.r);
+        int k = MathHelper.b(this.locZ);
 
         return super.a() && this.a(i, j, k) >= 0.0F;
     }

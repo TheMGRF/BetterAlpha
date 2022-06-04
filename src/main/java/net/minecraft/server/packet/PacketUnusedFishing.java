@@ -24,12 +24,12 @@ public class PacketUnusedFishing extends Packet {
 
     public PacketUnusedFishing(Entity entity, int i) {
         this.a = entity.g;
-        this.b = MathHelper.b(entity.p * 32.0D);
-        this.c = MathHelper.b(entity.q * 32.0D);
-        this.d = MathHelper.b(entity.r * 32.0D);
-        this.e = (byte) ((int) (entity.s * 128.0D));
-        this.f = (byte) ((int) (entity.t * 128.0D));
-        this.g = (byte) ((int) (entity.u * 128.0D));
+        this.b = MathHelper.b(entity.locX * 32.0D);
+        this.c = MathHelper.b(entity.locY * 32.0D);
+        this.d = MathHelper.b(entity.locZ * 32.0D);
+        this.e = (byte) ((int) (entity.motX * 128.0D));
+        this.f = (byte) ((int) (entity.motY * 128.0D));
+        this.g = (byte) ((int) (entity.motZ * 128.0D));
         this.h = i;
     }
 

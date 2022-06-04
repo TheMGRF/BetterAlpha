@@ -72,15 +72,15 @@ public class EntityLiving extends Entity {
         super(world);
         this.i = true;
         this.ax = (float) (Math.random() + 1.0D) * 0.01F;
-        this.a(this.p, this.q, this.r);
+        this.a(this.locX, this.locY, this.locZ);
         this.av = (float) Math.random() * 12398.0F;
-        this.v = (float) (Math.random() * 3.1415927410125732D * 2.0D);
+        this.yaw = (float) (Math.random() * 3.1415927410125732D * 2.0D);
         this.aw = 1.0F;
         this.R = 0.5F;
     }
 
     protected boolean g(Entity entity) {
-        return this.world.a(Vec3D.b(this.p, this.q + (double) this.s(), this.r), Vec3D.b(entity.p, entity.q + (double) entity.s(), entity.r)) == null;
+        return this.world.a(Vec3D.b(this.locX, this.locY + (double) this.s(), this.locZ), Vec3D.b(entity.locX, entity.locY + (double) entity.s(), entity.locZ)) == null;
     }
 
     public boolean c_() {
@@ -112,30 +112,30 @@ public class EntityLiving extends Entity {
         }
 
         if (this.w() && this.x()) {
-            this.a((Entity) null, 1);
+            this.hurt(null, 1);
         }
 
         int i;
 
         if (this.w() && this.a(Material.f)) {
-            --this.ac;
-            if (this.ac == -20) {
-                this.ac = 0;
+            --this.air;
+            if (this.air == -20) {
+                this.air = 0;
 
                 for (i = 0; i < 8; ++i) {
                     float f = this.V.nextFloat() - this.V.nextFloat();
                     float f1 = this.V.nextFloat() - this.V.nextFloat();
                     float f2 = this.V.nextFloat() - this.V.nextFloat();
 
-                    this.world.a("bubble", this.p + (double) f, this.q + (double) f1, this.r + (double) f2, this.s, this.t, this.u);
+                    this.world.a("bubble", this.locX + (double) f, this.locY + (double) f1, this.locZ + (double) f2, this.motX, this.motY, this.motZ);
                 }
 
-                this.a((Entity) null, 2);
+                this.hurt(null, 2);
             }
 
-            this.Y = 0;
+            this.fire = 0;
         } else {
-            this.ac = this.Z;
+            this.air = this.Z;
         }
 
         this.aW = this.aX;
@@ -162,15 +162,15 @@ public class EntityLiving extends Entity {
                     double d1 = this.V.nextGaussian() * 0.02D;
                     double d2 = this.V.nextGaussian() * 0.02D;
 
-                    this.world.a("explode", this.p + (double) (this.V.nextFloat() * this.H * 2.0F) - (double) this.H, this.q + (double) (this.V.nextFloat() * this.I), this.r + (double) (this.V.nextFloat() * this.H * 2.0F) - (double) this.H, d0, d1, d2);
+                    this.world.a("explode", this.locX + (double) (this.V.nextFloat() * this.H * 2.0F) - (double) this.H, this.locY + (double) (this.V.nextFloat() * this.I), this.locZ + (double) (this.V.nextFloat() * this.H * 2.0F) - (double) this.H, d0, d1, d2);
                 }
             }
         }
 
         this.aD = this.aC;
         this.az = this.ay;
-        this.x = this.v;
-        this.y = this.w;
+        this.lastYaw = this.yaw;
+        this.lastPitch = this.pitch;
     }
 
     public void I() {
@@ -180,7 +180,7 @@ public class EntityLiving extends Entity {
             double d2 = this.V.nextGaussian() * 0.02D;
             double d3 = 10.0D;
 
-            this.world.a("explode", this.p + (double) (this.V.nextFloat() * this.H * 2.0F) - (double) this.H - d0 * d3, this.q + (double) (this.V.nextFloat() * this.I) - d1 * d3, this.r + (double) (this.V.nextFloat() * this.H * 2.0F) - (double) this.H - d2 * d3, d0, d1, d2);
+            this.world.a("explode", this.locX + (double) (this.V.nextFloat() * this.H * 2.0F) - (double) this.H - d0 * d3, this.locY + (double) (this.V.nextFloat() * this.I) - d1 * d3, this.locZ + (double) (this.V.nextFloat() * this.H * 2.0F) - (double) this.H - d2 * d3, d0, d1, d2);
         }
     }
 
@@ -193,8 +193,8 @@ public class EntityLiving extends Entity {
     public void b_() {
         super.b_();
         this.D();
-        double d0 = this.p - this.m;
-        double d1 = this.r - this.o;
+        double d0 = this.locX - this.lastX;
+        double d1 = this.locZ - this.lastZ;
         float f = MathHelper.a(d0 * d0 + d1 * d1);
         float f1 = this.ay;
         float f2 = 0.0F;
@@ -209,10 +209,10 @@ public class EntityLiving extends Entity {
         }
 
         if (this.aO > 0.0F) {
-            f1 = this.v;
+            f1 = this.yaw;
         }
 
-        if (!this.A) {
+        if (!this.onGround) {
             f3 = 0.0F;
         }
 
@@ -221,7 +221,6 @@ public class EntityLiving extends Entity {
         float f4;
 
         for (f4 = f1 - this.ay; f4 < -180.0F; f4 += 360.0F) {
-            ;
         }
 
         while (f4 >= 180.0F) {
@@ -232,8 +231,7 @@ public class EntityLiving extends Entity {
 
         float f5;
 
-        for (f5 = this.v - this.ay; f5 < -180.0F; f5 += 360.0F) {
-            ;
+        for (f5 = this.yaw - this.ay; f5 < -180.0F; f5 += 360.0F) {
         }
 
         while (f5 >= 180.0F) {
@@ -250,7 +248,7 @@ public class EntityLiving extends Entity {
             f5 = 75.0F;
         }
 
-        this.ay = this.v - f5;
+        this.ay = this.yaw - f5;
         if (f5 * f5 > 2500.0F) {
             this.ay += f5 * 0.2F;
         }
@@ -259,12 +257,12 @@ public class EntityLiving extends Entity {
             f2 *= -1.0F;
         }
 
-        while (this.v - this.x < -180.0F) {
-            this.x -= 360.0F;
+        while (this.yaw - this.lastYaw < -180.0F) {
+            this.lastYaw -= 360.0F;
         }
 
-        while (this.v - this.x >= 180.0F) {
-            this.x += 360.0F;
+        while (this.yaw - this.lastYaw >= 180.0F) {
+            this.lastYaw += 360.0F;
         }
 
         while (this.ay - this.az < -180.0F) {
@@ -275,12 +273,12 @@ public class EntityLiving extends Entity {
             this.az += 360.0F;
         }
 
-        while (this.w - this.y < -180.0F) {
-            this.y -= 360.0F;
+        while (this.pitch - this.lastPitch < -180.0F) {
+            this.lastPitch -= 360.0F;
         }
 
-        while (this.w - this.y >= 180.0F) {
-            this.y += 360.0F;
+        while (this.pitch - this.lastPitch >= 180.0F) {
+            this.lastPitch += 360.0F;
         }
 
         this.aC += f2;
@@ -301,7 +299,7 @@ public class EntityLiving extends Entity {
         }
     }
 
-    public boolean a(Entity entity, int i) {
+    public boolean hurt(Entity entity, int i) {
         if (this.world.z) {
             i = 0;
         }
@@ -326,15 +324,15 @@ public class EntityLiving extends Entity {
 
             this.aT = 0.0F;
             if (entity != null) {
-                double d0 = entity.p - this.p;
+                double d0 = entity.locX - this.locX;
 
                 double d1;
 
-                for (d1 = entity.r - this.r; d0 * d0 + d1 * d1 < 1.0E-4D; d1 = (Math.random() - Math.random()) * 0.01D) {
+                for (d1 = entity.locZ - this.locZ; d0 * d0 + d1 * d1 < 1.0E-4D; d1 = (Math.random() - Math.random()) * 0.01D) {
                     d0 = (Math.random() - Math.random()) * 0.01D;
                 }
 
-                this.aT = (float) (Math.atan2(d1, d0) * 180.0D / 3.1415927410125732D) - this.v;
+                this.aT = (float) (Math.atan2(d1, d0) * 180.0D / 3.1415927410125732D) - this.yaw;
                 this.a(entity, i, d0, d1);
             } else {
                 this.aT = (float) ((int) (Math.random() * 2.0D) * 180);
@@ -371,14 +369,14 @@ public class EntityLiving extends Entity {
         float f = MathHelper.a(d0 * d0 + d1 * d1);
         float f1 = 0.4F;
 
-        this.s /= 2.0D;
-        this.t /= 2.0D;
-        this.u /= 2.0D;
-        this.s -= d0 / (double) f * (double) f1;
-        this.t += 0.4000000059604645D;
-        this.u -= d1 / (double) f * (double) f1;
-        if (this.t > 0.4000000059604645D) {
-            this.t = 0.4000000059604645D;
+        this.motX /= 2.0D;
+        this.motY /= 2.0D;
+        this.motZ /= 2.0D;
+        this.motX -= d0 / (double) f * (double) f1;
+        this.motY += 0.4000000059604645D;
+        this.motZ -= d1 / (double) f * (double) f1;
+        if (this.motY > 0.4000000059604645D) {
+            this.motY = 0.4000000059604645D;
         }
     }
 
@@ -404,11 +402,11 @@ public class EntityLiving extends Entity {
     }
 
     public void a(float f) {
-        int i = (int) Math.ceil((double) (f - 3.0F));
+        int i = (int) Math.ceil(f - 3.0F);
 
         if (i > 0) {
-            this.a((Entity) null, i);
-            int j = this.world.a(MathHelper.b(this.p), MathHelper.b(this.q - 0.20000000298023224D - (double) this.G), MathHelper.b(this.r));
+            this.hurt(null, i);
+            int j = this.world.a(MathHelper.b(this.locX), MathHelper.b(this.locY - 0.20000000298023224D - (double) this.G), MathHelper.b(this.locZ));
 
             if (j > 0) {
                 StepSound stepsound = Block.n[j].br;
@@ -422,33 +420,33 @@ public class EntityLiving extends Entity {
         double d0;
 
         if (this.r()) {
-            d0 = this.q;
+            d0 = this.locY;
             this.a(f, f1, 0.02F);
-            this.c(this.s, this.t, this.u);
-            this.s *= 0.800000011920929D;
-            this.t *= 0.800000011920929D;
-            this.u *= 0.800000011920929D;
-            this.t -= 0.02D;
-            if (this.B && this.b(this.s, this.t + 0.6000000238418579D - this.q + d0, this.u)) {
-                this.t = 0.30000001192092896D;
+            this.c(this.motX, this.motY, this.motZ);
+            this.motX *= 0.800000011920929D;
+            this.motY *= 0.800000011920929D;
+            this.motZ *= 0.800000011920929D;
+            this.motY -= 0.02D;
+            if (this.positionChanged && this.b(this.motX, this.motY + 0.6000000238418579D - this.locY + d0, this.motZ)) {
+                this.motY = 0.30000001192092896D;
             }
         } else if (this.t()) {
-            d0 = this.q;
+            d0 = this.locY;
             this.a(f, f1, 0.02F);
-            this.c(this.s, this.t, this.u);
-            this.s *= 0.5D;
-            this.t *= 0.5D;
-            this.u *= 0.5D;
-            this.t -= 0.02D;
-            if (this.B && this.b(this.s, this.t + 0.6000000238418579D - this.q + d0, this.u)) {
-                this.t = 0.30000001192092896D;
+            this.c(this.motX, this.motY, this.motZ);
+            this.motX *= 0.5D;
+            this.motY *= 0.5D;
+            this.motZ *= 0.5D;
+            this.motY -= 0.02D;
+            if (this.positionChanged && this.b(this.motX, this.motY + 0.6000000238418579D - this.locY + d0, this.motZ)) {
+                this.motY = 0.30000001192092896D;
             }
         } else {
             float f2 = 0.91F;
 
-            if (this.A) {
+            if (this.onGround) {
                 f2 = 0.54600006F;
-                int i = this.world.a(MathHelper.b(this.p), MathHelper.b(this.boundingBox.b) - 1, MathHelper.b(this.r));
+                int i = this.world.a(MathHelper.b(this.locX), MathHelper.b(this.boundingBox.b) - 1, MathHelper.b(this.locZ));
 
                 if (i > 0) {
                     f2 = Block.n[i].bu * 0.91F;
@@ -457,11 +455,11 @@ public class EntityLiving extends Entity {
 
             float f3 = 0.16277136F / (f2 * f2 * f2);
 
-            this.a(f, f1, this.A ? 0.1F * f3 : 0.02F);
+            this.a(f, f1, this.onGround ? 0.1F * f3 : 0.02F);
             f2 = 0.91F;
-            if (this.A) {
+            if (this.onGround) {
                 f2 = 0.54600006F;
-                int j = this.world.a(MathHelper.b(this.p), MathHelper.b(this.boundingBox.b) - 1, MathHelper.b(this.r));
+                int j = this.world.a(MathHelper.b(this.locX), MathHelper.b(this.boundingBox.b) - 1, MathHelper.b(this.locZ));
 
                 if (j > 0) {
                     f2 = Block.n[j].bu * 0.91F;
@@ -469,26 +467,26 @@ public class EntityLiving extends Entity {
             }
 
             if (this.d_()) {
-                this.M = 0.0F;
-                if (this.t < -0.15D) {
-                    this.t = -0.15D;
+                this.fallDistance = 0.0F;
+                if (this.motY < -0.15D) {
+                    this.motY = -0.15D;
                 }
             }
 
-            this.c(this.s, this.t, this.u);
-            if (this.B && this.d_()) {
-                this.t = 0.2D;
+            this.c(this.motX, this.motY, this.motZ);
+            if (this.positionChanged && this.d_()) {
+                this.motY = 0.2D;
             }
 
-            this.t -= 0.08D;
-            this.t *= 0.9800000190734863D;
-            this.s *= (double) f2;
-            this.u *= (double) f2;
+            this.motY -= 0.08D;
+            this.motY *= 0.9800000190734863D;
+            this.motX *= f2;
+            this.motZ *= f2;
         }
 
         this.bb = this.bc;
-        d0 = this.p - this.m;
-        double d1 = this.r - this.o;
+        d0 = this.locX - this.lastX;
+        double d1 = this.locZ - this.lastZ;
         float f4 = MathHelper.a(d0 * d0 + d1 * d1) * 4.0F;
 
         if (f4 > 1.0F) {
@@ -500,9 +498,9 @@ public class EntityLiving extends Entity {
     }
 
     public boolean d_() {
-        int i = MathHelper.b(this.p);
+        int i = MathHelper.b(this.locX);
         int j = MathHelper.b(this.boundingBox.b);
-        int k = MathHelper.b(this.r);
+        int k = MathHelper.b(this.locZ);
 
         return this.world.a(i, j, k) == Block.LADDER.bi || this.world.a(i, j + 1, k) == Block.LADDER.bi;
     }
@@ -531,25 +529,24 @@ public class EntityLiving extends Entity {
 
     public void D() {
         if (this.b > 0) {
-            double d0 = this.p + (this.c - this.p) / (double) this.b;
-            double d1 = this.q + (this.d - this.q) / (double) this.b;
-            double d2 = this.r + (this.e - this.r) / (double) this.b;
+            double d0 = this.locX + (this.c - this.locX) / (double) this.b;
+            double d1 = this.locY + (this.d - this.locY) / (double) this.b;
+            double d2 = this.locZ + (this.e - this.locZ) / (double) this.b;
 
             double d3;
 
-            for (d3 = this.f - (double) this.v; d3 < -180.0D; d3 += 360.0D) {
-                ;
+            for (d3 = this.f - (double) this.yaw; d3 < -180.0D; d3 += 360.0D) {
             }
 
             while (d3 >= 180.0D) {
                 d3 -= 360.0D;
             }
 
-            this.v = (float) ((double) this.v + d3 / (double) this.b);
-            this.w = (float) ((double) this.w + (this.ai - (double) this.w) / (double) this.b);
+            this.yaw = (float) ((double) this.yaw + d3 / (double) this.b);
+            this.pitch = (float) ((double) this.pitch + (this.ai - (double) this.pitch) / (double) this.b);
             --this.b;
             this.a(d0, d1, d2);
-            this.b(this.v, this.w);
+            this.b(this.yaw, this.pitch);
         }
 
         if (this.health <= 0) {
@@ -566,10 +563,10 @@ public class EntityLiving extends Entity {
 
         if (this.bj) {
             if (flag) {
-                this.t += 0.03999999910593033D;
+                this.motY += 0.03999999910593033D;
             } else if (flag1) {
-                this.t += 0.03999999910593033D;
-            } else if (this.A) {
+                this.motY += 0.03999999910593033D;
+            } else if (this.onGround) {
                 this.J();
             }
         }
@@ -578,21 +575,21 @@ public class EntityLiving extends Entity {
         this.bh *= 0.98F;
         this.bi *= 0.9F;
         this.c(this.bg, this.bh);
-        List list = this.world.b((Entity) this, this.boundingBox.b(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+        List list = this.world.b(this, this.boundingBox.b(0.20000000298023224D, 0.0D, 0.20000000298023224D));
 
         if (list != null && list.size() > 0) {
             for (int i = 0; i < list.size(); ++i) {
                 Entity entity = (Entity) list.get(i);
 
                 if (entity.u()) {
-                    entity.c((Entity) this);
+                    entity.c(this);
                 }
             }
         }
     }
 
     protected void J() {
-        this.t = 0.41999998688697815D;
+        this.motY = 0.41999998688697815D;
     }
 
     protected void c() {
@@ -600,9 +597,9 @@ public class EntityLiving extends Entity {
         EntityHuman entityhuman = this.world.a(this, -1.0D);
 
         if (entityhuman != null) {
-            double d0 = entityhuman.p - this.p;
-            double d1 = entityhuman.q - this.q;
-            double d2 = entityhuman.r - this.r;
+            double d0 = entityhuman.locX - this.locX;
+            double d1 = entityhuman.locY - this.locY;
+            double d2 = entityhuman.locZ - this.locZ;
             double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 
             if (d3 > 16384.0D) {
@@ -623,7 +620,7 @@ public class EntityLiving extends Entity {
         float f = 8.0F;
 
         if (this.V.nextFloat() < 0.02F) {
-            entityhuman = this.world.a(this, (double) f);
+            entityhuman = this.world.a(this, f);
             if (entityhuman != null) {
                 this.aj = entityhuman;
                 this.ak = 10 + this.V.nextInt(20);
@@ -634,7 +631,7 @@ public class EntityLiving extends Entity {
 
         if (this.aj != null) {
             this.b(this.aj, 10.0F);
-            if (this.ak-- <= 0 || this.aj.F || this.aj.b((Entity) this) > (double) (f * f)) {
+            if (this.ak-- <= 0 || this.aj.F || this.aj.b(this) > (double) (f * f)) {
                 this.aj = null;
             }
         } else {
@@ -642,8 +639,8 @@ public class EntityLiving extends Entity {
                 this.bi = (this.V.nextFloat() - 0.5F) * 20.0F;
             }
 
-            this.v += this.bi;
-            this.w = this.bk;
+            this.yaw += this.bi;
+            this.pitch = this.bk;
         }
 
         boolean flag = this.r();
@@ -655,31 +652,30 @@ public class EntityLiving extends Entity {
     }
 
     public void b(Entity entity, float f) {
-        double d0 = entity.p - this.p;
-        double d1 = entity.r - this.r;
+        double d0 = entity.locX - this.locX;
+        double d1 = entity.locZ - this.locZ;
         double d2;
 
         if (entity instanceof EntityLiving) {
             EntityLiving entityliving = (EntityLiving) entity;
 
-            d2 = entityliving.q + (double) entityliving.s() - (this.q + (double) this.s());
+            d2 = entityliving.locY + (double) entityliving.s() - (this.locY + (double) this.s());
         } else {
-            d2 = (entity.boundingBox.b + entity.boundingBox.e) / 2.0D - (this.q + (double) this.s());
+            d2 = (entity.boundingBox.b + entity.boundingBox.e) / 2.0D - (this.locY + (double) this.s());
         }
 
-        double d3 = (double) MathHelper.a(d0 * d0 + d1 * d1);
+        double d3 = MathHelper.a(d0 * d0 + d1 * d1);
         float f1 = (float) (Math.atan2(d1, d0) * 180.0D / 3.1415927410125732D) - 90.0F;
         float f2 = (float) (Math.atan2(d2, d3) * 180.0D / 3.1415927410125732D);
 
-        this.w = this.b(this.w, f2, f);
-        this.v = this.b(this.v, f1, f);
+        this.pitch = this.b(this.pitch, f2, f);
+        this.yaw = this.b(this.yaw, f1, f);
     }
 
     private float b(float f, float f1, float f2) {
         float f3;
 
         for (f3 = f1 - f; f3 < -180.0F; f3 += 360.0F) {
-            ;
         }
 
         while (f3 >= 180.0F) {
@@ -701,20 +697,20 @@ public class EntityLiving extends Entity {
     }
 
     public boolean a() {
-        return this.world.a(this.boundingBox) && this.world.a((Entity) this, this.boundingBox).size() == 0 && !this.world.b(this.boundingBox);
+        return this.world.a(this.boundingBox) && this.world.a(this, this.boundingBox).size() == 0 && !this.world.b(this.boundingBox);
     }
 
     public void o() {
-        this.a((Entity) null, 4);
+        this.hurt(null, 4);
     }
 
     public Vec3D c(float f) {
         if (f == 1.0F) {
-            return Vec3D.b(this.p, this.q, this.r);
+            return Vec3D.b(this.locX, this.locY, this.locZ);
         } else {
-            double d0 = this.m + (this.p - this.m) * (double) f;
-            double d1 = this.n + (this.q - this.n) * (double) f;
-            double d2 = this.o + (this.r - this.o) * (double) f;
+            double d0 = this.lastX + (this.locX - this.lastX) * (double) f;
+            double d1 = this.lastY + (this.locY - this.lastY) * (double) f;
+            double d2 = this.lastZ + (this.locZ - this.lastZ) * (double) f;
 
             return Vec3D.b(d0, d1, d2);
         }
@@ -731,20 +727,20 @@ public class EntityLiving extends Entity {
         float f4;
 
         if (f == 1.0F) {
-            f1 = MathHelper.b(-this.v * 0.017453292F - 3.1415927F);
-            f2 = MathHelper.a(-this.v * 0.017453292F - 3.1415927F);
-            f3 = -MathHelper.b(-this.w * 0.017453292F);
-            f4 = MathHelper.a(-this.w * 0.017453292F);
-            return Vec3D.b((double) (f2 * f3), (double) f4, (double) (f1 * f3));
+            f1 = MathHelper.b(-this.yaw * 0.017453292F - 3.1415927F);
+            f2 = MathHelper.a(-this.yaw * 0.017453292F - 3.1415927F);
+            f3 = -MathHelper.b(-this.pitch * 0.017453292F);
+            f4 = MathHelper.a(-this.pitch * 0.017453292F);
+            return Vec3D.b(f2 * f3, f4, f1 * f3);
         } else {
-            f1 = this.y + (this.w - this.y) * f;
-            f2 = this.x + (this.v - this.x) * f;
+            f1 = this.lastPitch + (this.pitch - this.lastPitch) * f;
+            f2 = this.lastYaw + (this.yaw - this.lastYaw) * f;
             f3 = MathHelper.b(-f2 * 0.017453292F - 3.1415927F);
             f4 = MathHelper.a(-f2 * 0.017453292F - 3.1415927F);
             float f5 = -MathHelper.b(-f1 * 0.017453292F);
             float f6 = MathHelper.a(-f1 * 0.017453292F);
 
-            return Vec3D.b((double) (f4 * f5), (double) f6, (double) (f3 * f5));
+            return Vec3D.b(f4 * f5, f6, f3 * f5);
         }
     }
 

@@ -20,16 +20,16 @@ import java.util.Set;
 
 public class EntityPlayer extends EntityHuman {
 
-    public NetServerHandler a;
+    public NetServerHandler netServerHandler;
     public MinecraftServer minecraftServer;
-    public ItemInWorldManager c;
+    public ItemInWorldManager itemInWorldManager;
     public double d;
     public double e;
     public List f = new LinkedList();
     public Set ai = new HashSet();
     public double aj;
 
-    public EntityPlayer(MinecraftServer minecraftserver, World world, String s, ItemInWorldManager iteminworldmanager) {
+    public EntityPlayer(MinecraftServer minecraftserver, World world, String name, ItemInWorldManager iteminworldmanager) {
         super(world);
         int i = world.m;
         int j = world.o;
@@ -45,15 +45,15 @@ public class EntityPlayer extends EntityHuman {
         this.minecraftServer = minecraftserver;
         this.R = 0.0F;
         iteminworldmanager.a = this;
-        this.ar = s;
-        this.c = iteminworldmanager;
+        this.name = name;
+        this.itemInWorldManager = iteminworldmanager;
         this.G = 0.0F;
     }
 
     public void a(World world) {
         this.world = world;
-        this.c = new ItemInWorldManager((WorldServer) world);
-        this.c.a = this;
+        this.itemInWorldManager = new ItemInWorldManager(world);
+        this.itemInWorldManager.a = this;
     }
 
     public void b_() {
@@ -62,8 +62,10 @@ public class EntityPlayer extends EntityHuman {
     public void die(Entity entity) {
     }
 
-    public boolean a(Entity entity, int i) {
-        return false;
+    public boolean hurt(Entity source, int amount) {
+        super.hurt(source, amount);
+        this.netServerHandler.sendPacket(new Packet8UpdateHealth(health));
+        return true;
     }
 
     public void a(int i) {
@@ -91,27 +93,27 @@ public class EntityPlayer extends EntityHuman {
                 flag = true;
             }
 
-            if (this.a.b() < 2) {
+            if (this.netServerHandler.b() < 2) {
                 flag = true;
             }
 
             if (flag) {
                 WorldServer worldserver = this.minecraftServer.getWorldByDimension(this.dimension);
                 this.f.remove(chunkcoordintpair);
-                this.a.b((Packet) (new Packet51MapChunk(chunkcoordintpair.a * 16, 0, chunkcoordintpair.b * 16, 16, 128, 16, worldserver)));
+                this.netServerHandler.sendPacket((Packet) (new Packet51MapChunk(chunkcoordintpair.a * 16, 0, chunkcoordintpair.b * 16, 16, 128, 16, worldserver)));
                 List list = worldserver.d(chunkcoordintpair.a * 16, 0, chunkcoordintpair.b * 16, chunkcoordintpair.a * 16 + 16, 128, chunkcoordintpair.b * 16 + 16);
 
                 for (int j = 0; j < list.size(); ++j) {
                     TileEntity tileentity = (TileEntity) list.get(j);
 
-                    this.a.b((Packet) (new Packet59ComplexEntity(tileentity.x, tileentity.y, tileentity.z, tileentity)));
+                    this.netServerHandler.sendPacket((Packet) (new Packet59ComplexEntity(tileentity.x, tileentity.y, tileentity.z, tileentity)));
                 }
             }
         }
     }
 
     public void D() {
-        this.s = this.t = this.u = 0.0D;
+        this.motX = this.motY = this.motZ = 0.0D;
         this.bj = false;
         super.D();
     }
@@ -121,12 +123,12 @@ public class EntityPlayer extends EntityHuman {
             EntityTracker entitytracker = this.minecraftServer.b(this.dimension);
 
             if (entity instanceof EntityItem) {
-                this.a.b((Packet) (new Packet17AddToInventory(((EntityItem) entity).a, i)));
+                this.netServerHandler.sendPacket((Packet) (new Packet17AddToInventory(((EntityItem) entity).a, i)));
                 entitytracker.a(entity, new Packet22Collect(entity.g, this.g));
             }
 
             if (entity instanceof EntityArrow) {
-                this.a.b((Packet) (new Packet17AddToInventory(new ItemStack(Item.ARROW, 1), i)));
+                this.netServerHandler.sendPacket((Packet) (new Packet17AddToInventory(new ItemStack(Item.ARROW, 1), i)));
                 entitytracker.a(entity, new Packet22Collect(entity.g, this.g));
             }
         }
@@ -136,7 +138,7 @@ public class EntityPlayer extends EntityHuman {
 
     public void mount(Entity entity) {
         super.e(entity);
-        this.a.a(this.p, this.q, this.r, this.v, this.w);
+        this.netServerHandler.a(this.locX, this.locY, this.locZ, this.yaw, this.pitch);
     }
 
     public void E() {

@@ -35,7 +35,7 @@ public class ItemPainting extends Item {
             EntityPainting entitypainting = new EntityPainting(world, i, j, k, b0);
 
             if (entitypainting.c()) {
-                world.a((Entity) entitypainting);
+                world.trackEntity((Entity) entitypainting);
                 --itemstack.a;
             }
 

@@ -32,13 +32,13 @@ public class BlockTNT extends Block {
         EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(world, (float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F);
 
         entitytntprimed.a = world.l.nextInt(entitytntprimed.a / 4) + entitytntprimed.a / 8;
-        world.a((Entity) entitytntprimed);
+        world.trackEntity((Entity) entitytntprimed);
     }
 
     public void a(World world, int i, int j, int k, int l) {
         EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(world, (float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F);
 
-        world.a((Entity) entitytntprimed);
+        world.trackEntity((Entity) entitytntprimed);
         world.a(entitytntprimed, "random.fuse", 1.0F, 1.0F);
     }
 }

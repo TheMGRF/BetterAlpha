@@ -39,8 +39,8 @@ public class EntityMonster extends EntityCreature implements IMonster {
         return entityhuman != null && this.g(entityhuman) ? entityhuman : null;
     }
 
-    public boolean a(Entity entity, int i) {
-        if (super.a(entity, i)) {
+    public boolean hurt(Entity entity, int i) {
+        if (super.hurt(entity, i)) {
             if (this.j != entity && this.k != entity) {
                 if (entity != this) {
                     this.f = entity;
@@ -58,7 +58,7 @@ public class EntityMonster extends EntityCreature implements IMonster {
     protected void a(Entity entity, float f) {
         if ((double) f < 2.5D && entity.boundingBox.e > this.boundingBox.b && entity.boundingBox.b < this.boundingBox.e) {
             this.attackTime = 20;
-            entity.a(this, this.e);
+            entity.hurt(this, this.e);
         }
     }
 
@@ -75,9 +75,9 @@ public class EntityMonster extends EntityCreature implements IMonster {
     }
 
     public boolean a() {
-        int i = MathHelper.b(this.p);
+        int i = MathHelper.b(this.locX);
         int j = MathHelper.b(this.boundingBox.b);
-        int k = MathHelper.b(this.r);
+        int k = MathHelper.b(this.locZ);
 
         if (this.world.a(EnumSkyBlock.SKY, i, j, k) > this.V.nextInt(32)) {
             return false;

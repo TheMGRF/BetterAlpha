@@ -32,27 +32,27 @@ public class EntityGhast extends EntityFlying implements IMonster {
         }
 
         this.e = this.f;
-        double d0 = this.b - this.p;
-        double d1 = this.c - this.q;
-        double d2 = this.d - this.r;
+        double d0 = this.b - this.locX;
+        double d1 = this.c - this.locY;
+        double d2 = this.d - this.locZ;
         double d3 = (double) MathHelper.a(d0 * d0 + d1 * d1 + d2 * d2);
 
         if (d3 < 1.0D || d3 > 60.0D) {
-            this.b = this.p + (double) ((this.V.nextFloat() * 2.0F - 1.0F) * 16.0F);
-            this.c = this.q + (double) ((this.V.nextFloat() * 2.0F - 1.0F) * 16.0F);
-            this.d = this.r + (double) ((this.V.nextFloat() * 2.0F - 1.0F) * 16.0F);
+            this.b = this.locX + (double) ((this.V.nextFloat() * 2.0F - 1.0F) * 16.0F);
+            this.c = this.locY + (double) ((this.V.nextFloat() * 2.0F - 1.0F) * 16.0F);
+            this.d = this.locZ + (double) ((this.V.nextFloat() * 2.0F - 1.0F) * 16.0F);
         }
 
         if (this.a-- <= 0) {
             this.a += this.V.nextInt(5) + 2;
             if (this.a(this.b, this.c, this.d, d3)) {
-                this.s += d0 / d3 * 0.1D;
-                this.t += d1 / d3 * 0.1D;
-                this.u += d2 / d3 * 0.1D;
+                this.motX += d0 / d3 * 0.1D;
+                this.motY += d1 / d3 * 0.1D;
+                this.motZ += d2 / d3 * 0.1D;
             } else {
-                this.b = this.p;
-                this.c = this.q;
-                this.d = this.r;
+                this.b = this.locX;
+                this.c = this.locY;
+                this.d = this.locZ;
             }
         }
 
@@ -70,11 +70,11 @@ public class EntityGhast extends EntityFlying implements IMonster {
         double d4 = 64.0D;
 
         if (this.ai != null && this.ai.b((Entity) this) < d4 * d4) {
-            double d5 = this.ai.p - this.p;
-            double d6 = this.ai.boundingBox.b + (double) (this.ai.I / 2.0F) - (this.q + (double) (this.I / 2.0F));
-            double d7 = this.ai.r - this.r;
+            double d5 = this.ai.locX - this.locX;
+            double d6 = this.ai.boundingBox.b + (double) (this.ai.I / 2.0F) - (this.locY + (double) (this.I / 2.0F));
+            double d7 = this.ai.locZ - this.locZ;
 
-            this.ay = this.v = -((float) Math.atan2(d5, d7)) * 180.0F / 3.1415927F;
+            this.ay = this.yaw = -((float) Math.atan2(d5, d7)) * 180.0F / 3.1415927F;
             if (this.g(this.ai)) {
                 if (this.f == 10) {
                     this.world.a(this, "mob.ghast.charge", this.h(), (this.V.nextFloat() - this.V.nextFloat()) * 0.2F + 1.0F);
@@ -87,17 +87,17 @@ public class EntityGhast extends EntityFlying implements IMonster {
                     double d8 = 4.0D;
                     Vec3D vec3d = this.d(1.0F);
 
-                    entityfireball.p = this.p + vec3d.a * d8;
-                    entityfireball.q = this.q + (double) (this.I / 2.0F) + 0.5D;
-                    entityfireball.r = this.r + vec3d.c * d8;
-                    this.world.a((Entity) entityfireball);
+                    entityfireball.locX = this.locX + vec3d.a * d8;
+                    entityfireball.locY = this.locY + (double) (this.I / 2.0F) + 0.5D;
+                    entityfireball.locZ = this.locZ + vec3d.c * d8;
+                    this.world.trackEntity((Entity) entityfireball);
                     this.f = -40;
                 }
             } else if (this.f > 0) {
                 --this.f;
             }
         } else {
-            this.ay = this.v = -((float) Math.atan2(this.s, this.u)) * 180.0F / 3.1415927F;
+            this.ay = this.yaw = -((float) Math.atan2(this.motX, this.motZ)) * 180.0F / 3.1415927F;
             if (this.f > 0) {
                 --this.f;
             }
@@ -107,9 +107,9 @@ public class EntityGhast extends EntityFlying implements IMonster {
     }
 
     private boolean a(double d0, double d1, double d2, double d3) {
-        double d4 = (this.b - this.p) / d3;
-        double d5 = (this.c - this.q) / d3;
-        double d6 = (this.d - this.r) / d3;
+        double d4 = (this.b - this.locX) / d3;
+        double d5 = (this.c - this.locY) / d3;
+        double d6 = (this.d - this.locZ) / d3;
         AxisAlignedBB axisalignedbb = this.boundingBox.b();
 
         for (int i = 1; (double) i < d3; ++i) {

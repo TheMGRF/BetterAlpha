@@ -20,7 +20,7 @@ public class ItemMinecart extends Item {
         int i1 = world.a(i, j, k);
 
         if (i1 == Block.RAILS.bi) {
-            world.a((Entity) (new EntityMinecart(world, (double) ((float) i + 0.5F), (double) ((float) j + 0.5F), (double) ((float) k + 0.5F), this.a)));
+            world.trackEntity((Entity) (new EntityMinecart(world, (double) ((float) i + 0.5F), (double) ((float) j + 0.5F), (double) ((float) k + 0.5F), this.a)));
             --itemstack.a;
             return true;
         } else {

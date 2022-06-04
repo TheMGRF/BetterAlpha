@@ -28,6 +28,14 @@ public class NetHandler {
         this.a((Packet) packet7UseEntity);
     }
 
+    public void a(Packet8UpdateHealth packet8UpdateHealth) {
+        this.a((Packet) packet8UpdateHealth);
+    }
+
+    public void a(Packet9Respawn packet9Respawn) {
+        this.a((Packet) packet9Respawn);
+    }
+
     public void a(Packet10Flying packet10flying) {
         this.a((Packet) packet10flying);
     }

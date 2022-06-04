@@ -93,19 +93,19 @@ public class Explosion {
             double d13 = entity1.e(d0, d1, d2) / (double) f;
 
             if (d13 <= 1.0D) {
-                d3 = entity1.p - d0;
-                d4 = entity1.q - d1;
-                d5 = entity1.r - d2;
+                d3 = entity1.locX - d0;
+                d4 = entity1.locY - d1;
+                d5 = entity1.locZ - d2;
                 d11 = (double) MathHelper.a(d3 * d3 + d4 * d4 + d5 * d5);
                 d3 /= d11;
                 d4 /= d11;
                 d5 /= d11;
                 d10 = (double) world.a(vec3d, entity1.boundingBox);
                 d12 = (1.0D - d13) * d10;
-                entity1.a(entity, (int) ((d12 * d12 + d12) / 2.0D * 8.0D * (double) f + 1.0D));
-                entity1.s += d3 * d12;
-                entity1.t += d4 * d12;
-                entity1.u += d5 * d12;
+                entity1.hurt(entity, (int) ((d12 * d12 + d12) / 2.0D * 8.0D * (double) f + 1.0D));
+                entity1.motX += d3 * d12;
+                entity1.motY += d4 * d12;
+                entity1.motZ += d5 * d12;
             }
         }
 

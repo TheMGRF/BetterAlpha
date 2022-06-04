@@ -83,6 +83,8 @@ public abstract class Packet {
         register(5, Packet5PlayerInventory.class);
         register(6, Packet6SpawnPosition.class);
         register(7, Packet7UseEntity.class);
+        register(8, Packet8UpdateHealth.class);
+        register(9, Packet9Respawn.class);
         register(10, Packet10Flying.class);
         register(11, Packet11PlayerPosition.class);
         register(12, Packet12PlayerLook.class);

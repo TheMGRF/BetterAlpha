@@ -85,7 +85,7 @@ public class BlockFurnace extends BlockContainer {
     }
 
     public void a(World world, int i, int j, int k, EntityLiving entityliving) {
-        int l = MathHelper.b((double) (entityliving.v * 4.0F / 360.0F) + 0.5D) & 3;
+        int l = MathHelper.b((double) (entityliving.yaw * 4.0F / 360.0F) + 0.5D) & 3;
 
         if (l == 0) {
             world.b(i, j, k, 2);

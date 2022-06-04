@@ -27,7 +27,7 @@ public class EntityChicken extends EntityAnimal {
         super.D();
         this.e = this.b;
         this.d = this.c;
-        this.c = (float) ((double) this.c + (double) (this.A ? -1 : 4) * 0.3D);
+        this.c = (float) ((double) this.c + (double) (this.onGround ? -1 : 4) * 0.3D);
         if (this.c < 0.0F) {
             this.c = 0.0F;
         }
@@ -36,13 +36,13 @@ public class EntityChicken extends EntityAnimal {
             this.c = 1.0F;
         }
 
-        if (!this.A && this.aj < 1.0F) {
+        if (!this.onGround && this.aj < 1.0F) {
             this.aj = 1.0F;
         }
 
         this.aj = (float) ((double) this.aj * 0.9D);
-        if (!this.A && this.t < 0.0D) {
-            this.t *= 0.6D;
+        if (!this.onGround && this.motY < 0.0D) {
+            this.motY *= 0.6D;
         }
 
         this.b += this.aj * 2.0F;

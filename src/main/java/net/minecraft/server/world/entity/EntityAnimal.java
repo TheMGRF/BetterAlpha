@@ -25,9 +25,9 @@ public abstract class EntityAnimal extends EntityCreature implements IAnimal {
     }
 
     public boolean a() {
-        int i = MathHelper.b(this.p);
+        int i = MathHelper.b(this.locX);
         int j = MathHelper.b(this.boundingBox.b);
-        int k = MathHelper.b(this.r);
+        int k = MathHelper.b(this.locZ);
 
         return this.world.a(i, j - 1, k) == Block.GRASS.bi && this.world.h(i, j, k) > 8 && super.a();
     }

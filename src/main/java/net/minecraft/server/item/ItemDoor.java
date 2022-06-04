@@ -33,7 +33,7 @@ public class ItemDoor extends Item {
             if (!block.a(world, i, j, k)) {
                 return false;
             } else {
-                int i1 = MathHelper.b((double) ((entityhuman.v + 180.0F) * 4.0F / 360.0F) - 0.5D) & 3;
+                int i1 = MathHelper.b((double) ((entityhuman.yaw + 180.0F) * 4.0F / 360.0F) - 0.5D) & 3;
                 byte b0 = 0;
                 byte b1 = 0;
 

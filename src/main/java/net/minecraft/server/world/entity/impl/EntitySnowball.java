@@ -48,27 +48,27 @@ public class EntitySnowball extends Entity {
             }
 
             this.f = false;
-            this.s *= (double) (this.V.nextFloat() * 0.2F);
-            this.t *= (double) (this.V.nextFloat() * 0.2F);
-            this.u *= (double) (this.V.nextFloat() * 0.2F);
+            this.motX *= (double) (this.V.nextFloat() * 0.2F);
+            this.motY *= (double) (this.V.nextFloat() * 0.2F);
+            this.motZ *= (double) (this.V.nextFloat() * 0.2F);
             this.aj = 0;
             this.ak = 0;
         } else {
             ++this.ak;
         }
 
-        Vec3D vec3d = Vec3D.b(this.p, this.q, this.r);
-        Vec3D vec3d1 = Vec3D.b(this.p + this.s, this.q + this.t, this.r + this.u);
+        Vec3D vec3d = Vec3D.b(this.locX, this.locY, this.locZ);
+        Vec3D vec3d1 = Vec3D.b(this.locX + this.motX, this.locY + this.motY, this.locZ + this.motZ);
         MovingObjectPosition movingobjectposition = this.world.a(vec3d, vec3d1);
 
-        vec3d = Vec3D.b(this.p, this.q, this.r);
-        vec3d1 = Vec3D.b(this.p + this.s, this.q + this.t, this.r + this.u);
+        vec3d = Vec3D.b(this.locX, this.locY, this.locZ);
+        vec3d1 = Vec3D.b(this.locX + this.motX, this.locY + this.motY, this.locZ + this.motZ);
         if (movingobjectposition != null) {
             vec3d1 = Vec3D.b(movingobjectposition.f.a, movingobjectposition.f.b, movingobjectposition.f.c);
         }
 
         Entity entity = null;
-        List list = this.world.b((Entity) this, this.boundingBox.a(this.s, this.t, this.u).b(1.0D, 1.0D, 1.0D));
+        List list = this.world.b((Entity) this, this.boundingBox.a(this.motX, this.motY, this.motZ).b(1.0D, 1.0D, 1.0D));
         double d0 = 0.0D;
 
         int j;
@@ -98,42 +98,42 @@ public class EntitySnowball extends Entity {
         }
 
         if (movingobjectposition != null) {
-            if (movingobjectposition.g != null && movingobjectposition.g.a(this.ai, 0)) {
+            if (movingobjectposition.g != null && movingobjectposition.g.hurt(this.ai, 0)) {
                 ;
             }
 
             for (j = 0; j < 8; ++j) {
-                this.world.a("snowballpoof", this.p, this.q, this.r, 0.0D, 0.0D, 0.0D);
+                this.world.a("snowballpoof", this.locX, this.locY, this.locZ, 0.0D, 0.0D, 0.0D);
             }
 
             this.l();
         }
 
-        this.p += this.s;
-        this.q += this.t;
-        this.r += this.u;
-        float f1 = MathHelper.a(this.s * this.s + this.u * this.u);
+        this.locX += this.motX;
+        this.locY += this.motY;
+        this.locZ += this.motZ;
+        float f1 = MathHelper.a(this.motX * this.motX + this.motZ * this.motZ);
 
-        this.v = (float) (Math.atan2(this.s, this.u) * 180.0D / 3.1415927410125732D);
+        this.yaw = (float) (Math.atan2(this.motX, this.motZ) * 180.0D / 3.1415927410125732D);
 
-        for (this.w = (float) (Math.atan2(this.t, (double) f1) * 180.0D / 3.1415927410125732D); this.w - this.y < -180.0F; this.y -= 360.0F) {
+        for (this.pitch = (float) (Math.atan2(this.motY, (double) f1) * 180.0D / 3.1415927410125732D); this.pitch - this.lastPitch < -180.0F; this.lastPitch -= 360.0F) {
             ;
         }
 
-        while (this.w - this.y >= 180.0F) {
-            this.y += 360.0F;
+        while (this.pitch - this.lastPitch >= 180.0F) {
+            this.lastPitch += 360.0F;
         }
 
-        while (this.v - this.x < -180.0F) {
-            this.x -= 360.0F;
+        while (this.yaw - this.lastYaw < -180.0F) {
+            this.lastYaw -= 360.0F;
         }
 
-        while (this.v - this.x >= 180.0F) {
-            this.x += 360.0F;
+        while (this.yaw - this.lastYaw >= 180.0F) {
+            this.lastYaw += 360.0F;
         }
 
-        this.w = this.y + (this.w - this.y) * 0.2F;
-        this.v = this.x + (this.v - this.x) * 0.2F;
+        this.pitch = this.lastPitch + (this.pitch - this.lastPitch) * 0.2F;
+        this.yaw = this.lastYaw + (this.yaw - this.lastYaw) * 0.2F;
         float f2 = 0.99F;
 
         f = 0.03F;
@@ -141,17 +141,17 @@ public class EntitySnowball extends Entity {
             for (int k = 0; k < 4; ++k) {
                 float f3 = 0.25F;
 
-                this.world.a("bubble", this.p - this.s * (double) f3, this.q - this.t * (double) f3, this.r - this.u * (double) f3, this.s, this.t, this.u);
+                this.world.a("bubble", this.locX - this.motX * (double) f3, this.locY - this.motY * (double) f3, this.locZ - this.motZ * (double) f3, this.motX, this.motY, this.motZ);
             }
 
             f2 = 0.8F;
         }
 
-        this.s *= (double) f2;
-        this.t *= (double) f2;
-        this.u *= (double) f2;
-        this.t -= (double) f;
-        this.a(this.p, this.q, this.r);
+        this.motX *= (double) f2;
+        this.motY *= (double) f2;
+        this.motZ *= (double) f2;
+        this.motY -= (double) f;
+        this.a(this.locX, this.locY, this.locZ);
     }
 
     public void a(NBTTagCompound nbttagcompound) {
@@ -173,7 +173,7 @@ public class EntitySnowball extends Entity {
     }
 
     public void a(EntityHuman entityhuman) {
-        if (this.f && this.ai == entityhuman && this.a <= 0 && entityhuman.ak.a(new ItemStack(Item.ARROW.aW, 1))) {
+        if (this.f && this.ai == entityhuman && this.a <= 0 && entityhuman.inventory.a(new ItemStack(Item.ARROW.aW, 1))) {
             this.world.a(this, "random.pop", 0.2F, ((this.V.nextFloat() - this.V.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             entityhuman.c(this, 1);
             this.l();

@@ -739,7 +739,7 @@ public class World implements IBlockAccess {
 
     public void a(Entity entity, String s, float f, float f1) {
         for (int i = 0; i < this.r.size(); ++i) {
-            ((IWorldAccess) this.r.get(i)).a(s, entity.p, entity.q - (double) entity.G, entity.r, f, f1);
+            ((IWorldAccess) this.r.get(i)).a(s, entity.locX, entity.locY - (double) entity.G, entity.locZ, f, f1);
         }
     }
 
@@ -761,9 +761,12 @@ public class World implements IBlockAccess {
         }
     }
 
-    public boolean a(Entity entity) {
-        int i = MathHelper.b(entity.p / 16.0D);
-        int j = MathHelper.b(entity.r / 16.0D);
+    /**
+     * Add entity to tracker
+     */
+    public boolean trackEntity(Entity entity) {
+        int i = MathHelper.b(entity.locX / 16.0D);
+        int j = MathHelper.b(entity.locZ / 16.0D);
         boolean flag = false;
 
         if (entity instanceof EntityHuman) {
@@ -796,6 +799,7 @@ public class World implements IBlockAccess {
         }
     }
 
+    // TODO: Idk what this is?
     public void d(Entity entity) {
         entity.l();
         if (entity instanceof EntityHuman) {
@@ -988,16 +992,16 @@ public class World implements IBlockAccess {
     }
 
     public void a(Entity entity, boolean flag) {
-        int i = MathHelper.b(entity.p);
-        int j = MathHelper.b(entity.r);
+        int i = MathHelper.b(entity.locX);
+        int j = MathHelper.b(entity.locZ);
         byte b0 = 16;
 
         if (flag || this.a(i - b0, 0, j - b0, i + b0, 128, j + b0)) {
-            entity.N = entity.p;
-            entity.O = entity.q;
-            entity.P = entity.r;
-            entity.x = entity.v;
-            entity.y = entity.w;
+            entity.N = entity.locX;
+            entity.O = entity.locY;
+            entity.P = entity.locZ;
+            entity.lastYaw = entity.yaw;
+            entity.lastPitch = entity.pitch;
             if (flag && entity.ae) {
                 if (entity.k != null) {
                     entity.y();
@@ -1006,9 +1010,9 @@ public class World implements IBlockAccess {
                 }
             }
 
-            int k = MathHelper.b(entity.p / 16.0D);
-            int l = MathHelper.b(entity.q / 16.0D);
-            int i1 = MathHelper.b(entity.r / 16.0D);
+            int k = MathHelper.b(entity.locX / 16.0D);
+            int l = MathHelper.b(entity.locY / 16.0D);
+            int i1 = MathHelper.b(entity.locZ / 16.0D);
 
             if (!entity.ae || entity.af != k || entity.ag != l || entity.ah != i1) {
                 if (entity.ae && this.f(entity.af, entity.ah)) {
@@ -1032,24 +1036,24 @@ public class World implements IBlockAccess {
                 }
             }
 
-            if (Double.isNaN(entity.p) || Double.isInfinite(entity.p)) {
-                entity.p = entity.N;
+            if (Double.isNaN(entity.locX) || Double.isInfinite(entity.locX)) {
+                entity.locX = entity.N;
             }
 
-            if (Double.isNaN(entity.q) || Double.isInfinite(entity.q)) {
-                entity.q = entity.O;
+            if (Double.isNaN(entity.locY) || Double.isInfinite(entity.locY)) {
+                entity.locY = entity.O;
             }
 
-            if (Double.isNaN(entity.r) || Double.isInfinite(entity.r)) {
-                entity.r = entity.P;
+            if (Double.isNaN(entity.locZ) || Double.isInfinite(entity.locZ)) {
+                entity.locZ = entity.P;
             }
 
-            if (Double.isNaN((double) entity.w) || Double.isInfinite((double) entity.w)) {
-                entity.w = entity.y;
+            if (Double.isNaN((double) entity.pitch) || Double.isInfinite((double) entity.pitch)) {
+                entity.pitch = entity.lastPitch;
             }
 
-            if (Double.isNaN((double) entity.v) || Double.isInfinite((double) entity.v)) {
-                entity.v = entity.x;
+            if (Double.isNaN((double) entity.yaw) || Double.isInfinite((double) entity.yaw)) {
+                entity.yaw = entity.lastYaw;
             }
         }
     }
@@ -1157,9 +1161,9 @@ public class World implements IBlockAccess {
             vec3d = vec3d.b();
             double d1 = 0.0040D;
 
-            entity.s += vec3d.a * d1;
-            entity.t += vec3d.b * d1;
-            entity.u += vec3d.c * d1;
+            entity.motX += vec3d.a * d1;
+            entity.motY += vec3d.b * d1;
+            entity.motZ += vec3d.c * d1;
         }
 
         return flag;
@@ -1395,8 +1399,8 @@ public class World implements IBlockAccess {
         for (int i1 = 0; i1 < this.d.size(); ++i1) {
             EntityHuman entityhuman = (EntityHuman) this.d.get(i1);
 
-            i = MathHelper.b(entityhuman.p / 16.0D);
-            j = MathHelper.b(entityhuman.r / 16.0D);
+            i = MathHelper.b(entityhuman.locX / 16.0D);
+            j = MathHelper.b(entityhuman.locZ / 16.0D);
             byte b0 = 9;
 
             for (k = -b0; k <= b0; ++k) {
@@ -1576,9 +1580,9 @@ public class World implements IBlockAccess {
     }
 
     public PathEntity a(Entity entity, Entity entity1, float f) {
-        int i = MathHelper.b(entity.p);
-        int j = MathHelper.b(entity.q);
-        int k = MathHelper.b(entity.r);
+        int i = MathHelper.b(entity.locX);
+        int j = MathHelper.b(entity.locY);
+        int k = MathHelper.b(entity.locZ);
         int l = (int) (f + 16.0F);
         int i1 = i - l;
         int j1 = j - l;
@@ -1592,9 +1596,9 @@ public class World implements IBlockAccess {
     }
 
     public PathEntity a(Entity entity, int i, int j, int k, float f) {
-        int l = MathHelper.b(entity.p);
-        int i1 = MathHelper.b(entity.q);
-        int j1 = MathHelper.b(entity.r);
+        int l = MathHelper.b(entity.locX);
+        int i1 = MathHelper.b(entity.locY);
+        int j1 = MathHelper.b(entity.locZ);
         int k1 = (int) (f + 8.0F);
         int l1 = l - k1;
         int i2 = i1 - k1;
@@ -1632,7 +1636,7 @@ public class World implements IBlockAccess {
     }
 
     public EntityHuman a(Entity entity, double d0) {
-        return this.a(entity.p, entity.q, entity.r, d0);
+        return this.a(entity.locX, entity.locY, entity.locZ, d0);
     }
 
     public EntityHuman a(double d0, double d1, double d2, double d3) {
@@ -1727,16 +1731,16 @@ public class World implements IBlockAccess {
     }
 
     public void entityJoinedWorld(Entity entity, boolean flag) {
-        int i = MathHelper.b(entity.p);
-        int j = MathHelper.b(entity.r);
+        int i = MathHelper.b(entity.locX);
+        int j = MathHelper.b(entity.locZ);
         byte b0 = 32;
 
         if (!flag || this.a(i - b0, 0, j - b0, i + b0, 128, j + b0)) {
-            entity.N = entity.p;
-            entity.O = entity.q;
-            entity.P = entity.r;
-            entity.x = entity.v;
-            entity.y = entity.w;
+            entity.N = entity.locX;
+            entity.O = entity.locY;
+            entity.P = entity.locZ;
+            entity.lastYaw = entity.yaw;
+            entity.lastPitch = entity.pitch;
             if (flag && entity.ae) {
                 if (entity.k != null) {
                     entity.y();
@@ -1745,29 +1749,29 @@ public class World implements IBlockAccess {
                 }
             }
 
-            if (Double.isNaN(entity.p) || Double.isInfinite(entity.p)) {
-                entity.p = entity.N;
+            if (Double.isNaN(entity.locX) || Double.isInfinite(entity.locX)) {
+                entity.locX = entity.N;
             }
 
-            if (Double.isNaN(entity.q) || Double.isInfinite(entity.q)) {
-                entity.q = entity.O;
+            if (Double.isNaN(entity.locY) || Double.isInfinite(entity.locY)) {
+                entity.locY = entity.O;
             }
 
-            if (Double.isNaN(entity.r) || Double.isInfinite(entity.r)) {
-                entity.r = entity.P;
+            if (Double.isNaN(entity.locZ) || Double.isInfinite(entity.locZ)) {
+                entity.locZ = entity.P;
             }
 
-            if (Double.isNaN((double) entity.w) || Double.isInfinite((double) entity.w)) {
-                entity.w = entity.x;
+            if (Double.isNaN((double) entity.pitch) || Double.isInfinite((double) entity.pitch)) {
+                entity.pitch = entity.lastYaw;
             }
 
-            if (Double.isNaN((double) entity.v) || Double.isInfinite((double) entity.v)) {
-                entity.v = entity.y;
+            if (Double.isNaN((double) entity.yaw) || Double.isInfinite((double) entity.yaw)) {
+                entity.yaw = entity.lastPitch;
             }
 
-            int k = MathHelper.b(entity.p / 16.0D);
-            int l = MathHelper.b(entity.q / 16.0D);
-            int i1 = MathHelper.b(entity.r / 16.0D);
+            int k = MathHelper.b(entity.locX / 16.0D);
+            int l = MathHelper.b(entity.locY / 16.0D);
+            int i1 = MathHelper.b(entity.locZ / 16.0D);
 
             if (!entity.ae || entity.af != k || entity.ag != l || entity.ah != i1) {
                 if (entity.ae && this.f(entity.af, entity.ah)) {

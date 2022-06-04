@@ -23,10 +23,10 @@ public class EntityItem extends Entity {
         this.G = this.I / 2.0F;
         this.a(d0, d1, d2);
         this.a = itemstack;
-        this.v = (float) (Math.random() * 360.0D);
-        this.s = (double) ((float) (Math.random() * 0.20000000298023224D - 0.10000000149011612D));
-        this.t = 0.20000000298023224D;
-        this.u = (double) ((float) (Math.random() * 0.20000000298023224D - 0.10000000149011612D));
+        this.yaw = (float) (Math.random() * 360.0D);
+        this.motX = (double) ((float) (Math.random() * 0.20000000298023224D - 0.10000000149011612D));
+        this.motY = 0.20000000298023224D;
+        this.motZ = (double) ((float) (Math.random() * 0.20000000298023224D - 0.10000000149011612D));
         this.L = false;
     }
 
@@ -42,36 +42,36 @@ public class EntityItem extends Entity {
             --this.c;
         }
 
-        this.m = this.p;
-        this.n = this.q;
-        this.o = this.r;
-        this.t -= 0.03999999910593033D;
-        if (this.world.c(MathHelper.b(this.p), MathHelper.b(this.q), MathHelper.b(this.r)) == Material.g) {
-            this.t = 0.20000000298023224D;
-            this.s = (double) ((this.V.nextFloat() - this.V.nextFloat()) * 0.2F);
-            this.u = (double) ((this.V.nextFloat() - this.V.nextFloat()) * 0.2F);
+        this.lastX = this.locX;
+        this.lastY = this.locY;
+        this.lastZ = this.locZ;
+        this.motY -= 0.03999999910593033D;
+        if (this.world.c(MathHelper.b(this.locX), MathHelper.b(this.locY), MathHelper.b(this.locZ)) == Material.g) {
+            this.motY = 0.20000000298023224D;
+            this.motX = (double) ((this.V.nextFloat() - this.V.nextFloat()) * 0.2F);
+            this.motZ = (double) ((this.V.nextFloat() - this.V.nextFloat()) * 0.2F);
             this.world.a(this, "random.fizz", 0.4F, 2.0F + this.V.nextFloat() * 0.4F);
         }
 
-        this.g(this.p, this.q, this.r);
+        this.g(this.locX, this.locY, this.locZ);
         this.r();
-        this.c(this.s, this.t, this.u);
+        this.c(this.motX, this.motY, this.motZ);
         float f = 0.98F;
 
-        if (this.A) {
+        if (this.onGround) {
             f = 0.58800006F;
-            int i = this.world.a(MathHelper.b(this.p), MathHelper.b(this.boundingBox.b) - 1, MathHelper.b(this.r));
+            int i = this.world.a(MathHelper.b(this.locX), MathHelper.b(this.boundingBox.b) - 1, MathHelper.b(this.locZ));
 
             if (i > 0) {
                 f = Block.n[i].bu * 0.98F;
             }
         }
 
-        this.s *= (double) f;
-        this.t *= 0.9800000190734863D;
-        this.u *= (double) f;
-        if (this.A) {
-            this.t *= -0.5D;
+        this.motX *= (double) f;
+        this.motY *= 0.9800000190734863D;
+        this.motZ *= (double) f;
+        if (this.onGround) {
+            this.motY *= -0.5D;
         }
 
         ++this.e;
@@ -136,27 +136,27 @@ public class EntityItem extends Entity {
             float f = this.V.nextFloat() * 0.2F + 0.1F;
 
             if (b0 == 0) {
-                this.s = (double) (-f);
+                this.motX = (double) (-f);
             }
 
             if (b0 == 1) {
-                this.s = (double) f;
+                this.motX = (double) f;
             }
 
             if (b0 == 2) {
-                this.t = (double) (-f);
+                this.motY = (double) (-f);
             }
 
             if (b0 == 3) {
-                this.t = (double) f;
+                this.motY = (double) f;
             }
 
             if (b0 == 4) {
-                this.u = (double) (-f);
+                this.motZ = (double) (-f);
             }
 
             if (b0 == 5) {
-                this.u = (double) f;
+                this.motZ = (double) f;
             }
         }
 
@@ -164,10 +164,10 @@ public class EntityItem extends Entity {
     }
 
     public void b(int i) {
-        this.a((Entity) null, i);
+        this.hurt((Entity) null, i);
     }
 
-    public boolean a(Entity entity, int i) {
+    public boolean hurt(Entity entity, int i) {
         this.f -= i;
         if (this.f <= 0) {
             this.l();
@@ -194,7 +194,7 @@ public class EntityItem extends Entity {
         if (!this.world.z) {
             int i = this.a.a;
 
-            if (this.c == 0 && entityhuman.ak.a(this.a)) {
+            if (this.c == 0 && entityhuman.inventory.a(this.a)) {
                 this.world.a(this, "random.pop", 0.2F, ((this.V.nextFloat() - this.V.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 entityhuman.c(this, i);
                 this.l();

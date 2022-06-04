@@ -3,10 +3,7 @@ package net.minecraft.server;
 import net.minecraft.server.item.ItemInWorldManager;
 import net.minecraft.server.nbt.PlayerNBTManager;
 import net.minecraft.server.network.handler.NetLoginHandler;
-import net.minecraft.server.packet.Packet;
-import net.minecraft.server.packet.Packet3Chat;
-import net.minecraft.server.packet.Packet4UpdateTime;
-import net.minecraft.server.packet.Packet59ComplexEntity;
+import net.minecraft.server.packet.*;
 import net.minecraft.server.player.PlayerManager;
 import net.minecraft.server.world.WorldServer;
 import net.minecraft.server.world.block.tile.TileEntity;
@@ -19,9 +16,10 @@ import java.util.logging.Logger;
 public class ServerConfigurationManager {
 
     public static Logger a = Logger.getLogger("Minecraft");
-    public List b = new ArrayList();
-    private MinecraftServer c;
-    private PlayerManager[] d = new PlayerManager[2];
+
+    public List<EntityPlayer> players = new ArrayList<>();
+    private final MinecraftServer minecraftServer;
+    private final PlayerManager[] playerManagers = new PlayerManager[2];
     private int e;
     private Set f = new HashSet();
     private Set g = new HashSet();
@@ -32,13 +30,13 @@ public class ServerConfigurationManager {
     private PlayerNBTManager l;
 
     public ServerConfigurationManager(MinecraftServer minecraftserver) {
-        this.c = minecraftserver;
+        this.minecraftServer = minecraftserver;
         this.i = minecraftserver.a("banned-players.txt");
         this.j = minecraftserver.a("banned-ips.txt");
         this.k = minecraftserver.a("ops.txt");
 
-        this.d[0] = new PlayerManager(minecraftserver, 0);
-        this.d[1] = new PlayerManager(minecraftserver, -1);
+        this.playerManagers[0] = new PlayerManager(minecraftserver, 0);
+        this.playerManagers[1] = new PlayerManager(minecraftserver, -1);
         this.e = minecraftserver.d.a("max-players", 20);
         this.e();
         this.g();
@@ -53,34 +51,34 @@ public class ServerConfigurationManager {
     }
 
     public void ass(EntityPlayer entityplayer) {
-        this.d[0].b(entityplayer);
-        this.d[1].b(entityplayer);
+        this.playerManagers[0].b(entityplayer);
+        this.playerManagers[1].b(entityplayer);
         this.a(entityplayer.dimension).a(entityplayer);
-        WorldServer worldserver = this.c.getWorldByDimension(entityplayer.dimension);
+        WorldServer worldserver = this.minecraftServer.getWorldByDimension(entityplayer.dimension);
 
-        worldserver.A.d((int) entityplayer.p >> 4, (int) entityplayer.r >> 4);
+        worldserver.A.d((int) entityplayer.locX >> 4, (int) entityplayer.locZ >> 4);
     }
 
     public int a() {
-        return this.d[0].b();
+        return this.playerManagers[0].b();
     }
 
     public void a(EntityPlayer entityplayer) {
-        this.b.add(entityplayer);
-        WorldServer worldserver = this.c.getWorldByDimension(entityplayer.world.q.e);
+        this.players.add(entityplayer);
+        WorldServer worldserver = this.minecraftServer.getWorldByDimension(entityplayer.world.q.e);
 
-        worldserver.A.d((int) entityplayer.p >> 4, (int) entityplayer.r >> 4);
+        worldserver.A.d((int) entityplayer.locX >> 4, (int) entityplayer.locZ >> 4);
 
         while (worldserver.a(entityplayer, entityplayer.boundingBox).size() != 0) {
-            entityplayer.a(entityplayer.p, entityplayer.q + 1.0D, entityplayer.r);
+            entityplayer.a(entityplayer.locX, entityplayer.locY + 1.0D, entityplayer.locZ);
         }
 
-        worldserver.a(entityplayer);
+        worldserver.trackEntity(entityplayer);
         this.a(entityplayer.world.q.e).a(entityplayer);
     }
 
     private PlayerManager a(int i) {
-        return i == -1 ? this.d[1] : this.d[0];
+        return i == -1 ? this.playerManagers[1] : this.playerManagers[0];
     }
 
     public void b(EntityPlayer entityplayer) {
@@ -93,43 +91,74 @@ public class ServerConfigurationManager {
 
     public void c(EntityPlayer entityplayer) {
         this.l.a(entityplayer);
-        this.c.getWorldByDimension(entityplayer.dimension).d(entityplayer);
-        this.b.remove(entityplayer);
+        this.minecraftServer.getWorldByDimension(entityplayer.dimension).d(entityplayer);
+        this.players.remove(entityplayer);
         this.a(entityplayer.dimension).b(entityplayer);
     }
 
     public EntityPlayer a(NetLoginHandler netloginhandler, String s, String s1) {
         if (this.f.contains(s.trim().toLowerCase())) {
-            netloginhandler.b("Banned!");
+            netloginhandler.b("You are banned from this server!");
             return null;
         } else {
-            String s2 = netloginhandler.b.b().toString();
+            String s2 = netloginhandler.networkManager.b().toString();
 
             s2 = s2.substring(s2.indexOf("/") + 1);
             s2 = s2.substring(0, s2.indexOf(":"));
             if (this.g.contains(s2)) {
-                netloginhandler.b("Your IP address is banned!");
+                netloginhandler.b("Your IP address is banned from this server!");
                 return null;
-            } else if (this.b.size() >= this.e) {
-                netloginhandler.b("Server full!");
+            } else if (this.players.size() >= this.e) {
+                netloginhandler.b("The server is full!");
                 return null;
             } else {
-                for (int i = 0; i < this.b.size(); ++i) {
-                    EntityPlayer entityplayer = (EntityPlayer) this.b.get(i);
+                for (int i = 0; i < this.players.size(); ++i) {
+                    EntityPlayer entityplayer = (EntityPlayer) this.players.get(i);
 
-                    if (entityplayer.ar.equalsIgnoreCase(s)) {
-                        netloginhandler.b("This name is already playing on the server!");
+                    if (entityplayer.name.equalsIgnoreCase(s)) {
+                        netloginhandler.b("You logged in from another location!");
                     }
                 }
 
-                return new EntityPlayer(this.c, this.c.getWorldByDimension(0), s, new ItemInWorldManager(this.c.getWorldByDimension(0)));
+                return new EntityPlayer(this.minecraftServer, this.minecraftServer.getWorldByDimension(0), s, new ItemInWorldManager(this.minecraftServer.getWorldByDimension(0)));
             }
         }
     }
 
+    public EntityPlayer respawnPlayer(EntityPlayer player) {
+        // TODO: Support for multi-world (nether?)
+        this.minecraftServer.entityTrackers[0].removeEntity(player);
+        this.minecraftServer.entityTrackers[0].addEntity(player);
+        this.playerManagers[0].b(player);
+
+        this.players.remove(player); // eww but probably right
+
+        WorldServer worldServer = this.minecraftServer.worlds[0];
+        worldServer.d(player);
+
+        // Make a new entity player
+        EntityPlayer newPlayer = new EntityPlayer(this.minecraftServer, worldServer, player.name, new ItemInWorldManager(worldServer));
+        newPlayer.g = player.g;
+        newPlayer.netServerHandler = player.netServerHandler;
+
+        worldServer.A.d((int) newPlayer.lastX >> 4, (int) newPlayer.lastZ >> 4);
+
+        while (worldServer.a(newPlayer, newPlayer.boundingBox).size() != 0) {
+            newPlayer.a(newPlayer.lastX, newPlayer.lastY + 1.0D, newPlayer.lastZ);
+        }
+
+        player.netServerHandler.sendPacket(new Packet9Respawn());
+        player.netServerHandler.a(player.lastX, player.lastY, player.lastZ, player.lastYaw, player.lastPitch);
+
+        this.playerManagers[0].a(newPlayer);
+        //worldServer.trackEntity(newPlayer);
+        this.players.add(newPlayer);
+        return newPlayer;
+    }
+
     public void b() {
-        for (int i = 0; i < this.d.length; ++i) {
-            this.d[i].a();
+        for (int i = 0; i < this.playerManagers.length; ++i) {
+            this.playerManagers[i].a();
         }
     }
 
@@ -139,19 +168,19 @@ public class ServerConfigurationManager {
     }
 
     public void a(Packet packet) {
-        for (int i = 0; i < this.b.size(); ++i) {
-            EntityPlayer entityplayer = (EntityPlayer) this.b.get(i);
+        for (int i = 0; i < this.players.size(); ++i) {
+            EntityPlayer entityplayer = (EntityPlayer) this.players.get(i);
 
-            entityplayer.a.b(packet);
+            entityplayer.netServerHandler.sendPacket(packet);
         }
     }
 
     public void a(Packet packet, int i) {
-        for (int j = 0; j < this.b.size(); ++j) {
-            EntityPlayer entityplayer = (EntityPlayer) this.b.get(j);
+        for (int j = 0; j < this.players.size(); ++j) {
+            EntityPlayer entityplayer = (EntityPlayer) this.players.get(j);
 
             if (entityplayer.dimension == i) {
-                entityplayer.a.b(packet);
+                entityplayer.netServerHandler.sendPacket(packet);
             }
         }
     }
@@ -159,12 +188,12 @@ public class ServerConfigurationManager {
     public String c() {
         String s = "";
 
-        for (int i = 0; i < this.b.size(); ++i) {
+        for (int i = 0; i < this.players.size(); ++i) {
             if (i > 0) {
                 s = s + ", ";
             }
 
-            s = s + ((EntityPlayer) this.b.get(i)).ar;
+            s = s + ((EntityPlayer) this.players.get(i)).name;
         }
 
         return s;
@@ -304,10 +333,10 @@ public class ServerConfigurationManager {
     }
 
     public EntityPlayer h(String s) {
-        for (int i = 0; i < this.b.size(); ++i) {
-            EntityPlayer entityplayer = (EntityPlayer) this.b.get(i);
+        for (int i = 0; i < this.players.size(); ++i) {
+            EntityPlayer entityplayer = (EntityPlayer) this.players.get(i);
 
-            if (entityplayer.ar.equalsIgnoreCase(s)) {
+            if (entityplayer.name.equalsIgnoreCase(s)) {
                 return entityplayer;
             }
         }
@@ -319,18 +348,18 @@ public class ServerConfigurationManager {
         EntityPlayer entityplayer = this.h(s);
 
         if (entityplayer != null) {
-            entityplayer.a.b((Packet) (new Packet3Chat(s1)));
+            entityplayer.netServerHandler.sendPacket((Packet) (new Packet3Chat(s1)));
         }
     }
 
     public void i(String s) {
         Packet3Chat packet3chat = new Packet3Chat(s);
 
-        for (int i = 0; i < this.b.size(); ++i) {
-            EntityPlayer entityplayer = (EntityPlayer) this.b.get(i);
+        for (int i = 0; i < this.players.size(); ++i) {
+            EntityPlayer entityplayer = (EntityPlayer) this.players.get(i);
 
-            if (this.g(entityplayer.ar)) {
-                entityplayer.a.b((Packet) packet3chat);
+            if (this.g(entityplayer.name)) {
+                entityplayer.netServerHandler.sendPacket((Packet) packet3chat);
             }
         }
     }
@@ -339,7 +368,7 @@ public class ServerConfigurationManager {
         EntityPlayer entityplayer = this.h(s);
 
         if (entityplayer != null) {
-            entityplayer.a.b(packet);
+            entityplayer.netServerHandler.sendPacket(packet);
             return true;
         } else {
             return false;
@@ -351,12 +380,12 @@ public class ServerConfigurationManager {
     }
 
     public void a(EntityPlayer entityplayer, WorldServer worldserver) {
-        entityplayer.a.a(new Packet4UpdateTime(worldserver.lastUpdate));
+        entityplayer.netServerHandler.a(new Packet4UpdateTime(worldserver.lastUpdate));
     }
 
     public void d() {
-        for (int i = 0; i < this.b.size(); ++i) {
-            this.l.a((EntityPlayer) this.b.get(i));
+        for (int i = 0; i < this.players.size(); ++i) {
+            this.l.a((EntityPlayer) this.players.get(i));
         }
     }
 }

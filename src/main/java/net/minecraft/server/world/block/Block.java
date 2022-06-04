@@ -297,7 +297,7 @@ public class Block {
                         EntityItem entityitem = new EntityItem(world, (double) i + d0, (double) j + d1, (double) k + d2, new ItemStack(k1));
 
                         entityitem.c = 10;
-                        world.a(entityitem);
+                        world.trackEntity(entityitem);
                     }
                 }
             }

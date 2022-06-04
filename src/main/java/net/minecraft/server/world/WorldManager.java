@@ -18,11 +18,11 @@ public class WorldManager implements IWorldAccess {
     }
 
     public void a(Entity entity) {
-        this.a.b(this.w.q.e).a(entity);
+        this.a.b(this.w.q.e).addEntity(entity);
     }
 
     public void b(Entity entity) {
-        this.a.b(this.w.q.e).b(entity);
+        this.a.b(this.w.q.e).removeEntity(entity);
     }
 
     public void a(String s, double d0, double d1, double d2, float f, float f1) {
@@ -35,13 +35,13 @@ public class WorldManager implements IWorldAccess {
     }
 
     public void a(int i, int j, int k) {
-        this.a.f.a(i, j, k, this.w.q.e);
+        this.a.serverConfigurationManager.a(i, j, k, this.w.q.e);
     }
 
     public void a(String s, int i, int j, int k) {
     }
 
     public void a(int i, int j, int k, TileEntity tileentity) {
-        this.a.f.a(i, j, k, tileentity);
+        this.a.serverConfigurationManager.a(i, j, k, tileentity);
     }
 }

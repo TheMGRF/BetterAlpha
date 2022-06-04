@@ -16,7 +16,7 @@ public class EntitySheep extends EntityAnimal {
         this.a(0.9F, 1.3F);
     }
 
-    public boolean a(Entity entity, int i) {
+    public boolean hurt(Entity entity, int i) {
         if (!this.a && entity instanceof EntityLiving) {
             this.a = true;
             int j = 1 + this.V.nextInt(3);
@@ -24,13 +24,13 @@ public class EntitySheep extends EntityAnimal {
             for (int k = 0; k < j; ++k) {
                 EntityItem entityitem = this.a(Block.WOOL.bi, 1, 1.0F);
 
-                entityitem.t += (double) (this.V.nextFloat() * 0.05F);
-                entityitem.s += (double) ((this.V.nextFloat() - this.V.nextFloat()) * 0.1F);
-                entityitem.u += (double) ((this.V.nextFloat() - this.V.nextFloat()) * 0.1F);
+                entityitem.motY += (double) (this.V.nextFloat() * 0.05F);
+                entityitem.motX += (double) ((this.V.nextFloat() - this.V.nextFloat()) * 0.1F);
+                entityitem.motZ += (double) ((this.V.nextFloat() - this.V.nextFloat()) * 0.1F);
             }
         }
 
-        return super.a(entity, i);
+        return super.hurt(entity, i);
     }
 
     public void a(NBTTagCompound nbttagcompound) {

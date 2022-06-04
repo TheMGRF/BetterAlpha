@@ -37,8 +37,8 @@ public final class SpawnerCreature {
 
         for (i = 0; i < world.d.size(); ++i) {
             EntityHuman entityhuman = (EntityHuman) world.d.get(i);
-            int j = MathHelper.b(entityhuman.p / 16.0D);
-            int k = MathHelper.b(entityhuman.r / 16.0D);
+            int j = MathHelper.b(entityhuman.locX / 16.0D);
+            int k = MathHelper.b(entityhuman.locZ / 16.0D);
             byte b0 = 8;
 
             for (int l = -b0; l <= b0; ++l) {
@@ -108,12 +108,12 @@ public final class SpawnerCreature {
                                                     entityliving.c((double) f, (double) f1, (double) f2, world.l.nextFloat() * 360.0F, 0.0F);
                                                     if (entityliving.a()) {
                                                         ++k2;
-                                                        world.a((Entity) entityliving);
+                                                        world.trackEntity((Entity) entityliving);
                                                         if (entityliving instanceof EntitySpider && world.l.nextInt(100) == 0) {
                                                             EntitySkeleton entityskeleton = new EntitySkeleton(world);
 
-                                                            entityskeleton.c((double) f, (double) f1, (double) f2, entityliving.v, 0.0F);
-                                                            world.a((Entity) entityskeleton);
+                                                            entityskeleton.c((double) f, (double) f1, (double) f2, entityliving.yaw, 0.0F);
+                                                            world.trackEntity((Entity) entityskeleton);
                                                             entityskeleton.e(entityliving);
                                                         }
 

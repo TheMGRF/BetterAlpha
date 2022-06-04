@@ -1,7 +1,10 @@
 package net.minecraft.server.world.entity;
 
 import net.minecraft.server.item.ItemStack;
-import net.minecraft.server.nbt.*;
+import net.minecraft.server.nbt.NBTTagCompound;
+import net.minecraft.server.nbt.NBTTagDouble;
+import net.minecraft.server.nbt.NBTTagFloat;
+import net.minecraft.server.nbt.NBTTagList;
 import net.minecraft.server.utils.AxisAlignedBB;
 import net.minecraft.server.utils.MathHelper;
 import net.minecraft.server.utils.Vec3D;
@@ -25,50 +28,50 @@ public abstract class Entity {
     public Entity j;
     public Entity k;
     public World world;
-    public double m;
-    public double n;
-    public double o;
-    public double p;
-    public double q;
-    public double r;
-    public double s;
-    public double t;
-    public double u;
-    public float v;
-    public float w;
-    public float x;
-    public float y;
+    public double lastX;
+    public double lastY;
+    public double lastZ;
+    public double locX;
+    public double locY;
+    public double locZ;
+    public double motX;
+    public double motY;
+    public double motZ;
+    public float yaw;
+    public float pitch;
+    public float lastYaw;
+    public float lastPitch;
     public final AxisAlignedBB boundingBox;
-    public boolean A;
-    public boolean B;
-    public boolean C;
-    public boolean D;
-    public boolean E;
-    public boolean F;
-    public float G;
-    public float H;
-    public float I;
+    public boolean onGround;
+    public boolean positionChanged;
+    public boolean C; // hasCollided horizontal?
+    public boolean D; // hasCollided vertical?
+    public boolean E; // velocityChanged (motion)
+    public boolean F; // customVelocity (motion)
+    public float G; // height
+    public float H; // width
+    public float I; // length
     public float J;
     public float K;
     public boolean L;
-    public float M;
-    private int b;
-    public double N;
-    public double O;
-    public double P;
-    public float Q;
-    public float R;
-    public boolean S;
-    public float T;
-    public boolean U;
+    public float fallDistance;
+    private int b; // nextStepDistance
+    public double N; // lastTickX
+    public double O; // lastTickY
+    public double P; // lastTickZ
+    public float Q; // ySize(?)
+    public float R; // stepHeight
+    public boolean S; // hasCollisions (enabling collisions with world) ?
+    public float T; // reduced velocity amount?
+    public boolean U; // idk maybe not used?
     public Random V;
-    public int W;
-    public int X;
-    public int Y;
+    public int W; // enterWaterTick?
+    public int X; // fireTicks?
+    public int fire;
     public int Z;
     public boolean aa;
     public int ab;
-    public int ac;
+    public int air;
     private boolean c;
     public boolean ad;
     private double d;
@@ -83,7 +86,7 @@ public abstract class Entity {
         this.h = 1.0D;
         this.i = false;
         this.boundingBox = AxisAlignedBB.a(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
-        this.A = false;
+        this.onGround = false;
         this.D = false;
         this.E = true;
         this.F = false;
@@ -93,7 +96,7 @@ public abstract class Entity {
         this.J = 0.0F;
         this.K = 0.0F;
         this.L = true;
-        this.M = 0.0F;
+        this.fallDistance = 0.0F;
         this.b = 1;
         this.Q = 0.0F;
         this.R = 0.0F;
@@ -103,11 +106,11 @@ public abstract class Entity {
         this.V = new Random();
         this.W = 0;
         this.X = 1;
-        this.Y = 0;
+        this.fire = 0;
         this.Z = 300;
         this.aa = false;
         this.ab = 0;
-        this.ac = 300;
+        this.air = 300;
         this.c = true;
         this.ad = false;
         this.ae = false;
@@ -116,7 +119,7 @@ public abstract class Entity {
     }
 
     public boolean equals(Object object) {
-        return object instanceof Entity ? ((Entity) object).g == this.g : false;
+        return object instanceof Entity && ((Entity) object).g == this.g;
     }
 
     public int hashCode() {
@@ -133,14 +136,14 @@ public abstract class Entity {
     }
 
     public void b(float f, float f1) {
-        this.v = f;
-        this.w = f1;
+        this.yaw = f;
+        this.pitch = f1;
     }
 
     public void a(double d0, double d1, double d2) {
-        this.p = d0;
-        this.q = d1;
-        this.r = d2;
+        this.locX = d0;
+        this.locY = d1;
+        this.locZ = d2;
         float f = this.H / 2.0F;
         float f1 = this.I;
 
@@ -158,14 +161,14 @@ public abstract class Entity {
 
         ++this.W;
         this.J = this.K;
-        this.m = this.p;
-        this.n = this.q;
-        this.o = this.r;
-        this.y = this.w;
-        this.x = this.v;
+        this.lastX = this.locX;
+        this.lastY = this.locY;
+        this.lastZ = this.locZ;
+        this.lastPitch = this.pitch;
+        this.lastYaw = this.yaw;
         if (this.r()) {
             if (!this.aa && !this.c) {
-                float f = MathHelper.a(this.s * this.s * 0.20000000298023224D + this.t * this.t + this.u * this.u * 0.20000000298023224D) * 0.2F;
+                float f = MathHelper.a(this.motX * this.motX * 0.20000000298023224D + this.motY * this.motY + this.motZ * this.motZ * 0.20000000298023224D) * 0.2F;
 
                 if (f > 1.0F) {
                     f = 1.0F;
@@ -181,35 +184,35 @@ public abstract class Entity {
                 for (i = 0; (float) i < 1.0F + this.H * 20.0F; ++i) {
                     f2 = (this.V.nextFloat() * 2.0F - 1.0F) * this.H;
                     f3 = (this.V.nextFloat() * 2.0F - 1.0F) * this.H;
-                    this.world.a("bubble", this.p + (double) f2, (double) (f1 + 1.0F), this.r + (double) f3, this.s, this.t - (double) (this.V.nextFloat() * 0.2F), this.u);
+                    this.world.a("bubble", this.locX + (double) f2, f1 + 1.0F, this.locZ + (double) f3, this.motX, this.motY - (double) (this.V.nextFloat() * 0.2F), this.motZ);
                 }
 
                 for (i = 0; (float) i < 1.0F + this.H * 20.0F; ++i) {
                     f2 = (this.V.nextFloat() * 2.0F - 1.0F) * this.H;
                     f3 = (this.V.nextFloat() * 2.0F - 1.0F) * this.H;
-                    this.world.a("splash", this.p + (double) f2, (double) (f1 + 1.0F), this.r + (double) f3, this.s, this.t, this.u);
+                    this.world.a("splash", this.locX + (double) f2, f1 + 1.0F, this.locZ + (double) f3, this.motX, this.motY, this.motZ);
                 }
             }
 
-            this.M = 0.0F;
+            this.fallDistance = 0.0F;
             this.aa = true;
-            this.Y = 0;
+            this.fire = 0;
         } else {
             this.aa = false;
         }
 
-        if (this.Y > 0) {
+        if (this.fire > 0) {
             if (this.ad) {
-                this.Y -= 4;
-                if (this.Y < 0) {
-                    this.Y = 0;
+                this.fire -= 4;
+                if (this.fire < 0) {
+                    this.fire = 0;
                 }
             } else {
-                if (this.Y % 20 == 0) {
-                    this.a((Entity) null, 1);
+                if (this.fire % 20 == 0) {
+                    this.hurt(null, 1);
                 }
 
-                --this.Y;
+                --this.fire;
             }
         }
 
@@ -217,7 +220,7 @@ public abstract class Entity {
             this.n();
         }
 
-        if (this.q < -64.0D) {
+        if (this.locY < -64.0D) {
             this.o();
         }
 
@@ -226,10 +229,10 @@ public abstract class Entity {
 
     public void n() {
         if (this.ad) {
-            this.Y = 600;
+            this.fire = 600;
         } else {
-            this.a((Entity) null, 4);
-            this.Y = 600;
+            this.hurt(null, 4);
+            this.fire = 600;
         }
     }
 
@@ -241,23 +244,23 @@ public abstract class Entity {
         AxisAlignedBB axisalignedbb = this.boundingBox.c(d0, d1, d2);
         List list = this.world.a(this, axisalignedbb);
 
-        return list.size() > 0 ? false : !this.world.b(axisalignedbb);
+        return list.size() <= 0 && !this.world.b(axisalignedbb);
     }
 
     public void c(double d0, double d1, double d2) {
         if (this.S) {
             this.boundingBox.d(d0, d1, d2);
-            this.p = (this.boundingBox.a + this.boundingBox.d) / 2.0D;
-            this.q = this.boundingBox.b + (double) this.G - (double) this.Q;
-            this.r = (this.boundingBox.c + this.boundingBox.f) / 2.0D;
+            this.locX = (this.boundingBox.a + this.boundingBox.d) / 2.0D;
+            this.locY = this.boundingBox.b + (double) this.G - (double) this.Q;
+            this.locZ = (this.boundingBox.c + this.boundingBox.f) / 2.0D;
         } else {
-            double d3 = this.p;
-            double d4 = this.r;
+            double d3 = this.locX;
+            double d4 = this.locZ;
             double d5 = d0;
             double d6 = d1;
             double d7 = d2;
             AxisAlignedBB axisalignedbb = this.boundingBox.b();
-            boolean flag = this.A && this.p();
+            boolean flag = this.onGround && this.p();
 
             if (flag) {
                 double d8;
@@ -296,7 +299,7 @@ public abstract class Entity {
                 d0 = 0.0D;
             }
 
-            boolean flag1 = this.A || d6 != d1 && d6 < 0.0D;
+            boolean flag1 = this.onGround || d6 != d1 && d6 < 0.0D;
 
             int j;
 
@@ -332,7 +335,7 @@ public abstract class Entity {
                 double d11 = d2;
 
                 d0 = d5;
-                d1 = (double) this.R;
+                d1 = this.R;
                 d2 = d7;
                 AxisAlignedBB axisalignedbb1 = this.boundingBox.b();
 
@@ -382,45 +385,45 @@ public abstract class Entity {
                 }
             }
 
-            this.p = (this.boundingBox.a + this.boundingBox.d) / 2.0D;
-            this.q = this.boundingBox.b + (double) this.G - (double) this.Q;
-            this.r = (this.boundingBox.c + this.boundingBox.f) / 2.0D;
-            this.B = d5 != d0 || d7 != d2;
+            this.locX = (this.boundingBox.a + this.boundingBox.d) / 2.0D;
+            this.locY = this.boundingBox.b + (double) this.G - (double) this.Q;
+            this.locZ = (this.boundingBox.c + this.boundingBox.f) / 2.0D;
+            this.positionChanged = d5 != d0 || d7 != d2;
             this.C = d6 != d1;
-            this.A = d6 != d1 && d6 < 0.0D;
-            this.D = this.B || this.C;
-            if (this.A) {
-                if (this.M > 0.0F) {
-                    this.a(this.M);
-                    this.M = 0.0F;
+            this.onGround = d6 != d1 && d6 < 0.0D;
+            this.D = this.positionChanged || this.C;
+            if (this.onGround) {
+                if (this.fallDistance > 0.0F) {
+                    this.a(this.fallDistance);
+                    this.fallDistance = 0.0F;
                 }
             } else if (d1 < 0.0D) {
-                this.M = (float) ((double) this.M - d1);
+                this.fallDistance = (float) ((double) this.fallDistance - d1);
             }
 
             if (d5 != d0) {
-                this.s = 0.0D;
+                this.motX = 0.0D;
             }
 
             if (d6 != d1) {
-                this.t = 0.0D;
+                this.motY = 0.0D;
             }
 
             if (d7 != d2) {
-                this.u = 0.0D;
+                this.motZ = 0.0D;
             }
 
-            d9 = this.p - d3;
-            d10 = this.r - d4;
+            d9 = this.locX - d3;
+            d10 = this.locZ - d4;
             this.K = (float) ((double) this.K + (double) MathHelper.a(d9 * d9 + d10 * d10) * 0.6D);
             int l;
             int i1;
             int j1;
 
             if (this.L && !flag) {
-                l = MathHelper.b(this.p);
-                i1 = MathHelper.b(this.q - 0.20000000298023224D - (double) this.G);
-                j1 = MathHelper.b(this.r);
+                l = MathHelper.b(this.locX);
+                i1 = MathHelper.b(this.locY - 0.20000000298023224D - (double) this.G);
+                j1 = MathHelper.b(this.locZ);
                 k = this.world.a(l, i1, j1);
                 if (this.K > (float) this.b && k > 0) {
                     ++this.b;
@@ -462,18 +465,18 @@ public abstract class Entity {
             if (this.world.c(this.boundingBox)) {
                 this.b(1);
                 if (!flag2) {
-                    ++this.Y;
-                    if (this.Y == 0) {
-                        this.Y = 300;
+                    ++this.fire;
+                    if (this.fire == 0) {
+                        this.fire = 300;
                     }
                 }
-            } else if (this.Y <= 0) {
-                this.Y = -this.X;
+            } else if (this.fire <= 0) {
+                this.fire = -this.X;
             }
 
-            if (flag2 && this.Y > 0) {
+            if (flag2 && this.fire > 0) {
                 this.world.a(this, "random.fizz", 0.7F, 1.6F + (this.V.nextFloat() - this.V.nextFloat()) * 0.4F);
-                this.Y = -this.X;
+                this.fire = -this.X;
             }
         }
     }
@@ -487,7 +490,7 @@ public abstract class Entity {
     }
 
     public void b(int i) {
-        this.a((Entity) null, i);
+        this.hurt(null, i);
     }
 
     public void a(float f) {
@@ -498,10 +501,10 @@ public abstract class Entity {
     }
 
     public boolean a(Material material) {
-        double d0 = this.q + (double) this.s();
-        int i = MathHelper.b(this.p);
+        double d0 = this.locY + (double) this.s();
+        int i = MathHelper.b(this.locX);
         int j = MathHelper.d((float) MathHelper.b(d0));
-        int k = MathHelper.b(this.r);
+        int k = MathHelper.b(this.locZ);
         int l = this.world.a(i, j, k);
 
         if (l != 0 && Block.n[l].bt == material) {
@@ -533,19 +536,19 @@ public abstract class Entity {
             f3 = f2 / f3;
             f *= f3;
             f1 *= f3;
-            float f4 = MathHelper.a(this.v * 3.1415927F / 180.0F);
-            float f5 = MathHelper.b(this.v * 3.1415927F / 180.0F);
+            float f4 = MathHelper.a(this.yaw * 3.1415927F / 180.0F);
+            float f5 = MathHelper.b(this.yaw * 3.1415927F / 180.0F);
 
-            this.s += (double) (f * f5 - f1 * f4);
-            this.u += (double) (f1 * f5 + f * f4);
+            this.motX += f * f5 - f1 * f4;
+            this.motZ += f1 * f5 + f * f4;
         }
     }
 
     public float b(float f) {
-        int i = MathHelper.b(this.p);
+        int i = MathHelper.b(this.locX);
         double d0 = (this.boundingBox.e - this.boundingBox.b) * 0.66D;
-        int j = MathHelper.b(this.q - (double) this.G + d0);
-        int k = MathHelper.b(this.r);
+        int j = MathHelper.b(this.locY - (double) this.G + d0);
+        int k = MathHelper.b(this.locZ);
 
         return this.world.j(i, j, k);
     }
@@ -555,62 +558,62 @@ public abstract class Entity {
     }
 
     public void b(double d0, double d1, double d2, float f, float f1) {
-        this.m = this.p = d0;
-        this.n = this.q = d1;
-        this.o = this.r = d2;
-        this.v = f;
-        this.w = f1;
+        this.lastX = this.locX = d0;
+        this.lastY = this.locY = d1;
+        this.lastZ = this.locZ = d2;
+        this.yaw = f;
+        this.pitch = f1;
         this.Q = 0.0F;
-        double d3 = (double) (this.x - f);
+        double d3 = this.lastYaw - f;
 
         if (d3 < -180.0D) {
-            this.x += 360.0F;
+            this.lastYaw += 360.0F;
         }
 
         if (d3 >= 180.0D) {
-            this.x -= 360.0F;
+            this.lastYaw -= 360.0F;
         }
 
-        this.a(this.p, this.q, this.r);
+        this.a(this.locX, this.locY, this.locZ);
     }
 
     public void c(double d0, double d1, double d2, float f, float f1) {
-        this.m = this.p = d0;
-        this.n = this.q = d1 + (double) this.G;
-        this.o = this.r = d2;
-        this.v = f;
-        this.w = f1;
-        this.a(this.p, this.q, this.r);
+        this.lastX = this.locX = d0;
+        this.lastY = this.locY = d1 + (double) this.G;
+        this.lastZ = this.locZ = d2;
+        this.yaw = f;
+        this.pitch = f1;
+        this.a(this.locX, this.locY, this.locZ);
     }
 
     public float a(Entity entity) {
-        float f = (float) (this.p - entity.p);
-        float f1 = (float) (this.q - entity.q);
-        float f2 = (float) (this.r - entity.r);
+        float f = (float) (this.locX - entity.locX);
+        float f1 = (float) (this.locY - entity.locY);
+        float f2 = (float) (this.locZ - entity.locZ);
 
         return MathHelper.c(f * f + f1 * f1 + f2 * f2);
     }
 
     public double d(double d0, double d1, double d2) {
-        double d3 = this.p - d0;
-        double d4 = this.q - d1;
-        double d5 = this.r - d2;
+        double d3 = this.locX - d0;
+        double d4 = this.locY - d1;
+        double d5 = this.locZ - d2;
 
         return d3 * d3 + d4 * d4 + d5 * d5;
     }
 
     public double e(double d0, double d1, double d2) {
-        double d3 = this.p - d0;
-        double d4 = this.q - d1;
-        double d5 = this.r - d2;
+        double d3 = this.locX - d0;
+        double d4 = this.locY - d1;
+        double d5 = this.locZ - d2;
 
-        return (double) MathHelper.a(d3 * d3 + d4 * d4 + d5 * d5);
+        return MathHelper.a(d3 * d3 + d4 * d4 + d5 * d5);
     }
 
     public double b(Entity entity) {
-        double d0 = this.p - entity.p;
-        double d1 = this.q - entity.q;
-        double d2 = this.r - entity.r;
+        double d0 = this.locX - entity.locX;
+        double d1 = this.locY - entity.locY;
+        double d2 = this.locZ - entity.locZ;
 
         return d0 * d0 + d1 * d1 + d2 * d2;
     }
@@ -620,12 +623,12 @@ public abstract class Entity {
 
     public void c(Entity entity) {
         if (entity.j != this && entity.k != this) {
-            double d0 = entity.p - this.p;
-            double d1 = entity.r - this.r;
+            double d0 = entity.locX - this.locX;
+            double d1 = entity.locZ - this.locZ;
             double d2 = MathHelper.a(d0, d1);
 
             if (d2 >= 0.009999999776482582D) {
-                d2 = (double) MathHelper.a(d2);
+                d2 = MathHelper.a(d2);
                 d0 /= d2;
                 d1 /= d2;
                 double d3 = 1.0D / d2;
@@ -638,8 +641,8 @@ public abstract class Entity {
                 d1 *= d3;
                 d0 *= 0.05000000074505806D;
                 d1 *= 0.05000000074505806D;
-                d0 *= (double) (1.0F - this.T);
-                d1 *= (double) (1.0F - this.T);
+                d0 *= 1.0F - this.T;
+                d1 *= 1.0F - this.T;
                 this.f(-d0, 0.0D, -d1);
                 entity.f(d0, 0.0D, d1);
             }
@@ -647,12 +650,12 @@ public abstract class Entity {
     }
 
     public void f(double d0, double d1, double d2) {
-        this.s += d0;
-        this.t += d1;
-        this.u += d2;
+        this.motX += d0;
+        this.motY += d1;
+        this.motZ += d2;
     }
 
-    public boolean a(Entity entity, int i) {
+    public boolean hurt(Entity entity, int i) {
         return false;
     }
 
@@ -680,13 +683,13 @@ public abstract class Entity {
     }
 
     public void d(NBTTagCompound nbttagcompound) {
-        nbttagcompound.a("Pos", (NBTBase) this.a(new double[]{this.p, this.q, this.r}));
-        nbttagcompound.a("Motion", (NBTBase) this.a(new double[]{this.s, this.t, this.u}));
-        nbttagcompound.a("Rotation", (NBTBase) this.a(new float[]{this.v, this.w}));
-        nbttagcompound.a("FallDistance", this.M);
-        nbttagcompound.a("Fire", (short) this.Y);
-        nbttagcompound.a("Air", (short) this.ac);
-        nbttagcompound.a("OnGround", this.A);
+        nbttagcompound.a("Pos", this.a(new double[]{this.locX, this.locY, this.locZ}));
+        nbttagcompound.a("Motion", this.a(new double[]{this.motX, this.motY, this.motZ}));
+        nbttagcompound.a("Rotation", this.a(new float[]{this.yaw, this.pitch}));
+        nbttagcompound.a("FallDistance", this.fallDistance);
+        nbttagcompound.a("Fire", (short) this.fire);
+        nbttagcompound.a("Air", (short) this.air);
+        nbttagcompound.a("OnGround", this.onGround);
         this.a(nbttagcompound);
     }
 
@@ -696,19 +699,19 @@ public abstract class Entity {
         NBTTagList nbttaglist2 = nbttagcompound.k("Rotation");
 
         this.a(0.0D, 0.0D, 0.0D);
-        this.s = ((NBTTagDouble) nbttaglist1.a(0)).a;
-        this.t = ((NBTTagDouble) nbttaglist1.a(1)).a;
-        this.u = ((NBTTagDouble) nbttaglist1.a(2)).a;
-        this.m = this.N = this.p = ((NBTTagDouble) nbttaglist.a(0)).a;
-        this.n = this.O = this.q = ((NBTTagDouble) nbttaglist.a(1)).a;
-        this.o = this.P = this.r = ((NBTTagDouble) nbttaglist.a(2)).a;
-        this.x = this.v = ((NBTTagFloat) nbttaglist2.a(0)).a;
-        this.y = this.w = ((NBTTagFloat) nbttaglist2.a(1)).a;
-        this.M = nbttagcompound.f("FallDistance");
-        this.Y = nbttagcompound.c("Fire");
-        this.ac = nbttagcompound.c("Air");
-        this.A = nbttagcompound.l("OnGround");
-        this.a(this.p, this.q, this.r);
+        this.motX = ((NBTTagDouble) nbttaglist1.a(0)).a;
+        this.motY = ((NBTTagDouble) nbttaglist1.a(1)).a;
+        this.motZ = ((NBTTagDouble) nbttaglist1.a(2)).a;
+        this.lastX = this.N = this.locX = ((NBTTagDouble) nbttaglist.a(0)).a;
+        this.lastY = this.O = this.locY = ((NBTTagDouble) nbttaglist.a(1)).a;
+        this.lastZ = this.P = this.locZ = ((NBTTagDouble) nbttaglist.a(2)).a;
+        this.lastYaw = this.yaw = ((NBTTagFloat) nbttaglist2.a(0)).a;
+        this.lastPitch = this.pitch = ((NBTTagFloat) nbttaglist2.a(1)).a;
+        this.fallDistance = nbttagcompound.f("FallDistance");
+        this.fire = nbttagcompound.c("Fire");
+        this.air = nbttagcompound.c("Air");
+        this.onGround = nbttagcompound.l("OnGround");
+        this.a(this.locX, this.locY, this.locZ);
         this.b(nbttagcompound);
     }
 
@@ -728,7 +731,7 @@ public abstract class Entity {
         for (int j = 0; j < i; ++j) {
             double d0 = adouble1[j];
 
-            nbttaglist.a((NBTBase) (new NBTTagDouble(d0)));
+            nbttaglist.a(new NBTTagDouble(d0));
         }
 
         return nbttaglist;
@@ -742,7 +745,7 @@ public abstract class Entity {
         for (int j = 0; j < i; ++j) {
             float f = afloat1[j];
 
-            nbttaglist.a((NBTBase) (new NBTTagFloat(f)));
+            nbttaglist.a(new NBTTagFloat(f));
         }
 
         return nbttaglist;
@@ -753,10 +756,10 @@ public abstract class Entity {
     }
 
     public EntityItem a(int i, int j, float f) {
-        EntityItem entityitem = new EntityItem(this.world, this.p, this.q + (double) f, this.r, new ItemStack(i, j));
+        EntityItem entityitem = new EntityItem(this.world, this.locX, this.locY + (double) f, this.locZ, new ItemStack(i, j));
 
         entityitem.c = 10;
-        this.world.a((Entity) entityitem);
+        this.world.trackEntity(entityitem);
         return entityitem;
     }
 
@@ -765,9 +768,9 @@ public abstract class Entity {
     }
 
     public boolean x() {
-        int i = MathHelper.b(this.p);
-        int j = MathHelper.b(this.q + (double) this.s());
-        int k = MathHelper.b(this.r);
+        int i = MathHelper.b(this.locX);
+        int j = MathHelper.b(this.locY + (double) this.s());
+        int k = MathHelper.b(this.locZ);
 
         return this.world.d(i, j, k);
     }
@@ -780,15 +783,14 @@ public abstract class Entity {
         if (this.k.F) {
             this.k = null;
         } else {
-            this.s = 0.0D;
-            this.t = 0.0D;
-            this.u = 0.0D;
+            this.motX = 0.0D;
+            this.motY = 0.0D;
+            this.motZ = 0.0D;
             this.b_();
             this.k.z();
-            this.e += (double) (this.k.v - this.k.x);
+            this.e += this.k.yaw - this.k.lastYaw;
 
-            for (this.d += (double) (this.k.w - this.k.y); this.e >= 180.0D; this.e -= 360.0D) {
-                ;
+            for (this.d += this.k.pitch - this.k.lastPitch; this.e >= 180.0D; this.e -= 360.0D) {
             }
 
             while (this.e < -180.0D) {
@@ -808,34 +810,34 @@ public abstract class Entity {
             float f = 10.0F;
 
             if (d0 > (double) f) {
-                d0 = (double) f;
+                d0 = f;
             }
 
             if (d0 < (double) (-f)) {
-                d0 = (double) (-f);
+                d0 = -f;
             }
 
             if (d1 > (double) f) {
-                d1 = (double) f;
+                d1 = f;
             }
 
             if (d1 < (double) (-f)) {
-                d1 = (double) (-f);
+                d1 = -f;
             }
 
             this.e -= d0;
             this.d -= d1;
-            this.v = (float) ((double) this.v + d0);
-            this.w = (float) ((double) this.w + d1);
+            this.yaw = (float) ((double) this.yaw + d0);
+            this.pitch = (float) ((double) this.pitch + d1);
         }
     }
 
     public void z() {
-        this.j.a(this.p, this.q + this.j() + this.j.A(), this.r);
+        this.j.a(this.locX, this.locY + this.j() + this.j.A(), this.locZ);
     }
 
     public double A() {
-        return (double) this.G;
+        return this.G;
     }
 
     public double j() {
@@ -848,7 +850,7 @@ public abstract class Entity {
         if (this.k == entity) {
             this.k.j = null;
             this.k = null;
-            this.c(entity.p, entity.boundingBox.b + (double) entity.I, entity.r, this.v, this.w);
+            this.c(entity.locX, entity.boundingBox.b + (double) entity.I, entity.locZ, this.yaw, this.pitch);
         } else {
             if (this.k != null) {
                 this.k.j = null;

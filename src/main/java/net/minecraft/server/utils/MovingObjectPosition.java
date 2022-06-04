@@ -24,6 +24,6 @@ public class MovingObjectPosition {
     public MovingObjectPosition(Entity entity) {
         this.a = 1;
         this.g = entity;
-        this.f = Vec3D.b(entity.p, entity.q, entity.r);
+        this.f = Vec3D.b(entity.locX, entity.locY, entity.locZ);
     }
 }

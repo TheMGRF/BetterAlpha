@@ -18,17 +18,17 @@ public class NetLoginHandler extends NetHandler {
     public static final Random RANDOM = new Random();
     public static final int MINIMUM_VERSION = 6; // Alpha 1.2.6
 
-    public NetworkManager b;
+    public NetworkManager networkManager;
     public boolean c = false;
-    private final MinecraftServer e;
+    private final MinecraftServer minecraftServer;
     private int f = 0;
     private String g = null;
     private Packet1Login h = null;
     private String i = "";
 
     public NetLoginHandler(MinecraftServer minecraftserver, Socket socket, String s) throws IOException {
-        this.e = minecraftserver;
-        this.b = new NetworkManager(socket, s, this);
+        this.minecraftServer = minecraftserver;
+        this.networkManager = new NetworkManager(socket, s, this);
     }
 
     public void a() {
@@ -40,23 +40,23 @@ public class NetLoginHandler extends NetHandler {
         if (this.f++ == 100) {
             this.b("Took too long to log in");
         } else {
-            this.b.a();
+            this.networkManager.a();
         }
     }
 
     public void b(String s) {
         LOGGER.info("Disconnecting " + this.b() + ": " + s);
-        this.b.a(new Packet255KickDisconnect(s));
-        this.b.c();
+        this.networkManager.sendPacket(new Packet255KickDisconnect(s));
+        this.networkManager.c();
         this.c = true;
     }
 
     public void a(Packet2Handshake packet2handshake) {
-        if (this.e.l) {
+        if (this.minecraftServer.l) {
             this.i = Long.toHexString(RANDOM.nextLong());
-            this.b.a(new Packet2Handshake(this.i));
+            this.networkManager.sendPacket(new Packet2Handshake(this.i));
         } else {
-            this.b.a(new Packet2Handshake("-"));
+            this.networkManager.sendPacket(new Packet2Handshake("-"));
         }
     }
 
@@ -70,7 +70,7 @@ public class NetLoginHandler extends NetHandler {
                 this.b("Outdated client!");
             }
         } else {
-            if (!this.e.l) {
+            if (!this.minecraftServer.l) {
                 this.b(packet1login);
             } else {
                 (new ThreadLoginVerifier(this, packet1login)).start();
@@ -79,20 +79,20 @@ public class NetLoginHandler extends NetHandler {
     }
 
     public void b(Packet1Login packet1login) {
-        EntityPlayer entityplayer = this.e.f.a(this, packet1login.b, packet1login.c);
-        WorldServer worldserver = this.e.getWorldByDimension(entityplayer.dimension);
+        EntityPlayer entityplayer = this.minecraftServer.serverConfigurationManager.a(this, packet1login.b, packet1login.c);
+        WorldServer worldserver = this.minecraftServer.getWorldByDimension(entityplayer.dimension);
 
         if (entityplayer != null) {
             LOGGER.info(this.b() + " logged in");
-            NetServerHandler netserverhandler = new NetServerHandler(this.e, this.b, entityplayer);
+            NetServerHandler netserverhandler = new NetServerHandler(this.minecraftServer, this.networkManager, entityplayer);
 
-            netserverhandler.b(new Packet1Login("", "", 0, worldserver.u, (byte) worldserver.q.e));
-            netserverhandler.b(new Packet6SpawnPosition(worldserver.m, worldserver.n, worldserver.o));
-            this.e.f.a(entityplayer);
-            netserverhandler.a(entityplayer.p, entityplayer.q, entityplayer.r, entityplayer.v, entityplayer.w);
+            netserverhandler.sendPacket(new Packet1Login("", "", 0, worldserver.u, (byte) worldserver.q.e));
+            netserverhandler.sendPacket(new Packet6SpawnPosition(worldserver.m, worldserver.n, worldserver.o));
+            this.minecraftServer.serverConfigurationManager.a(entityplayer);
+            netserverhandler.a(entityplayer.locX, entityplayer.locY, entityplayer.locZ, entityplayer.yaw, entityplayer.pitch);
             netserverhandler.d();
-            this.e.c.a(netserverhandler);
-            netserverhandler.b(new Packet4UpdateTime(worldserver.lastUpdate));
+            this.minecraftServer.c.a(netserverhandler);
+            netserverhandler.sendPacket(new Packet4UpdateTime(worldserver.lastUpdate));
         }
 
         this.c = true;
@@ -108,7 +108,7 @@ public class NetLoginHandler extends NetHandler {
     }
 
     public String b() {
-        return this.g != null ? this.g + " [" + this.b.b().toString() + "]" : this.b.b().toString();
+        return this.g != null ? this.g + " [" + this.networkManager.b().toString() + "]" : this.networkManager.b().toString();
     }
 
     public static String a(NetLoginHandler netloginhandler) {

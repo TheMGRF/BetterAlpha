@@ -74,10 +74,10 @@ public class BlockChest extends BlockContainer {
                     EntityItem entityitem = new EntityItem(world, (double) ((float) i + f), (double) ((float) j + f1), (double) ((float) k + f2), new ItemStack(itemstack.c, i1, itemstack.d));
                     float f3 = 0.05F;
 
-                    entityitem.s = (double) ((float) this.a.nextGaussian() * f3);
-                    entityitem.t = (double) ((float) this.a.nextGaussian() * f3 + 0.2F);
-                    entityitem.u = (double) ((float) this.a.nextGaussian() * f3);
-                    world.a((Entity) entityitem);
+                    entityitem.motX = (double) ((float) this.a.nextGaussian() * f3);
+                    entityitem.motY = (double) ((float) this.a.nextGaussian() * f3 + 0.2F);
+                    entityitem.motZ = (double) ((float) this.a.nextGaussian() * f3);
+                    world.trackEntity((Entity) entityitem);
                 }
             }
         }

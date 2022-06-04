@@ -40,7 +40,7 @@ public class EntityBoat extends Entity {
         return (double) this.I * 0.0D - 0.30000001192092896D;
     }
 
-    public boolean a(Entity entity, int i) {
+    public boolean hurt(Entity entity, int i) {
         this.c = -this.c;
         this.b = 10;
         this.a += i * 10;
@@ -75,9 +75,9 @@ public class EntityBoat extends Entity {
             --this.a;
         }
 
-        this.m = this.p;
-        this.n = this.q;
-        this.o = this.r;
+        this.lastX = this.locX;
+        this.lastY = this.locY;
+        this.lastZ = this.locZ;
         byte b0 = 5;
         double d0 = 0.0D;
 
@@ -93,44 +93,44 @@ public class EntityBoat extends Entity {
 
         double d3 = d0 * 2.0D - 1.0D;
 
-        this.t += 0.03999999910593033D * d3;
+        this.motY += 0.03999999910593033D * d3;
         if (this.j != null) {
-            this.s += this.j.s * 0.2D;
-            this.u += this.j.u * 0.2D;
+            this.motX += this.j.motX * 0.2D;
+            this.motZ += this.j.motZ * 0.2D;
         }
 
         double d4 = 0.4D;
 
-        if (this.s < -d4) {
-            this.s = -d4;
+        if (this.motX < -d4) {
+            this.motX = -d4;
         }
 
-        if (this.s > d4) {
-            this.s = d4;
+        if (this.motX > d4) {
+            this.motX = d4;
         }
 
-        if (this.u < -d4) {
-            this.u = -d4;
+        if (this.motZ < -d4) {
+            this.motZ = -d4;
         }
 
-        if (this.u > d4) {
-            this.u = d4;
+        if (this.motZ > d4) {
+            this.motZ = d4;
         }
 
-        if (this.A) {
-            this.s *= 0.5D;
-            this.t *= 0.5D;
-            this.u *= 0.5D;
+        if (this.onGround) {
+            this.motX *= 0.5D;
+            this.motY *= 0.5D;
+            this.motZ *= 0.5D;
         }
 
-        this.c(this.s, this.t, this.u);
-        double d5 = Math.sqrt(this.s * this.s + this.u * this.u);
+        this.c(this.motX, this.motY, this.motZ);
+        double d5 = Math.sqrt(this.motX * this.motX + this.motZ * this.motZ);
         double d6;
         double d7;
 
         if (d5 > 0.15D) {
-            d6 = Math.cos((double) this.v * 3.141592653589793D / 180.0D);
-            d7 = Math.sin((double) this.v * 3.141592653589793D / 180.0D);
+            d6 = Math.cos((double) this.yaw * 3.141592653589793D / 180.0D);
+            d7 = Math.sin((double) this.yaw * 3.141592653589793D / 180.0D);
 
             for (int j = 0; (double) j < 1.0D + d5 * 60.0D; ++j) {
                 double d8 = (double) (this.V.nextFloat() * 2.0F - 1.0F);
@@ -139,18 +139,18 @@ public class EntityBoat extends Entity {
                 double d11;
 
                 if (this.V.nextBoolean()) {
-                    d10 = this.p - d6 * d8 * 0.8D + d7 * d9;
-                    d11 = this.r - d7 * d8 * 0.8D - d6 * d9;
-                    this.world.a("splash", d10, this.q - 0.125D, d11, this.s, this.t, this.u);
+                    d10 = this.locX - d6 * d8 * 0.8D + d7 * d9;
+                    d11 = this.locZ - d7 * d8 * 0.8D - d6 * d9;
+                    this.world.a("splash", d10, this.locY - 0.125D, d11, this.motX, this.motY, this.motZ);
                 } else {
-                    d10 = this.p + d6 + d7 * d8 * 0.7D;
-                    d11 = this.r + d7 - d6 * d8 * 0.7D;
-                    this.world.a("splash", d10, this.q - 0.125D, d11, this.s, this.t, this.u);
+                    d10 = this.locX + d6 + d7 * d8 * 0.7D;
+                    d11 = this.locZ + d7 - d6 * d8 * 0.7D;
+                    this.world.a("splash", d10, this.locY - 0.125D, d11, this.motX, this.motY, this.motZ);
                 }
             }
         }
 
-        if (this.B && d5 > 0.15D) {
+        if (this.positionChanged && d5 > 0.15D) {
             this.l();
 
             int k;
@@ -163,15 +163,15 @@ public class EntityBoat extends Entity {
                 this.a(Item.STICK.aW, 1, 0.0F);
             }
         } else {
-            this.s *= 0.9900000095367432D;
-            this.t *= 0.949999988079071D;
-            this.u *= 0.9900000095367432D;
+            this.motX *= 0.9900000095367432D;
+            this.motY *= 0.949999988079071D;
+            this.motZ *= 0.9900000095367432D;
         }
 
-        this.w = 0.0F;
-        d6 = (double) this.v;
-        d7 = this.m - this.p;
-        double d12 = this.o - this.r;
+        this.pitch = 0.0F;
+        d6 = (double) this.yaw;
+        d7 = this.lastX - this.locX;
+        double d12 = this.lastZ - this.locZ;
 
         if (d7 * d7 + d12 * d12 > 0.0010D) {
             d6 = (double) ((float) (Math.atan2(d12, d7) * 180.0D / 3.141592653589793D));
@@ -179,7 +179,7 @@ public class EntityBoat extends Entity {
 
         double d13;
 
-        for (d13 = d6 - (double) this.v; d13 >= 180.0D; d13 -= 360.0D) {
+        for (d13 = d6 - (double) this.yaw; d13 >= 180.0D; d13 -= 360.0D) {
             ;
         }
 
@@ -195,8 +195,8 @@ public class EntityBoat extends Entity {
             d13 = -20.0D;
         }
 
-        this.v = (float) ((double) this.v + d13);
-        this.b(this.v, this.w);
+        this.yaw = (float) ((double) this.yaw + d13);
+        this.b(this.yaw, this.pitch);
         List list = this.world.b((Entity) this, this.boundingBox.b(0.20000000298023224D, 0.0D, 0.20000000298023224D));
 
         if (list != null && list.size() > 0) {
@@ -215,10 +215,10 @@ public class EntityBoat extends Entity {
     }
 
     public void z() {
-        double d0 = Math.cos((double) this.v * 3.141592653589793D / 180.0D) * 0.4D;
-        double d1 = Math.sin((double) this.v * 3.141592653589793D / 180.0D) * 0.4D;
+        double d0 = Math.cos((double) this.yaw * 3.141592653589793D / 180.0D) * 0.4D;
+        double d1 = Math.sin((double) this.yaw * 3.141592653589793D / 180.0D) * 0.4D;
 
-        this.j.a(this.p + d0, this.q + this.j() + this.j.A(), this.r + d1);
+        this.j.a(this.locX + d0, this.locY + this.j() + this.j.A(), this.locZ + d1);
     }
 
     public void a(NBTTagCompound nbttagcompound) {
