@@ -35,8 +35,8 @@ public final class SpawnerCreature {
 
         int i;
 
-        for (i = 0; i < world.d.size(); ++i) {
-            EntityHuman entityhuman = (EntityHuman) world.d.get(i);
+        for (i = 0; i < world.players.size(); ++i) {
+            EntityHuman entityhuman = (EntityHuman) world.players.get(i);
             int j = MathHelper.b(entityhuman.locX / 16.0D);
             int k = MathHelper.b(entityhuman.locZ / 16.0D);
             byte b0 = 8;

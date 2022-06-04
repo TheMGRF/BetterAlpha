@@ -4,14 +4,11 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.packet.Packet;
 import net.minecraft.server.world.entity.impl.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 public class EntityTracker {
 
-    private Set a = new HashSet();
+    private final Set<EntityTrackerEntry> a = new HashSet<>();
     private EntityList b = new EntityList();
     private MinecraftServer c;
     private int d;
@@ -24,14 +21,10 @@ public class EntityTracker {
     }
 
     public void addEntity(Entity entity) {
-        if (entity instanceof EntityPlayer) {
+        if (entity instanceof EntityPlayer entityplayer) {
             this.addEntity(entity, 512, 2);
-            EntityPlayer entityplayer = (EntityPlayer) entity;
-            Iterator iterator = this.a.iterator();
 
-            while (iterator.hasNext()) {
-                EntityTrackerEntry entitytrackerentry = (EntityTrackerEntry) iterator.next();
-
+            for (EntityTrackerEntry entitytrackerentry : this.a) {
                 if (entitytrackerentry.a != entityplayer) {
                     entitytrackerentry.a(entityplayer);
                 }
@@ -50,9 +43,10 @@ public class EntityTracker {
     }
 
     public void addEntity(Entity entity, int i, int j) {
-/*    	if (entity instanceof EntityPlayer) {
-    		System.out.println("Tracking player");
-    	}*/
+    	if (entity instanceof EntityPlayer player) {
+            MinecraftServer.LOGGER.info("Tracking player: " + player.username);
+    	}
+
         if (i > this.d) {
             i = this.d;
         }
@@ -64,19 +58,14 @@ public class EntityTracker {
 
             this.a.add(entitytrackerentry);
             this.b.a(entity.g, entitytrackerentry);
-            entitytrackerentry.b(this.c.getWorldByDimension(this.e).d);
+            entitytrackerentry.b(this.c.getWorldByDimension(this.e).players);
         }
     }
 
     public void removeEntity(Entity entity) {
-        if (entity instanceof EntityPlayer) {
-            EntityPlayer entityplayer = (EntityPlayer) entity;
-            Iterator iterator = this.a.iterator();
-
-            while (iterator.hasNext()) {
-                EntityTrackerEntry entitytrackerentry = (EntityTrackerEntry) iterator.next();
-
-                entitytrackerentry.a(entityplayer);
+        if (entity instanceof EntityPlayer entityplayer) {
+            for (EntityTrackerEntry entry : this.a) {
+                entry.a(entityplayer);
             }
         }
         EntityTrackerEntry entitytrackerentry = (EntityTrackerEntry) this.b.d(entity.g);
@@ -88,27 +77,18 @@ public class EntityTracker {
     }
 
     public void a() {
-        ArrayList arraylist = new ArrayList();
-        Iterator iterator = this.a.iterator();
-
-        while (iterator.hasNext()) {
-            EntityTrackerEntry entitytrackerentry = (EntityTrackerEntry) iterator.next();
-
-            entitytrackerentry.a(this.c.getWorldByDimension(this.e).d);
+        List<EntityPlayer> arraylist = new ArrayList<>();
+        for (EntityTrackerEntry entitytrackerentry : this.a) {
+            entitytrackerentry.a(this.c.getWorldByDimension(this.e).players);
             if (entitytrackerentry.j && entitytrackerentry.a instanceof EntityPlayer) {
                 arraylist.add((EntityPlayer) entitytrackerentry.a);
             }
         }
 
-        for (int i = 0; i < arraylist.size(); ++i) {
-            EntityPlayer entityplayer = (EntityPlayer) arraylist.get(i);
-            Iterator iterator1 = this.a.iterator();
-
-            while (iterator1.hasNext()) {
-                EntityTrackerEntry entitytrackerentry1 = (EntityTrackerEntry) iterator1.next();
-
-                if (entitytrackerentry1.a != entityplayer) {
-                    entitytrackerentry1.a(entityplayer);
+        for (EntityPlayer entityPlayer : arraylist) {
+            for (EntityTrackerEntry entitytrackerentry1 : this.a) {
+                if (entitytrackerentry1.a != entityPlayer) {
+                    entitytrackerentry1.a(entityPlayer);
                 }
             }
         }

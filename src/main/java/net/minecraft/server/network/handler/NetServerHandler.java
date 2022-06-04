@@ -197,8 +197,8 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
         player.spawnIn(toTp);
         player.worldItems = new ItemInWorldManager(toTp);
         player.worldItems.entityHuman = player;
-        for (int j = 0; j < world.b.size(); ++j) {
-            Entity en = ((Entity) world.b.get(j));
+        for (int j = 0; j < world.entities.size(); ++j) {
+            Entity en = ((Entity) world.entities.get(j));
             this.entityPlayer.networkHandler.sendPacket(new Packet29DestroyEntity(en.g));
         }
     }
@@ -274,7 +274,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 
     public void a(Packet15Place packet15place) {
         WorldServer worldserver = this.minecraftServer.getWorldByDimension(this.entityPlayer.dimension);
-        boolean flag = worldserver.B = worldserver.q.e != 0 || this.minecraftServer.serverConfigurationManager.g(this.entityPlayer.username);
+        boolean flag = worldserver.B = worldserver.q.e != 0 || this.minecraftServer.serverConfigurationManager.isAdmin(this.entityPlayer.username);
         int i = packet15place.b;
         int j = packet15place.c;
         int k = packet15place.d;
@@ -394,7 +394,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
         } else {
             String s1;
 
-            if (this.minecraftServer.serverConfigurationManager.g(this.entityPlayer.username)) {
+            if (this.minecraftServer.serverConfigurationManager.isAdmin(this.entityPlayer.username)) {
                 s1 = s.substring(1);
                 LOGGER.info(this.entityPlayer.username + " issued server command: " + s1);
                 this.minecraftServer.a(s1, this);

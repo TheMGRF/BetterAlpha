@@ -15,18 +15,18 @@ import java.util.logging.Logger;
 
 public class ServerConfigurationManager {
 
-    public static Logger a = Logger.getLogger("Minecraft");
+    public static final Logger LOGGER = Logger.getLogger("Minecraft");
 
-    public List<EntityPlayer> players = new ArrayList<>();
+    public final List<EntityPlayer> players = new ArrayList<>();
     private final MinecraftServer minecraftServer;
     private final PlayerManager[] playersInWorld = new PlayerManager[2];
-    private int e;
-    private Set f = new HashSet();
-    private Set g = new HashSet();
-    private Set h = new HashSet();
-    private File i;
-    private File j;
-    private File k;
+    private final int maxPlayers;
+    private final Set<String> banned = new HashSet<>();
+    private final Set<String> ipBanned = new HashSet<>();
+    private final Set<String> admins = new HashSet<>();
+    private final File i;
+    private final File j;
+    private final File k;
     private PlayerNBTManager l;
 
     public ServerConfigurationManager(MinecraftServer minecraftserver) {
@@ -37,13 +37,13 @@ public class ServerConfigurationManager {
 
         this.playersInWorld[0] = new PlayerManager(minecraftserver, 0);
         this.playersInWorld[1] = new PlayerManager(minecraftserver, -1);
-        this.e = minecraftserver.d.a("max-players", 20);
-        this.e();
-        this.g();
-        this.i();
-        this.f();
-        this.h();
-        this.j();
+        this.maxPlayers = minecraftserver.d.a("max-players", 20);
+        this.loadBanList();
+        this.loadIPBanList();
+        this.loadAdmins();
+        this.saveBanList();
+        this.saveIPBanList();
+        this.saveAdmins();
     }
 
     public void a(WorldServer[] aworldserver) {
@@ -97,7 +97,7 @@ public class ServerConfigurationManager {
     }
 
     public EntityPlayer a(NetLoginHandler netloginhandler, String s, String s1) {
-        if (this.f.contains(s.trim().toLowerCase())) {
+        if (this.banned.contains(s.trim().toLowerCase())) {
             netloginhandler.b("You are banned from this server!");
             return null;
         } else {
@@ -105,17 +105,16 @@ public class ServerConfigurationManager {
 
             s2 = s2.substring(s2.indexOf("/") + 1);
             s2 = s2.substring(0, s2.indexOf(":"));
-            if (this.g.contains(s2)) {
+            if (this.ipBanned.contains(s2)) {
                 netloginhandler.b("Your IP address is banned from this server!");
                 return null;
-            } else if (this.players.size() >= this.e) {
+            } else if (this.players.size() >= this.maxPlayers) {
                 netloginhandler.b("The server is full!");
                 return null;
             } else {
-                for (int i = 0; i < this.players.size(); ++i) {
-                    EntityPlayer entityplayer = (EntityPlayer) this.players.get(i);
+                for (EntityPlayer player : this.players) {
 
-                    if (entityplayer.username.equalsIgnoreCase(s)) {
+                    if (player.username.equalsIgnoreCase(s)) {
                         netloginhandler.b("You logged in from another location!");
                     }
                 }
@@ -128,12 +127,12 @@ public class ServerConfigurationManager {
     public EntityPlayer respawnPlayer(EntityPlayer player) {
         // TODO: Support for multi-world (nether?)
         this.minecraftServer.entityTrackers[0].removeEntity(player);
-        this.minecraftServer.entityTrackers[0].addEntity(player);
+        //this.minecraftServer.entityTrackers[0].addEntity(player);
         this.playersInWorld[0].b(player);
-
-        this.players.remove(player); // eww but probably right
+        this.players.remove(player);
 
         WorldServer worldServer = this.minecraftServer.worlds[0];
+        //worldServer.trackEntity()
         worldServer.d(player);
 
         // Make a new entity player
@@ -151,14 +150,14 @@ public class ServerConfigurationManager {
         player.networkHandler.a(player.lastX, player.lastY, player.lastZ, player.lastYaw, player.lastPitch);
 
         this.playersInWorld[0].a(newPlayer);
-        //worldServer.trackEntity(newPlayer);
+        worldServer.trackEntity(newPlayer);
         this.players.add(newPlayer);
         return newPlayer;
     }
 
     public void b() {
-        for (int i = 0; i < this.playersInWorld.length; ++i) {
-            this.playersInWorld[i].a();
+        for (PlayerManager playerManager : this.playersInWorld) {
+            playerManager.a();
         }
     }
 
@@ -168,176 +167,156 @@ public class ServerConfigurationManager {
     }
 
     public void a(Packet packet) {
-        for (int i = 0; i < this.players.size(); ++i) {
-            EntityPlayer entityplayer = (EntityPlayer) this.players.get(i);
-
-            entityplayer.networkHandler.sendPacket(packet);
+        for (EntityPlayer player : this.players) {
+            player.networkHandler.sendPacket(packet);
         }
     }
 
     public void a(Packet packet, int i) {
-        for (int j = 0; j < this.players.size(); ++j) {
-            EntityPlayer entityplayer = (EntityPlayer) this.players.get(j);
-
-            if (entityplayer.dimension == i) {
-                entityplayer.networkHandler.sendPacket(packet);
+        for (EntityPlayer player : this.players) {
+            if (player.dimension == i) {
+                player.networkHandler.sendPacket(packet);
             }
         }
     }
 
     public String c() {
-        String s = "";
+        StringBuilder s = new StringBuilder();
 
         for (int i = 0; i < this.players.size(); ++i) {
             if (i > 0) {
-                s = s + ", ";
+                s.append(", ");
             }
 
-            s = s + ((EntityPlayer) this.players.get(i)).username;
+            s.append(this.players.get(i).username);
         }
 
-        return s;
+        return s.toString();
     }
 
-    public void a(String s) {
-        this.f.add(s.toLowerCase());
-        this.f();
+    public void ban(String s) {
+        this.banned.add(s.toLowerCase());
+        this.saveBanList();
     }
 
-    public void b(String s) {
-        this.f.remove(s.toLowerCase());
-        this.f();
+    public void unban(String s) {
+        this.banned.remove(s.toLowerCase());
+        this.saveBanList();
     }
 
-    private void e() {
+    private void loadBanList() {
         try {
-            this.f.clear();
+            this.banned.clear();
             BufferedReader bufferedreader = new BufferedReader(new FileReader(this.i));
-            String s = "";
-
+            String s;
             while ((s = bufferedreader.readLine()) != null) {
-                this.f.add(s.trim().toLowerCase());
+                this.banned.add(s.trim().toLowerCase());
             }
 
             bufferedreader.close();
         } catch (Exception exception) {
-            a.warning("Failed to load ban list: " + exception);
+            LOGGER.warning("Failed to load ban list: " + exception);
         }
     }
 
-    private void f() {
+    private void saveBanList() {
         try {
             PrintWriter printwriter = new PrintWriter(new FileWriter(this.i, false));
-            Iterator iterator = this.f.iterator();
-
-            while (iterator.hasNext()) {
-                String s = (String) iterator.next();
-
+            for (String s : this.banned) {
                 printwriter.println(s);
             }
 
             printwriter.close();
         } catch (Exception exception) {
-            a.warning("Failed to save ban list: " + exception);
+            LOGGER.warning("Failed to save ban list: " + exception);
         }
     }
 
-    public void c(String s) {
-        this.g.add(s.toLowerCase());
-        this.h();
+    public void banIP(String s) {
+        this.ipBanned.add(s.toLowerCase());
+        this.saveIPBanList();
     }
 
-    public void d(String s) {
-        this.g.remove(s.toLowerCase());
-        this.h();
+    public void unbanIP(String s) {
+        this.ipBanned.remove(s.toLowerCase());
+        this.saveIPBanList();
     }
 
-    private void g() {
+    private void loadIPBanList() {
         try {
-            this.g.clear();
+            this.ipBanned.clear();
             BufferedReader bufferedreader = new BufferedReader(new FileReader(this.j));
-            String s = "";
-
+            String s;
             while ((s = bufferedreader.readLine()) != null) {
-                this.g.add(s.trim().toLowerCase());
+                this.ipBanned.add(s.trim().toLowerCase());
             }
 
             bufferedreader.close();
         } catch (Exception exception) {
-            a.warning("Failed to load ip ban list: " + exception);
+            LOGGER.warning("Failed to load ip ban list: " + exception);
         }
     }
 
-    private void h() {
+    private void saveIPBanList() {
         try {
             PrintWriter printwriter = new PrintWriter(new FileWriter(this.j, false));
-            Iterator iterator = this.g.iterator();
-
-            while (iterator.hasNext()) {
-                String s = (String) iterator.next();
-
+            for (String s : this.ipBanned) {
                 printwriter.println(s);
             }
 
             printwriter.close();
         } catch (Exception exception) {
-            a.warning("Failed to save ip ban list: " + exception);
+            LOGGER.warning("Failed to save ip ban list: " + exception);
         }
     }
 
-    public void e(String s) {
-        this.h.add(s.toLowerCase());
-        this.j();
+    public void setAdmin(String s) {
+        this.admins.add(s.toLowerCase());
+        this.saveAdmins();
     }
 
-    public void f(String s) {
-        this.h.remove(s.toLowerCase());
-        this.j();
+    public void removeAdmin(String s) {
+        this.admins.remove(s.toLowerCase());
+        this.saveAdmins();
     }
 
-    private void i() {
+    private void loadAdmins() {
         try {
-            this.h.clear();
+            this.admins.clear();
             BufferedReader bufferedreader = new BufferedReader(new FileReader(this.k));
-            String s = "";
-
+            String s;
             while ((s = bufferedreader.readLine()) != null) {
-                this.h.add(s.trim().toLowerCase());
+                this.admins.add(s.trim().toLowerCase());
             }
 
             bufferedreader.close();
         } catch (Exception exception) {
-            a.warning("Failed to load ip ban list: " + exception);
+            LOGGER.warning("Failed to load ip ban list: " + exception);
         }
     }
 
-    private void j() {
+    private void saveAdmins() {
         try {
             PrintWriter printwriter = new PrintWriter(new FileWriter(this.k, false));
-            Iterator iterator = this.h.iterator();
 
-            while (iterator.hasNext()) {
-                String s = (String) iterator.next();
-
+            for (String s : this.admins) {
                 printwriter.println(s);
             }
 
             printwriter.close();
         } catch (Exception exception) {
-            a.warning("Failed to save ip ban list: " + exception);
+            LOGGER.warning("Failed to save admin list: " + exception);
         }
     }
 
-    public boolean g(String s) {
-        return this.h.contains(s.trim().toLowerCase());
+    public boolean isAdmin(String s) {
+        return this.admins.contains(s.trim().toLowerCase());
     }
 
-    public EntityPlayer h(String s) {
-        for (int i = 0; i < this.players.size(); ++i) {
-            EntityPlayer entityplayer = (EntityPlayer) this.players.get(i);
-
-            if (entityplayer.username.equalsIgnoreCase(s)) {
-                return entityplayer;
+    public EntityPlayer getPlayer(String s) {
+        for (EntityPlayer player : this.players) {
+            if (player.username.equalsIgnoreCase(s)) {
+                return player;
             }
         }
 
@@ -345,27 +324,24 @@ public class ServerConfigurationManager {
     }
 
     public void a(String s, String s1) {
-        EntityPlayer entityplayer = this.h(s);
+        EntityPlayer entityplayer = this.getPlayer(s);
 
         if (entityplayer != null) {
-            entityplayer.networkHandler.sendPacket((Packet) (new Packet3Chat(s1)));
+            entityplayer.networkHandler.sendPacket(new Packet3Chat(s1));
         }
     }
 
     public void i(String s) {
         Packet3Chat packet3chat = new Packet3Chat(s);
-
-        for (int i = 0; i < this.players.size(); ++i) {
-            EntityPlayer entityplayer = (EntityPlayer) this.players.get(i);
-
-            if (this.g(entityplayer.username)) {
-                entityplayer.networkHandler.sendPacket((Packet) packet3chat);
+        for (EntityPlayer player : this.players) {
+            if (this.isAdmin(player.username)) {
+                player.networkHandler.sendPacket(packet3chat);
             }
         }
     }
 
     public boolean a(String s, Packet packet) {
-        EntityPlayer entityplayer = this.h(s);
+        EntityPlayer entityplayer = this.getPlayer(s);
 
         if (entityplayer != null) {
             entityplayer.networkHandler.sendPacket(packet);
@@ -384,8 +360,8 @@ public class ServerConfigurationManager {
     }
 
     public void d() {
-        for (int i = 0; i < this.players.size(); ++i) {
-            this.l.a((EntityPlayer) this.players.get(i));
+        for (EntityPlayer player : this.players) {
+            this.l.a(player);
         }
     }
 }

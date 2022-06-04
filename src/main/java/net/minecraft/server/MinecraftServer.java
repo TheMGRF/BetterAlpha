@@ -368,8 +368,8 @@ public class MinecraftServer implements ICommandListener, Runnable {
                     this.worlds[0].C = false;
                 } else if (s.toLowerCase().startsWith("clearentity")) {
                     int i = 0;
-                    for (int j = 0; j < this.worlds[0].b.size(); ++j) {
-                        Entity e = ((Entity) this.worlds[0].b.get(j));
+                    for (int j = 0; j < this.worlds[0].entities.size(); ++j) {
+                        Entity e = ((Entity) this.worlds[0].entities.get(j));
                         if (!(e instanceof EntityHuman) || !(e instanceof EntityPlayer)) {
                             this.worlds[0].d(e);
                             i++;
@@ -381,36 +381,36 @@ public class MinecraftServer implements ICommandListener, Runnable {
 
                     if (s.toLowerCase().startsWith("op ")) {
                         s2 = s.substring(s.indexOf(" ")).trim();
-                        this.serverConfigurationManager.e(s2);
+                        this.serverConfigurationManager.setAdmin(s2);
                         this.a(s1, "Opping " + s2);
                         this.serverConfigurationManager.a(s2, "\u00A7eYou are now op!");
                     } else if (s.toLowerCase().startsWith("deop ")) {
                         s2 = s.substring(s.indexOf(" ")).trim();
-                        this.serverConfigurationManager.f(s2);
+                        this.serverConfigurationManager.removeAdmin(s2);
                         this.serverConfigurationManager.a(s2, "\u00A7eYou are no longer op!");
                         this.a(s1, "De-opping " + s2);
                     } else if (s.toLowerCase().startsWith("ban-ip ")) {
                         s2 = s.substring(s.indexOf(" ")).trim();
-                        this.serverConfigurationManager.c(s2);
+                        this.serverConfigurationManager.banIP(s2);
                         this.a(s1, "Banning ip " + s2);
                     } else if (s.toLowerCase().startsWith("pardon-ip ")) {
                         s2 = s.substring(s.indexOf(" ")).trim();
-                        this.serverConfigurationManager.d(s2);
+                        this.serverConfigurationManager.unbanIP(s2);
                         this.a(s1, "Pardoning ip " + s2);
                     } else {
                         EntityPlayer entityplayer;
 
                         if (s.toLowerCase().startsWith("ban ")) {
                             s2 = s.substring(s.indexOf(" ")).trim();
-                            this.serverConfigurationManager.a(s2);
+                            this.serverConfigurationManager.ban(s2);
                             this.a(s1, "Banning " + s2);
-                            entityplayer = this.serverConfigurationManager.h(s2);
+                            entityplayer = this.serverConfigurationManager.getPlayer(s2);
                             if (entityplayer != null) {
                                 entityplayer.networkHandler.c("Banned by admin");
                             }
                         } else if (s.toLowerCase().startsWith("pardon ")) {
                             s2 = s.substring(s.indexOf(" ")).trim();
-                            this.serverConfigurationManager.b(s2);
+                            this.serverConfigurationManager.unban(s2);
                             this.a(s1, "Pardoning " + s2);
                         } else if (s.toLowerCase().startsWith("kick ")) {
                             s2 = s.substring(s.indexOf(" ")).trim();
@@ -437,8 +437,8 @@ public class MinecraftServer implements ICommandListener, Runnable {
                             if (s.toLowerCase().startsWith("tp ")) {
                                 astring = s.split(" ");
                                 if (astring.length == 3) {
-                                    entityplayer = this.serverConfigurationManager.h(astring[1]);
-                                    entityplayer2 = this.serverConfigurationManager.h(astring[2]);
+                                    entityplayer = this.serverConfigurationManager.getPlayer(astring[1]);
+                                    entityplayer2 = this.serverConfigurationManager.getPlayer(astring[2]);
                                     if (entityplayer == null) {
                                         icommandlistener.b("Can't find user " + astring[1] + ". No tp.");
                                     } else if (entityplayer2 == null) {
@@ -458,7 +458,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
 
                                 String s3 = astring[1];
 
-                                entityplayer2 = this.serverConfigurationManager.h(s3);
+                                entityplayer2 = this.serverConfigurationManager.getPlayer(s3);
                                 if (entityplayer2 != null) {
                                     try {
                                         int j = Integer.parseInt(astring[2]);
