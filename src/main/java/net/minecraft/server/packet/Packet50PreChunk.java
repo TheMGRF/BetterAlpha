@@ -8,30 +8,30 @@ import java.io.IOException;
 
 public class Packet50PreChunk extends Packet {
 
-    public int a;
-    public int b;
-    public boolean c;
+    public int x;
+    public int z;
+    public boolean loaded;
 
     public Packet50PreChunk() {
     }
 
-    public Packet50PreChunk(int i, int j, boolean flag) {
+    public Packet50PreChunk(int x, int z, boolean loaded) {
         this.j = true;
-        this.a = i;
-        this.b = j;
-        this.c = flag;
+        this.x = x;
+        this.z = z;
+        this.loaded = loaded;
     }
 
     public void a(DataInputStream datainputstream) throws IOException {
-        this.a = datainputstream.readInt();
-        this.b = datainputstream.readInt();
-        this.c = datainputstream.read() != 0;
+        this.x = datainputstream.readInt();
+        this.z = datainputstream.readInt();
+        this.loaded = datainputstream.read() != 0;
     }
 
     public void a(DataOutputStream dataoutputstream) throws IOException {
-        dataoutputstream.writeInt(this.a);
-        dataoutputstream.writeInt(this.b);
-        dataoutputstream.write(this.c ? 1 : 0);
+        dataoutputstream.writeInt(this.x);
+        dataoutputstream.writeInt(this.z);
+        dataoutputstream.write(this.loaded ? 1 : 0);
     }
 
     public void a(NetHandler nethandler) {

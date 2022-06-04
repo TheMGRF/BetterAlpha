@@ -10,39 +10,39 @@ import java.util.List;
 
 public class PlayerManager {
 
-    private List a = new ArrayList();
-    private PlayerList b = new PlayerList();
-    private List c = new ArrayList();
-    private MinecraftServer d;
-    private int e;
+    private List<EntityPlayer> playerEntities = new ArrayList<>();
+    private PlayerList playerList = new PlayerList();
+    private List<PlayerInstance> players = new ArrayList<>();
+    private MinecraftServer minecraftServer;
+    private int dimension;
 
-    public PlayerManager(MinecraftServer minecraftserver, int i) {
-        this.d = minecraftserver;
-        this.e = i;
+    public PlayerManager(MinecraftServer minecraftServer, int dimension) {
+        this.minecraftServer = minecraftServer;
+        this.dimension = dimension;
     }
 
-    public WorldServer aworld() {
-        return this.d.getWorldByDimension(this.e);
+    public WorldServer getWorld() {
+        return this.minecraftServer.getWorldByDimension(this.dimension);
     }
 
     public void a() {
-        for (int i = 0; i < this.c.size(); ++i) {
-            ((PlayerInstance) this.c.get(i)).a();
+        for (int i = 0; i < this.players.size(); ++i) {
+            this.players.get(i).a();
         }
 
-        this.c.clear();
+        this.players.clear();
     }
 
     private PlayerInstance a(int i, int j, boolean flag) {
         long k = (long) i + 2147483647L | (long) j + 2147483647L << 32;
-        PlayerInstance playerinstance = (PlayerInstance) this.b.a(k);
+        PlayerInstance player = (PlayerInstance) this.playerList.a(k);
 
-        if (playerinstance == null && flag) {
-            playerinstance = new PlayerInstance(this, i, j);
-            this.b.a(k, playerinstance);
+        if (player == null && flag) {
+            player = new PlayerInstance(this, i, j);
+            this.playerList.a(k, player);
         }
 
-        return playerinstance;
+        return player;
     }
 
     public void a(Packet packet, int i, int j, int k) {
@@ -78,7 +78,7 @@ public class PlayerManager {
             }
         }
 
-        this.a.add(entityplayer);
+        this.playerEntities.add(entityplayer);
     }
 
     public void b(EntityPlayer entityplayer) {
@@ -95,7 +95,7 @@ public class PlayerManager {
             }
         }
 
-        this.a.remove(entityplayer);
+        this.playerEntities.remove(entityplayer);
     }
 
     private boolean a(int i, int j, int k, int l) {
@@ -141,19 +141,15 @@ public class PlayerManager {
         }
     }
 
-    public int b() {
+    public int b() { // ?
         return 144;
     }
 
-    static MinecraftServer a(PlayerManager playermanager) {
-        return playermanager.d;
+    static PlayerList getPlayerList(PlayerManager playermanager) {
+        return playermanager.playerList;
     }
 
-    static PlayerList b(PlayerManager playermanager) {
-        return playermanager.b;
-    }
-
-    static List c(PlayerManager playermanager) {
-        return playermanager.c;
+    static List<PlayerInstance> getPlayerInstances(PlayerManager playermanager) {
+        return playermanager.players;
     }
 }

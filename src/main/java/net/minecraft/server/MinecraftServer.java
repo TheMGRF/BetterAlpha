@@ -353,7 +353,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
                     this.a(s1, "Stopping the server...");
                     for (int j = 0; j < this.serverConfigurationManager.players.size(); ++j) {
                         EntityPlayer e = ((EntityPlayer) this.serverConfigurationManager.players.get(j));
-                        e.netServerHandler.sendPacket((Packet) new Packet3Chat("Stopping the server..."));
+                        player.networkHandler.sendPacket((Packet) new Packet3Chat("Stopping the server..."));
                     }
                     this.m = false;
                 } else if (s.toLowerCase().startsWith("save-all")) {
@@ -406,7 +406,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
                             this.a(s1, "Banning " + s2);
                             entityplayer = this.serverConfigurationManager.h(s2);
                             if (entityplayer != null) {
-                                entityplayer.netServerHandler.c("Banned by admin");
+                                entityplayer.networkHandler.c("Banned by admin");
                             }
                         } else if (s.toLowerCase().startsWith("pardon ")) {
                             s2 = s.substring(s.indexOf(" ")).trim();
@@ -419,14 +419,14 @@ public class MinecraftServer implements ICommandListener, Runnable {
                             for (int i = 0; i < this.serverConfigurationManager.players.size(); ++i) {
                                 EntityPlayer entityplayer1 = (EntityPlayer) this.serverConfigurationManager.players.get(i);
 
-                                if (entityplayer1.name.equalsIgnoreCase(s2)) {
+                                if (entityplayer1.username.equalsIgnoreCase(s2)) {
                                     entityplayer = entityplayer1;
                                 }
                             }
 
                             if (entityplayer != null) {
-                                entityplayer.netServerHandler.c("Kicked by admin");
-                                this.a(s1, "Kicking " + entityplayer.name);
+                                entityplayer.networkHandler.c("Kicked by admin");
+                                this.a(s1, "Kicking " + entityplayer.username);
                             } else {
                                 icommandlistener.b("Can't find user " + s2 + ". No kick.");
                             }
@@ -444,7 +444,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
                                     } else if (entityplayer2 == null) {
                                         icommandlistener.b("Can't find user " + astring[2] + ". No tp.");
                                     } else {
-                                        entityplayer.netServerHandler.a(entityplayer2.locX, entityplayer2.locY, entityplayer2.locZ, entityplayer2.yaw, entityplayer2.pitch);
+                                        entityplayer.networkHandler.a(entityplayer2.locX, entityplayer2.locY, entityplayer2.locZ, entityplayer2.yaw, entityplayer2.pitch);
                                         this.a(s1, "Teleporting " + astring[1] + " to " + astring[2] + ".");
                                     }
                                 } else {
@@ -464,7 +464,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
                                         int j = Integer.parseInt(astring[2]);
 
                                         if (Item.c[j] != null) {
-                                            this.a(s1, "Giving " + entityplayer2.name + " some " + j);
+                                            this.a(s1, "Giving " + entityplayer2.username + " some " + j);
                                             int k = 1;
 
                                             if (astring.length > 3) {
@@ -479,7 +479,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
                                                 k = 64;
                                             }
 
-                                            entityplayer2.a(new ItemStack(j, k));
+                                            entityplayer2.dropItem(new ItemStack(j, k));
                                         } else {
                                             icommandlistener.b("There's no item with id " + j);
                                         }

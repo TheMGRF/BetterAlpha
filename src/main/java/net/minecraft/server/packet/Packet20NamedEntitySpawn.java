@@ -25,7 +25,7 @@ public class Packet20NamedEntitySpawn extends Packet {
 
     public Packet20NamedEntitySpawn(EntityHuman entityhuman) {
         this.a = entityhuman.g;
-        this.b = entityhuman.name;
+        this.b = entityhuman.username;
         this.c = MathHelper.b(entityhuman.locX * 32.0D);
         this.d = MathHelper.b(entityhuman.locY * 32.0D);
         this.e = MathHelper.b(entityhuman.locZ * 32.0D);

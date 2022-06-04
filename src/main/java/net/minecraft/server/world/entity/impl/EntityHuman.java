@@ -26,7 +26,7 @@ public class EntityHuman extends EntityLiving {
     public float ao;
     public boolean ap = false;
     public int aq = 0;
-    public String name;
+    public String username;
     public int dimension;
     private int a = 0;
     public EntityFishingHook at = null;
@@ -108,11 +108,11 @@ public class EntityHuman extends EntityLiving {
         this.a(0.2F, 0.2F);
         this.a(this.locX, this.locY, this.locZ);
         this.motY = 0.10000000149011612D;
-        if (this.name.equals("Notch")) {
-            this.a(new ItemStack(Item.APPLE, 1), true);
+        if (this.username.equals("Notch")) {
+            this.dropItem(new ItemStack(Item.APPLE, 1), true);
         }
 
-        this.inventory.f();
+        this.inventory.dropAll();
         if (entity != null) {
             this.motX = (double) (-MathHelper.b((this.aT + this.yaw) * 3.1415927F / 180.0F) * 0.1F);
             this.motZ = (double) (-MathHelper.a((this.aT + this.yaw) * 3.1415927F / 180.0F) * 0.1F);
@@ -127,11 +127,11 @@ public class EntityHuman extends EntityLiving {
         this.am += i;
     }
 
-    public void a(ItemStack itemstack) {
-        this.a(itemstack, false);
+    public void dropItem(ItemStack itemstack) {
+        this.dropItem(itemstack, false);
     }
 
-    public void a(ItemStack itemstack, boolean flag) {
+    public void dropItem(ItemStack itemstack, boolean flag) {
         if (itemstack != null) {
             EntityItem entityitem = new EntityItem(this.world, this.locX, this.locY - 0.30000001192092896D + (double) this.s(), this.locZ, itemstack);
 
@@ -255,7 +255,7 @@ public class EntityHuman extends EntityLiving {
     }
 
     public void H() {
-        this.inventory.a(this.inventory.d, (ItemStack) null);
+        this.inventory.setItem(this.inventory.d, (ItemStack) null);
     }
 
     public double A() {
