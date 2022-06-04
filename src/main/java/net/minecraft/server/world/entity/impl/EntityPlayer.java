@@ -64,7 +64,7 @@ public class EntityPlayer extends EntityHuman {
 
     public boolean hurt(Entity source, int amount) {
         super.hurt(source, amount);
-        this.netServerHandler.sendPacket(new Packet8UpdateHealth(health));
+        this.networkHandler.sendPacket(new Packet8UpdateHealth(health));
         return true;
     }
 

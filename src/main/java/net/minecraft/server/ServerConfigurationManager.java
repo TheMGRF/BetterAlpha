@@ -129,7 +129,7 @@ public class ServerConfigurationManager {
         // TODO: Support for multi-world (nether?)
         this.minecraftServer.entityTrackers[0].removeEntity(player);
         this.minecraftServer.entityTrackers[0].addEntity(player);
-        this.playerManagers[0].b(player);
+        this.playersInWorld[0].b(player);
 
         this.players.remove(player); // eww but probably right
 
@@ -137,9 +137,9 @@ public class ServerConfigurationManager {
         worldServer.d(player);
 
         // Make a new entity player
-        EntityPlayer newPlayer = new EntityPlayer(this.minecraftServer, worldServer, player.name, new ItemInWorldManager(worldServer));
+        EntityPlayer newPlayer = new EntityPlayer(this.minecraftServer, worldServer, player.username, new ItemInWorldManager(worldServer));
         newPlayer.g = player.g;
-        newPlayer.netServerHandler = player.netServerHandler;
+        newPlayer.networkHandler = player.networkHandler;
 
         worldServer.A.d((int) newPlayer.lastX >> 4, (int) newPlayer.lastZ >> 4);
 
@@ -147,10 +147,10 @@ public class ServerConfigurationManager {
             newPlayer.a(newPlayer.lastX, newPlayer.lastY + 1.0D, newPlayer.lastZ);
         }
 
-        player.netServerHandler.sendPacket(new Packet9Respawn());
-        player.netServerHandler.a(player.lastX, player.lastY, player.lastZ, player.lastYaw, player.lastPitch);
+        player.networkHandler.sendPacket(new Packet9Respawn());
+        player.networkHandler.a(player.lastX, player.lastY, player.lastZ, player.lastYaw, player.lastPitch);
 
-        this.playerManagers[0].a(newPlayer);
+        this.playersInWorld[0].a(newPlayer);
         //worldServer.trackEntity(newPlayer);
         this.players.add(newPlayer);
         return newPlayer;

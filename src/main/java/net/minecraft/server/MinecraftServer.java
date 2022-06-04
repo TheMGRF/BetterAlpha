@@ -352,7 +352,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
                 if (s.toLowerCase().equals("stop")) {
                     this.a(s1, "Stopping the server...");
                     for (int j = 0; j < this.serverConfigurationManager.players.size(); ++j) {
-                        EntityPlayer e = ((EntityPlayer) this.serverConfigurationManager.players.get(j));
+                        EntityPlayer player = this.serverConfigurationManager.players.get(j);
                         player.networkHandler.sendPacket((Packet) new Packet3Chat("Stopping the server..."));
                     }
                     this.m = false;
