@@ -2,19 +2,18 @@ package net.minecraft.server.gui;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.player.IUpdatePlayerListBox;
-import net.minecraft.server.world.entity.impl.EntityPlayer;
 
 import javax.swing.*;
 import java.util.Vector;
 
 public class PlayerListBox extends JList implements IUpdatePlayerListBox {
 
-    private MinecraftServer a;
+    private final MinecraftServer a;
     private int b = 0;
 
     public PlayerListBox(MinecraftServer minecraftserver) {
         this.a = minecraftserver;
-        minecraftserver.a((IUpdatePlayerListBox) this);
+        minecraftserver.a(this);
     }
 
     public void a() {
@@ -22,7 +21,7 @@ public class PlayerListBox extends JList implements IUpdatePlayerListBox {
             Vector vector = new Vector();
 
             for (int i = 0; i < this.a.serverConfigurationManager.players.size(); ++i) {
-                vector.add(((EntityPlayer) this.a.serverConfigurationManager.players.get(i)).username);
+                vector.add(this.a.serverConfigurationManager.players.get(i).username);
             }
 
             this.setListData(vector);

@@ -9,7 +9,6 @@ import net.minecraft.server.network.NetworkListenThread;
 import net.minecraft.server.network.ThreadCommandReader;
 import net.minecraft.server.network.thread.ThreadServerApplication;
 import net.minecraft.server.network.thread.ThreadSleepForever;
-import net.minecraft.server.packet.Packet;
 import net.minecraft.server.packet.Packet3Chat;
 import net.minecraft.server.packet.Packet4UpdateTime;
 import net.minecraft.server.player.IUpdatePlayerListBox;
@@ -20,7 +19,6 @@ import net.minecraft.server.world.SecondaryWorldServer;
 import net.minecraft.server.world.WorldManager;
 import net.minecraft.server.world.WorldServer;
 import net.minecraft.server.world.chunk.ChunkCoordinates;
-import net.minecraft.server.world.chunk.IProgressUpdate;
 import net.minecraft.server.world.entity.Entity;
 import net.minecraft.server.world.entity.EntityTracker;
 import net.minecraft.server.world.entity.impl.EntityHuman;
@@ -49,8 +47,8 @@ public class MinecraftServer implements ICommandListener, Runnable {
     int h = 0;
     public String i;
     public int j;
-    private List n = new ArrayList();
-    private List o = Collections.synchronizedList(new ArrayList());
+    private final List<IUpdatePlayerListBox> n = new ArrayList<>();
+    private final List<ServerCommand> commands = Collections.synchronizedList(new ArrayList<>());
     public EntityTracker[] entityTrackers = new EntityTracker[2];
     public boolean l;
     public boolean spawnAnimals;
@@ -67,7 +65,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
         ConsoleLogManager.a();
         LOGGER.info("Starting Minecraft server version Alpha 1.2.1_01 (0.2.3)");
         LOGGER.info("Nether additions by Moresteck: https://github.com/Moresteck");
-        LOGGER.info("Cleanup and extras by BetterAlpha: https://github.com/domrbeeson/BetterAlpha");
+        LOGGER.info("Cleanup and extras by BetterAlpha: https://github.com/TheMGRF/BetterAlpha");
         if (Runtime.getRuntime().maxMemory() / 1024L / 1024L < 512L) {
             LOGGER.warning("**** NOT ENOUGH RAM!");
             LOGGER.warning("To start the server with more ram, launch it as \"java -Xmx1024M -Xms1024M -jar minecraft_server.jar\"");
@@ -109,7 +107,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
             try {
                 k = Long.parseLong(s2);
             } catch (NumberFormatException numberformatexception) {
-                k = (long) s2.hashCode();
+                k = s2.hashCode();
             }
         }
 
@@ -188,7 +186,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
         for (int i = 0; i < this.worlds.length; ++i) {
             WorldServer worldserver = this.worlds[i];
 
-            worldserver.a(true, (IProgressUpdate) null);
+            worldserver.a(true, null);
             worldserver.h();
         }
     }
@@ -304,7 +302,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
                 WorldServer worldserver = this.worlds[j];
 
                 if (this.h % 20 == 0) {
-                    this.serverConfigurationManager.a((Packet) (new Packet4UpdateTime(worldserver.lastUpdate)), worldserver.q.e);
+                    this.serverConfigurationManager.a(new Packet4UpdateTime(worldserver.lastUpdate), worldserver.q.e);
                 }
 
                 // Spawn entities in world?
@@ -327,7 +325,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
         }
 
         for (j = 0; j < this.n.size(); ++j) {
-            ((IUpdatePlayerListBox) this.n.get(j)).a();
+            this.n.get(j).a();
         }
 
         try {
@@ -338,12 +336,12 @@ public class MinecraftServer implements ICommandListener, Runnable {
     }
 
     public void a(String s, ICommandListener icommandlistener) {
-        this.o.add(new ServerCommand(s, icommandlistener));
+        this.commands.add(new ServerCommand(s, icommandlistener));
     }
 
     public void b() {
-        while (this.o.size() > 0) {
-            ServerCommand servercommand = (ServerCommand) this.o.remove(0);
+        while (this.commands.size() > 0) {
+            ServerCommand servercommand = this.commands.remove(0);
             String s = servercommand.a;
             ICommandListener icommandlistener = servercommand.b;
             String s1 = icommandlistener.c();
@@ -353,7 +351,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
                     this.a(s1, "Stopping the server...");
                     for (int j = 0; j < this.serverConfigurationManager.players.size(); ++j) {
                         EntityPlayer player = this.serverConfigurationManager.players.get(j);
-                        player.networkHandler.sendPacket((Packet) new Packet3Chat("Stopping the server..."));
+                        player.networkHandler.sendPacket(new Packet3Chat("Stopping the server..."));
                     }
                     this.m = false;
                 } else if (s.toLowerCase().startsWith("save-all")) {
@@ -369,7 +367,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
                 } else if (s.toLowerCase().startsWith("clearentity")) {
                     int i = 0;
                     for (int j = 0; j < this.worlds[0].entities.size(); ++j) {
-                        Entity e = ((Entity) this.worlds[0].entities.get(j));
+                        Entity e = this.worlds[0].entities.get(j);
                         if (!(e instanceof EntityHuman) || !(e instanceof EntityPlayer)) {
                             this.worlds[0].d(e);
                             i++;
@@ -417,7 +415,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
                             entityplayer = null;
 
                             for (int i = 0; i < this.serverConfigurationManager.players.size(); ++i) {
-                                EntityPlayer entityplayer1 = (EntityPlayer) this.serverConfigurationManager.players.get(i);
+                                EntityPlayer entityplayer1 = this.serverConfigurationManager.players.get(i);
 
                                 if (entityplayer1.username.equalsIgnoreCase(s2)) {
                                     entityplayer = entityplayer1;
@@ -492,7 +490,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
                             } else if (s.toLowerCase().startsWith("say ")) {
                                 s = s.substring(s.indexOf(" ")).trim();
                                 LOGGER.info("[" + s1 + "] " + s);
-                                this.serverConfigurationManager.a((Packet) (new Packet3Chat("\u00A7d[Server] " + s)));
+                                this.serverConfigurationManager.a(new Packet3Chat("\u00A7d[Server] " + s));
                             } else if (s.toLowerCase().startsWith("tell ")) {
                                 astring = s.split(" ");
                                 if (astring.length >= 3) {
@@ -501,7 +499,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
                                     LOGGER.info("[" + s1 + "->" + astring[1] + "] " + s);
                                     s = "\u00A77" + s1 + " whispers " + s;
                                     LOGGER.info(s);
-                                    if (!this.serverConfigurationManager.a(astring[1], (Packet) (new Packet3Chat(s)))) {
+                                    if (!this.serverConfigurationManager.a(astring[1], new Packet3Chat(s))) {
                                         icommandlistener.b("There's no player by that name online.");
                                     }
                                 }

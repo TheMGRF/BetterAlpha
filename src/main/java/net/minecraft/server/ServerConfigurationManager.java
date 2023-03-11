@@ -147,7 +147,7 @@ public class ServerConfigurationManager {
         }
 
         player.networkHandler.sendPacket(new Packet9Respawn());
-        player.networkHandler.a(player.lastX, player.lastY, player.lastZ, player.lastYaw, player.lastPitch);
+        player.networkHandler.d();
 
         this.playersInWorld[0].a(newPlayer);
         worldServer.trackEntity(newPlayer);
