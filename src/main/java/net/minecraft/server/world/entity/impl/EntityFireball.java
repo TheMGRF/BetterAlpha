@@ -62,7 +62,7 @@ public class EntityFireball extends Entity {
             if (i == this.aj) {
                 ++this.am;
                 if (this.am == 1200) {
-                    this.l();
+                    this.die();
                 }
 
                 return;
@@ -126,7 +126,7 @@ public class EntityFireball extends Entity {
 
             explosion.a = true;
             explosion.a(this.world, this, this.locX, this.locY, this.locZ, 1.0F);
-            this.l();
+            this.die();
         }
 
         this.locX += this.motX;

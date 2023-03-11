@@ -36,9 +36,9 @@ public class EntityFishingHook extends Entity {
         super.b_();
         ItemStack itemstack = this.b.G();
 
-        if (!this.b.F && this.b.w() && itemstack != null && itemstack.a() == Item.FISHING_ROD && this.b(this.b) <= 1024.0D) {
+        if (!this.b.dead && this.b.w() && itemstack != null && itemstack.a() == Item.FISHING_ROD && this.b(this.b) <= 1024.0D) {
             if (this.c != null) {
-                if (!this.c.F) {
+                if (!this.c.dead) {
                     this.locX = this.c.locX;
                     this.locY = this.c.boundingBox.b + (double) this.c.I * 0.8D;
                     this.locZ = this.c.locZ;
@@ -58,7 +58,7 @@ public class EntityFishingHook extends Entity {
                 if (i == this.ai) {
                     ++this.ak;
                     if (this.ak == 1200) {
-                        this.l();
+                        this.die();
                     }
 
                     return;
@@ -209,7 +209,7 @@ public class EntityFishingHook extends Entity {
                 this.a(this.locX, this.locY, this.locZ);
             }
         } else {
-            this.l();
+            this.die();
             this.b.at = null;
         }
     }

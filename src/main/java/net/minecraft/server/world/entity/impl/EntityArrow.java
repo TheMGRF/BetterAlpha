@@ -79,7 +79,7 @@ public class EntityArrow extends Entity {
             if (i == this.e) {
                 ++this.aj;
                 if (this.aj == 1200) {
-                    this.l();
+                    this.die();
                 }
 
                 return;
@@ -140,7 +140,7 @@ public class EntityArrow extends Entity {
             if (movingobjectposition.g != null) {
                 if (movingobjectposition.g.hurt(this.ai, 4)) {
                     this.world.a(this, "random.drr", 1.0F, 1.2F / (this.V.nextFloat() * 0.2F + 0.9F));
-                    this.l();
+                    this.die();
                 } else {
                     this.motX *= -0.10000000149011612D;
                     this.motY *= -0.10000000149011612D;
@@ -233,7 +233,7 @@ public class EntityArrow extends Entity {
         if (this.f && this.ai == entityhuman && this.a <= 0 && entityhuman.inventory.a(new ItemStack(Item.ARROW.aW, 1))) {
             this.world.a(this, "random.pop", 0.2F, ((this.V.nextFloat() - this.V.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             entityhuman.c(this, 1);
-            this.l();
+            this.die();
         }
     }
 }

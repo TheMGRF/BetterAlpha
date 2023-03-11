@@ -29,7 +29,7 @@ public class EntityMonster extends EntityCreature implements IMonster {
     public void b_() {
         super.b_();
         if (this.world.k == 0) {
-            this.l();
+            this.die();
         }
     }
 

@@ -24,16 +24,16 @@ public class ServerConfigurationManager {
     private final Set<String> banned = new HashSet<>();
     private final Set<String> ipBanned = new HashSet<>();
     private final Set<String> admins = new HashSet<>();
-    private final File i;
-    private final File j;
-    private final File k;
+    private final File bannedPlayers;
+    private final File bannedIPs;
+    private final File operators;
     private PlayerNBTManager l;
 
     public ServerConfigurationManager(MinecraftServer minecraftserver) {
         this.minecraftServer = minecraftserver;
-        this.i = minecraftserver.a("banned-players.txt");
-        this.j = minecraftserver.a("banned-ips.txt");
-        this.k = minecraftserver.a("ops.txt");
+        this.bannedPlayers = minecraftserver.a("banned-players.txt");
+        this.bannedIPs = minecraftserver.a("banned-ips.txt");
+        this.operators = minecraftserver.a("ops.txt");
 
         this.playersInWorld[0] = new PlayerManager(minecraftserver, 0);
         this.playersInWorld[1] = new PlayerManager(minecraftserver, -1);
@@ -146,12 +146,17 @@ public class ServerConfigurationManager {
             newPlayer.a(newPlayer.lastX, newPlayer.lastY + 1.0D, newPlayer.lastZ);
         }
 
-        player.networkHandler.sendPacket(new Packet9Respawn());
-        player.networkHandler.d();
+        newPlayer.networkHandler.sendPacket(new Packet9Respawn());
+        newPlayer.networkHandler.sendPacket(new Packet9Respawn());
+        newPlayer.spawnIn(worldServer);
+        newPlayer.dead = false;
 
-        this.playersInWorld[0].a(newPlayer);
-        worldServer.trackEntity(newPlayer);
-        this.players.add(newPlayer);
+        newPlayer.networkHandler.sendPacket(new Packet6SpawnPosition(worldServer.m, worldServer.n, worldServer.o));
+        a(newPlayer); // TODO: Check if player is connected before re-add
+        newPlayer.networkHandler.teleport(newPlayer.lastX, newPlayer.lastY, newPlayer.lastZ, newPlayer.lastYaw, newPlayer.lastPitch);
+        newPlayer.networkHandler.updateInventory();
+        minecraftServer.c.a(newPlayer.networkHandler);
+        newPlayer.networkHandler.sendPacket(new Packet4UpdateTime(worldServer.lastUpdate));
         return newPlayer;
     }
 
@@ -180,7 +185,7 @@ public class ServerConfigurationManager {
         }
     }
 
-    public String c() {
+    public String getPlayersHumanReadable() {
         StringBuilder s = new StringBuilder();
 
         for (int i = 0; i < this.players.size(); ++i) {
@@ -207,7 +212,7 @@ public class ServerConfigurationManager {
     private void loadBanList() {
         try {
             this.banned.clear();
-            BufferedReader bufferedreader = new BufferedReader(new FileReader(this.i));
+            BufferedReader bufferedreader = new BufferedReader(new FileReader(this.bannedPlayers));
             String s;
             while ((s = bufferedreader.readLine()) != null) {
                 this.banned.add(s.trim().toLowerCase());
@@ -221,7 +226,7 @@ public class ServerConfigurationManager {
 
     private void saveBanList() {
         try {
-            PrintWriter printwriter = new PrintWriter(new FileWriter(this.i, false));
+            PrintWriter printwriter = new PrintWriter(new FileWriter(this.bannedPlayers, false));
             for (String s : this.banned) {
                 printwriter.println(s);
             }
@@ -245,7 +250,7 @@ public class ServerConfigurationManager {
     private void loadIPBanList() {
         try {
             this.ipBanned.clear();
-            BufferedReader bufferedreader = new BufferedReader(new FileReader(this.j));
+            BufferedReader bufferedreader = new BufferedReader(new FileReader(this.bannedIPs));
             String s;
             while ((s = bufferedreader.readLine()) != null) {
                 this.ipBanned.add(s.trim().toLowerCase());
@@ -259,7 +264,7 @@ public class ServerConfigurationManager {
 
     private void saveIPBanList() {
         try {
-            PrintWriter printwriter = new PrintWriter(new FileWriter(this.j, false));
+            PrintWriter printwriter = new PrintWriter(new FileWriter(this.bannedIPs, false));
             for (String s : this.ipBanned) {
                 printwriter.println(s);
             }
@@ -283,7 +288,7 @@ public class ServerConfigurationManager {
     private void loadAdmins() {
         try {
             this.admins.clear();
-            BufferedReader bufferedreader = new BufferedReader(new FileReader(this.k));
+            BufferedReader bufferedreader = new BufferedReader(new FileReader(this.operators));
             String s;
             while ((s = bufferedreader.readLine()) != null) {
                 this.admins.add(s.trim().toLowerCase());
@@ -297,7 +302,7 @@ public class ServerConfigurationManager {
 
     private void saveAdmins() {
         try {
-            PrintWriter printwriter = new PrintWriter(new FileWriter(this.k, false));
+            PrintWriter printwriter = new PrintWriter(new FileWriter(this.operators, false));
 
             for (String s : this.admins) {
                 printwriter.println(s);
@@ -323,16 +328,15 @@ public class ServerConfigurationManager {
         return null;
     }
 
-    public void a(String s, String s1) {
-        EntityPlayer entityplayer = this.getPlayer(s);
+    public void sendMessage(String player, String message) {
+        EntityPlayer entityplayer = this.getPlayer(player);
+        if (entityplayer == null) return;
 
-        if (entityplayer != null) {
-            entityplayer.networkHandler.sendPacket(new Packet3Chat(s1));
-        }
+        entityplayer.networkHandler.sendPacket(new Packet3Chat(message));
     }
 
-    public void i(String s) {
-        Packet3Chat packet3chat = new Packet3Chat(s);
+    public void broadcastToOperators(String message) {
+        Packet3Chat packet3chat = new Packet3Chat(message);
         for (EntityPlayer player : this.players) {
             if (this.isAdmin(player.username)) {
                 player.networkHandler.sendPacket(packet3chat);
@@ -340,7 +344,7 @@ public class ServerConfigurationManager {
         }
     }
 
-    public boolean a(String s, Packet packet) {
+    public boolean trySendPacket(String s, Packet packet) {
         EntityPlayer entityplayer = this.getPlayer(s);
 
         if (entityplayer != null) {

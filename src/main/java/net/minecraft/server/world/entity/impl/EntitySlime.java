@@ -95,7 +95,7 @@ public class EntitySlime extends EntityLiving implements IMonster {
         }
     }
 
-    public void l() {
+    public void die() {
         if (this.c > 1 && this.health == 0) {
             for (int i = 0; i < 4; ++i) {
                 float f = ((float) (i % 2) - 0.5F) * (float) this.c / 4.0F;
@@ -108,7 +108,7 @@ public class EntitySlime extends EntityLiving implements IMonster {
             }
         }
 
-        super.l();
+        super.die();
     }
 
     public void a(EntityHuman entityhuman) {

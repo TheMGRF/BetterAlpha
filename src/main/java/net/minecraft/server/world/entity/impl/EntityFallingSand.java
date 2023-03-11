@@ -31,12 +31,12 @@ public class EntityFallingSand extends Entity {
     }
 
     public boolean c_() {
-        return !this.F;
+        return !this.dead;
     }
 
     public void b_() {
         if (this.a == 0) {
-            this.l();
+            this.die();
         } else {
             this.lastX = this.locX;
             this.lastY = this.locY;
@@ -59,13 +59,13 @@ public class EntityFallingSand extends Entity {
                 this.motX *= 0.699999988079071D;
                 this.motZ *= 0.699999988079071D;
                 this.motY *= -0.5D;
-                this.l();
+                this.die();
                 if (!this.world.a(this.a, i, j, k, true) || !this.world.d(i, j, k, this.a)) {
                     this.a(this.a, 1);
                 }
             } else if (this.b > 100) {
                 this.a(this.a, 1);
-                this.l();
+                this.die();
             }
         }
     }

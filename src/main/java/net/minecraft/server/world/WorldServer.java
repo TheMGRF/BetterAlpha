@@ -28,7 +28,7 @@ public class WorldServer extends World {
 
     public void entityJoinedWorld(Entity entity, boolean flag) {
         if (!this.server.spawnAnimals && (entity instanceof EntityAnimal)) {
-            entity.l();
+            entity.die();
         }
 
         if (entity.j == null || !(entity.j instanceof EntityHuman)) {

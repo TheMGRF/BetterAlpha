@@ -87,17 +87,17 @@ public class EntityMinecart extends Entity implements IInventory {
                 this.a(Block.FURNACE.bi, 1, 0.0F);
             }
 
-            this.l();
+            this.die();
         }
 
         return true;
     }
 
     public boolean c_() {
-        return !this.F;
+        return !this.dead;
     }
 
-    public void l() {
+    public void die() {
         for (int i = 0; i < this.a(); ++i) {
             ItemStack itemstack = this.a(i);
 
@@ -125,7 +125,7 @@ public class EntityMinecart extends Entity implements IInventory {
             }
         }
 
-        super.l();
+        super.die();
     }
 
     public void b_() {
@@ -415,7 +415,7 @@ public class EntityMinecart extends Entity implements IInventory {
                 }
             }
 
-            if (this.j != null && this.j.F) {
+            if (this.j != null && this.j.dead) {
                 this.j = null;
             }
 

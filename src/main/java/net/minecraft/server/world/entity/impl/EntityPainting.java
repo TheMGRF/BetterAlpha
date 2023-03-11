@@ -122,7 +122,7 @@ public class EntityPainting extends Entity {
     public void b_() {
         if (this.c++ == 100 && !this.c()) {
             this.c = 0;
-            this.l();
+            this.die();
             this.world.trackEntity((Entity) (new EntityItem(this.world, this.locX, this.locY, this.locZ, new ItemStack(Item.PAINTING))));
         }
     }
@@ -190,7 +190,7 @@ public class EntityPainting extends Entity {
     }
 
     public boolean hurt(Entity entity, int i) {
-        this.l();
+        this.die();
         this.world.trackEntity((Entity) (new EntityItem(this.world, this.locX, this.locY, this.locZ, new ItemStack(Item.PAINTING))));
         return true;
     }

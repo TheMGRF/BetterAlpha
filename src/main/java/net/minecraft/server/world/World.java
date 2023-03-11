@@ -795,7 +795,7 @@ public class World implements IBlockAccess {
 
     // TODO: Idk what this is?
     public void d(Entity entity) {
-        entity.l();
+        entity.die();
         if (entity instanceof EntityHuman) {
             this.players.remove((EntityHuman) entity);
         }
@@ -949,7 +949,7 @@ public class World implements IBlockAccess {
         for (i = 0; i < this.entities.size(); ++i) {
             entity = this.entities.get(i);
             if (entity.k != null) {
-                if (!entity.k.F && entity.k.j == entity) {
+                if (!entity.k.dead && entity.k.j == entity) {
                     continue;
                 }
 
@@ -957,11 +957,11 @@ public class World implements IBlockAccess {
                 entity.k = null;
             }
 
-            if (!entity.F) {
+            if (!entity.dead) {
                 this.e(entity);
             }
 
-            if (entity.F) {
+            if (entity.dead) {
                 j = entity.af;
                 k = entity.ah;
                 if (entity.ae && this.f(j, k)) {
@@ -1021,7 +1021,7 @@ public class World implements IBlockAccess {
             }
 
             if (flag && entity.ae && entity.j != null) {
-                if (!entity.j.F && entity.j.k == entity) {
+                if (!entity.j.dead && entity.j.k == entity) {
                     this.e(entity.j);
                 } else {
                     entity.j.k = null;
@@ -1057,7 +1057,7 @@ public class World implements IBlockAccess {
         for (Object value : list) {
             Entity entity = (Entity) value;
 
-            if (!entity.F && entity.i) {
+            if (!entity.dead && entity.i) {
                 return false;
             }
         }
@@ -1771,7 +1771,7 @@ public class World implements IBlockAccess {
             }
 
             if (flag && entity.ae && entity.j != null) {
-                if (!entity.j.F && entity.j.k == entity) {
+                if (!entity.j.dead && entity.j.k == entity) {
                     this.playerJoinedWorld(entity.j);
                 } else {
                     entity.j.k = null;

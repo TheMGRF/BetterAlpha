@@ -41,7 +41,7 @@ public class EntitySnowball extends Entity {
             if (i == this.e) {
                 ++this.aj;
                 if (this.aj == 1200) {
-                    this.l();
+                    this.die();
                 }
 
                 return;
@@ -106,7 +106,7 @@ public class EntitySnowball extends Entity {
                 this.world.a("snowballpoof", this.locX, this.locY, this.locZ, 0.0D, 0.0D, 0.0D);
             }
 
-            this.l();
+            this.die();
         }
 
         this.locX += this.motX;
@@ -176,7 +176,7 @@ public class EntitySnowball extends Entity {
         if (this.f && this.ai == entityhuman && this.a <= 0 && entityhuman.inventory.a(new ItemStack(Item.ARROW.aW, 1))) {
             this.world.a(this, "random.pop", 0.2F, ((this.V.nextFloat() - this.V.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             entityhuman.c(this, 1);
-            this.l();
+            this.die();
         }
     }
 }

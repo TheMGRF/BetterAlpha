@@ -47,7 +47,7 @@ public abstract class Entity {
     public boolean C; // hasCollided horizontal?
     public boolean D; // hasCollided vertical?
     public boolean E; // velocityChanged (motion)
-    public boolean F; // customVelocity (motion)
+    public boolean dead; // customVelocity (motion) (OR DEAD?)
     public float G; // height
     public float H; // width
     public float I; // length
@@ -89,7 +89,7 @@ public abstract class Entity {
         this.onGround = false;
         this.D = false;
         this.E = true;
-        this.F = false;
+        this.dead = false;
         this.G = 0.0F;
         this.H = 0.6F;
         this.I = 1.8F;
@@ -126,8 +126,8 @@ public abstract class Entity {
         return this.g;
     }
 
-    public void l() {
-        this.F = true;
+    public void die() {
+        this.dead = true;
     }
 
     public void a(float f, float f1) {
@@ -155,7 +155,7 @@ public abstract class Entity {
     }
 
     public void m() {
-        if (this.k != null && this.k.F) {
+        if (this.k != null && this.k.dead) {
             this.k = null;
         }
 
@@ -221,7 +221,7 @@ public abstract class Entity {
         }
 
         if (this.locY < -64.0D) {
-            this.o();
+            this.die();
         }
 
         this.c = false;
@@ -234,10 +234,6 @@ public abstract class Entity {
             this.hurt(null, 4);
             this.fire = 600;
         }
-    }
-
-    public void o() {
-        this.l();
     }
 
     public boolean b(double d0, double d1, double d2) {
@@ -673,7 +669,7 @@ public abstract class Entity {
     public boolean c(NBTTagCompound nbttagcompound) {
         String s = this.v();
 
-        if (!this.F && s != null) {
+        if (!this.dead && s != null) {
             nbttagcompound.a("id", s);
             this.d(nbttagcompound);
             return true;
@@ -764,7 +760,7 @@ public abstract class Entity {
     }
 
     public boolean w() {
-        return !this.F;
+        return !this.dead;
     }
 
     public boolean x() {
@@ -780,7 +776,7 @@ public abstract class Entity {
     }
 
     public void y() {
-        if (this.k.F) {
+        if (this.k.dead) {
             this.k = null;
         } else {
             this.motX = 0.0D;

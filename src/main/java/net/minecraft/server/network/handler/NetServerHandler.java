@@ -136,7 +136,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
             boolean flag2 = worldserver.a(this.entityPlayer, this.entityPlayer.boundingBox.b().e(f2, f2, f2)).size() == 0;
 
             if (flag && (flag1 || !flag2)) {
-                this.a(this.g, this.h, this.i, f, f1);
+                this.teleport(this.g, this.h, this.i, f, f1);
                 return;
             }
 
@@ -166,7 +166,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
         WorldServer toTp = this.minecraftServer.getWorldByDimension(player.dimension);
 
         world.d(player);
-        player.F = false;
+        player.dead = false;
         double d0 = player.locX;
         double d1 = player.locZ;
         double d2 = 8.0D;
@@ -175,25 +175,25 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
             d0 /= d2;
             d1 /= d2;
             player.b(d0 + 3D, player.locY, d1, player.yaw, player.pitch);
-            if (!player.F) {
+            if (!player.dead) {
                 toTp.entityJoinedWorld(player, false);
             }
         } else {
             d0 *= d2;
             d1 *= d2;
             player.b(d0 + 3D, player.locY, d1, player.yaw, player.pitch);
-            if (!player.F) {
+            if (!player.dead) {
                 toTp.entityJoinedWorld(player, false);
             }
         }
-        if (!player.F) {
+        if (!player.dead) {
             toTp.trackEntity(player);
             player.b(d0 + 3D, player.locY, d1, player.yaw, player.pitch);
             toTp.entityJoinedWorld(player, false);
             (new PortalTravelAgent()).a(toTp, player);
         }
         this.minecraftServer.serverConfigurationManager.ass(player);
-        this.a(player.locX, player.locY, player.locZ, player.yaw, player.pitch);
+        this.teleport(player.locX, player.locY, player.locZ, player.yaw, player.pitch);
         player.spawnIn(toTp);
         player.worldItems = new ItemInWorldManager(toTp);
         player.worldItems.entityHuman = player;
@@ -203,7 +203,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
         }
     }
 
-    public void a(double d0, double d1, double d2, float f, float f1) {
+    public void teleport(double d0, double d1, double d2, float f, float f1) {
         this.j = false;
         this.g = d0;
         this.h = d1;
@@ -356,7 +356,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
             s = s.trim();
 
             for (int i = 0; i < s.length(); ++i) {
-                if (" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_'abcdefghijklmnopqrstuvwxyz{|}~⌂\u00C7\u00FC\u00E9\u00E2\u00E4\u00E0\u00E5\u00E7\u00EA\u00EB\u00E8\u00EF\u00EE\u00EC\u00C4\u00C5\u00C9\u00E6\u00C6\u00F4\u00F6\u00F2\u00FB\u00F9\u00FF\u00D6\u00DC\u00F8\u00A3\u00D8\u00D7ƒ\u00E1\u00ED\u00F3\u00FA\u00F1\u00D1\u00AA\u00BA\u00BF\u00AE\u00AC\u00BD\u00BC\u00A1\u00AB\u00BB".indexOf(s.charAt(i)) < 0) {
+                if (" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_'abcdefghijklmnopqrstuvwxyz{|}~⌂ÇüéâäàåçêëèïîìÄÅÉæÆôöòûùÿÖÜø£Ø×ƒáíóúñÑªº¿®¬½¼¡«»".indexOf(s.charAt(i)) < 0) {
                     this.c("Illegal characters in chat");
                     return;
                 }
@@ -383,14 +383,12 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
             if (astring.length >= 3) {
                 s = s.substring(s.indexOf(" ")).trim();
                 s = s.substring(s.indexOf(" ")).trim();
-                s = "\u00A77" + this.entityPlayer.username + " whispers " + s;
+                s = "§7" + this.entityPlayer.username + " whispers " + s;
                 LOGGER.info(s + " to " + astring[1]);
-                if (!this.minecraftServer.serverConfigurationManager.a(astring[1], new Packet3Chat(s))) {
-                    this.sendPacket(new Packet3Chat("\u00A7cThere's no player by that name online."));
+                if (!this.minecraftServer.serverConfigurationManager.trySendPacket(astring[1], new Packet3Chat(s))) {
+                    this.sendPacket(new Packet3Chat("§cThere's no player by that name online."));
                 }
             }
-        } else if (s.toLowerCase().startsWith("/list")) {
-            this.sendPacket(new Packet3Chat("\u00A7cConnected players\u00A7f: " + this.minecraftServer.serverConfigurationManager.c()));
         } else {
             String s1;
 
@@ -420,7 +418,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
     }
 
     public void b(String s) {
-        this.sendPacket(new Packet3Chat("\u00A77" + s));
+        this.sendPacket(new Packet3Chat("§7" + s));
     }
 
     public String c() {
@@ -441,7 +439,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
         }
     }
 
-    public void d() {
+    public void updateInventory() {
         this.networkManager.sendPacket(new Packet5PlayerInventory(-1, this.entityPlayer.inventory.inventorySlots));
         this.networkManager.sendPacket(new Packet5PlayerInventory(-2, this.entityPlayer.inventory.craftingSlots));
         this.networkManager.sendPacket(new Packet5PlayerInventory(-3, this.entityPlayer.inventory.armourSlots));

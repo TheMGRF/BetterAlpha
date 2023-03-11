@@ -33,7 +33,7 @@ public class EntityTNTPrimed extends Entity {
     }
 
     public boolean c_() {
-        return !this.F;
+        return !this.dead;
     }
 
     public void b_() {
@@ -52,7 +52,7 @@ public class EntityTNTPrimed extends Entity {
         }
 
         if (this.a-- <= 0) {
-            this.l();
+            this.die();
             this.c();
         } else {
             this.world.a("smoke", this.locX, this.locY + 0.5D, this.locZ, 0.0D, 0.0D, 0.0D);

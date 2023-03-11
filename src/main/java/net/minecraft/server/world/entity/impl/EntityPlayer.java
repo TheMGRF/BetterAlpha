@@ -119,7 +119,7 @@ public class EntityPlayer extends EntityHuman {
     }
 
     public void c(Entity entity, int i) {
-        if (!entity.F) {
+        if (!entity.dead) {
             EntityTracker entitytracker = this.minecraftServer.b(this.dimension);
 
             if (entity instanceof EntityItem) {
@@ -138,7 +138,7 @@ public class EntityPlayer extends EntityHuman {
 
     public void mount(Entity entity) {
         super.e(entity);
-        this.networkHandler.a(this.locX, this.locY, this.locZ, this.yaw, this.pitch);
+        this.networkHandler.teleport(this.locX, this.locY, this.locZ, this.yaw, this.pitch);
     }
 
     public void E() {

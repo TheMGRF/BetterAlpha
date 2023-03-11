@@ -77,7 +77,7 @@ public class EntityItem extends Entity {
         ++this.e;
         ++this.b;
         if (this.b >= 6000) {
-            this.l();
+            this.die();
         }
     }
 
@@ -170,7 +170,7 @@ public class EntityItem extends Entity {
     public boolean hurt(Entity entity, int i) {
         this.f -= i;
         if (this.f <= 0) {
-            this.l();
+            this.die();
         }
 
         return false;
@@ -197,7 +197,7 @@ public class EntityItem extends Entity {
             if (this.c == 0 && entityhuman.inventory.a(this.a)) {
                 this.world.a(this, "random.pop", 0.2F, ((this.V.nextFloat() - this.V.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 entityhuman.c(this, i);
-                this.l();
+                this.die();
             }
         }
     }

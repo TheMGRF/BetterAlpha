@@ -79,20 +79,20 @@ public class NetLoginHandler extends NetHandler {
     }
 
     public void b(Packet1Login packet1login) {
-        EntityPlayer entityplayer = this.minecraftServer.serverConfigurationManager.a(this, packet1login.b, packet1login.c);
-        WorldServer worldserver = this.minecraftServer.getWorldByDimension(entityplayer.dimension);
+        EntityPlayer entityPlayer = this.minecraftServer.serverConfigurationManager.a(this, packet1login.b, packet1login.c);
+        if (entityPlayer != null) {
+            WorldServer worldServer = this.minecraftServer.getWorldByDimension(entityPlayer.dimension);
 
-        if (entityplayer != null) {
             LOGGER.info(this.b() + " logged in");
-            NetServerHandler netserverhandler = new NetServerHandler(this.minecraftServer, this.networkManager, entityplayer);
+            NetServerHandler netserverhandler = new NetServerHandler(this.minecraftServer, this.networkManager, entityPlayer);
 
-            netserverhandler.sendPacket(new Packet1Login("", "", 0, worldserver.u, (byte) worldserver.q.e));
-            netserverhandler.sendPacket(new Packet6SpawnPosition(worldserver.m, worldserver.n, worldserver.o));
-            this.minecraftServer.serverConfigurationManager.a(entityplayer);
-            netserverhandler.a(entityplayer.locX, entityplayer.locY, entityplayer.locZ, entityplayer.yaw, entityplayer.pitch);
-            netserverhandler.d();
+            netserverhandler.sendPacket(new Packet1Login("", "", 0, worldServer.u, (byte) worldServer.q.e));
+            netserverhandler.sendPacket(new Packet6SpawnPosition(worldServer.m, worldServer.n, worldServer.o));
+            this.minecraftServer.serverConfigurationManager.a(entityPlayer);
+            netserverhandler.teleport(entityPlayer.locX, entityPlayer.locY, entityPlayer.locZ, entityPlayer.yaw, entityPlayer.pitch);
+            netserverhandler.updateInventory();
             this.minecraftServer.c.a(netserverhandler);
-            netserverhandler.sendPacket(new Packet4UpdateTime(worldserver.lastUpdate));
+            netserverhandler.sendPacket(new Packet4UpdateTime(worldServer.lastUpdate));
         }
 
         this.c = true;

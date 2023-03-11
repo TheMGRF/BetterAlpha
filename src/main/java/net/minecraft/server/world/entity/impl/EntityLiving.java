@@ -84,11 +84,11 @@ public class EntityLiving extends Entity {
     }
 
     public boolean c_() {
-        return !this.F;
+        return !this.dead;
     }
 
     public boolean u() {
-        return !this.F;
+        return !this.dead;
     }
 
     public float s() {
@@ -155,7 +155,7 @@ public class EntityLiving extends Entity {
             ++this.deathTime;
             if (this.deathTime > 20) {
                 this.K();
-                this.l();
+                this.die();
 
                 for (i = 0; i < 20; ++i) {
                     double d0 = this.V.nextGaussian() * 0.02D;
@@ -524,7 +524,7 @@ public class EntityLiving extends Entity {
     }
 
     public boolean w() {
-        return !this.F && this.health > 0;
+        return !this.dead && this.health > 0;
     }
 
     public void D() {
@@ -603,14 +603,14 @@ public class EntityLiving extends Entity {
             double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 
             if (d3 > 16384.0D) {
-                this.l();
+                this.die();
             }
 
             if (this.bf > 600 && this.V.nextInt(800) == 0) {
                 if (d3 < 1024.0D) {
                     this.bf = 0;
                 } else {
-                    this.l();
+                    this.die();
                 }
             }
         }
@@ -631,7 +631,7 @@ public class EntityLiving extends Entity {
 
         if (this.aj != null) {
             this.b(this.aj, 10.0F);
-            if (this.ak-- <= 0 || this.aj.F || this.aj.b(this) > (double) (f * f)) {
+            if (this.ak-- <= 0 || this.aj.dead || this.aj.b(this) > (double) (f * f)) {
                 this.aj = null;
             }
         } else {

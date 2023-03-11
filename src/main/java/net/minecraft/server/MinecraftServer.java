@@ -348,22 +348,27 @@ public class MinecraftServer implements ICommandListener, Runnable {
 
             if (!s.toLowerCase().startsWith("help") && !s.toLowerCase().startsWith("?")) {
                 if (s.toLowerCase().equals("stop")) {
-                    this.a(s1, "Stopping the server...");
+                    this.broadcastToOperators(s1, "Stopping the server...");
                     for (int j = 0; j < this.serverConfigurationManager.players.size(); ++j) {
                         EntityPlayer player = this.serverConfigurationManager.players.get(j);
                         player.networkHandler.sendPacket(new Packet3Chat("Stopping the server..."));
                     }
                     this.m = false;
                 } else if (s.toLowerCase().startsWith("save-all")) {
-                    this.a(s1, "Forcing save..");
+                    this.broadcastToOperators(s1, "Forcing save..");
                     this.f();
-                    this.a(s1, "Save complete.");
+                    this.broadcastToOperators(s1, "Save complete.");
                 } else if (s.toLowerCase().startsWith("save-off")) {
-                    this.a(s1, "Disabling level saving..");
+                    this.broadcastToOperators(s1, "Disabling level saving..");
                     this.worlds[0].C = true;
                 } else if (s.toLowerCase().startsWith("save-on")) {
-                    this.a(s1, "Enabling level saving..");
+                    this.broadcastToOperators(s1, "Enabling level saving..");
                     this.worlds[0].C = false;
+                } else if (s.toLowerCase().startsWith("list")) {
+                    this.broadcastToOperators(s1, String.format("§7Players: %s", this.serverConfigurationManager.getPlayersHumanReadable()));
+                } else if (s.toLowerCase().startsWith("suicide")) {
+                    EntityPlayer player = this.serverConfigurationManager.players.get(j);
+                    player.die();
                 } else if (s.toLowerCase().startsWith("clearentity")) {
                     int i = 0;
                     for (int j = 0; j < this.worlds[0].entities.size(); ++j) {
@@ -373,35 +378,35 @@ public class MinecraftServer implements ICommandListener, Runnable {
                             i++;
                         }
                     }
-                    this.a(s1, "Cleared " + i + " entities.");
+                    this.broadcastToOperators(s1, "Cleared " + i + " entities.");
                 } else {
                     String s2;
 
                     if (s.toLowerCase().startsWith("op ")) {
                         s2 = s.substring(s.indexOf(" ")).trim();
                         this.serverConfigurationManager.setAdmin(s2);
-                        this.a(s1, "Opping " + s2);
-                        this.serverConfigurationManager.a(s2, "\u00A7eYou are now op!");
+                        this.broadcastToOperators(s1, "Opping " + s2);
+                        this.serverConfigurationManager.sendMessage(s2, "§eYou are now op!");
                     } else if (s.toLowerCase().startsWith("deop ")) {
                         s2 = s.substring(s.indexOf(" ")).trim();
                         this.serverConfigurationManager.removeAdmin(s2);
-                        this.serverConfigurationManager.a(s2, "\u00A7eYou are no longer op!");
-                        this.a(s1, "De-opping " + s2);
+                        this.serverConfigurationManager.sendMessage(s2, "§eYou are no longer op!");
+                        this.broadcastToOperators(s1, "De-opping " + s2);
                     } else if (s.toLowerCase().startsWith("ban-ip ")) {
                         s2 = s.substring(s.indexOf(" ")).trim();
                         this.serverConfigurationManager.banIP(s2);
-                        this.a(s1, "Banning ip " + s2);
+                        this.broadcastToOperators(s1, "Banning ip " + s2);
                     } else if (s.toLowerCase().startsWith("pardon-ip ")) {
                         s2 = s.substring(s.indexOf(" ")).trim();
                         this.serverConfigurationManager.unbanIP(s2);
-                        this.a(s1, "Pardoning ip " + s2);
+                        this.broadcastToOperators(s1, "Pardoning ip " + s2);
                     } else {
                         EntityPlayer entityplayer;
 
                         if (s.toLowerCase().startsWith("ban ")) {
                             s2 = s.substring(s.indexOf(" ")).trim();
                             this.serverConfigurationManager.ban(s2);
-                            this.a(s1, "Banning " + s2);
+                            this.broadcastToOperators(s1, "Banning " + s2);
                             entityplayer = this.serverConfigurationManager.getPlayer(s2);
                             if (entityplayer != null) {
                                 entityplayer.networkHandler.c("Banned by admin");
@@ -409,7 +414,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
                         } else if (s.toLowerCase().startsWith("pardon ")) {
                             s2 = s.substring(s.indexOf(" ")).trim();
                             this.serverConfigurationManager.unban(s2);
-                            this.a(s1, "Pardoning " + s2);
+                            this.broadcastToOperators(s1, "Pardoning " + s2);
                         } else if (s.toLowerCase().startsWith("kick ")) {
                             s2 = s.substring(s.indexOf(" ")).trim();
                             entityplayer = null;
@@ -424,7 +429,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
 
                             if (entityplayer != null) {
                                 entityplayer.networkHandler.c("Kicked by admin");
-                                this.a(s1, "Kicking " + entityplayer.username);
+                                this.broadcastToOperators(s1, "Kicking " + entityplayer.username);
                             } else {
                                 icommandlistener.b("Can't find user " + s2 + ". No kick.");
                             }
@@ -442,8 +447,8 @@ public class MinecraftServer implements ICommandListener, Runnable {
                                     } else if (entityplayer2 == null) {
                                         icommandlistener.b("Can't find user " + astring[2] + ". No tp.");
                                     } else {
-                                        entityplayer.networkHandler.a(entityplayer2.locX, entityplayer2.locY, entityplayer2.locZ, entityplayer2.yaw, entityplayer2.pitch);
-                                        this.a(s1, "Teleporting " + astring[1] + " to " + astring[2] + ".");
+                                        entityplayer.networkHandler.teleport(entityplayer2.locX, entityplayer2.locY, entityplayer2.locZ, entityplayer2.yaw, entityplayer2.pitch);
+                                        this.broadcastToOperators(s1, "Teleporting " + astring[1] + " to " + astring[2] + ".");
                                     }
                                 } else {
                                     icommandlistener.b("Syntax error, please provice a source and a target.");
@@ -462,7 +467,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
                                         int j = Integer.parseInt(astring[2]);
 
                                         if (Item.c[j] != null) {
-                                            this.a(s1, "Giving " + entityplayer2.username + " some " + j);
+                                            this.broadcastToOperators(s1, "Giving " + entityplayer2.username + " some " + j);
                                             int k = 1;
 
                                             if (astring.length > 3) {
@@ -490,16 +495,16 @@ public class MinecraftServer implements ICommandListener, Runnable {
                             } else if (s.toLowerCase().startsWith("say ")) {
                                 s = s.substring(s.indexOf(" ")).trim();
                                 LOGGER.info("[" + s1 + "] " + s);
-                                this.serverConfigurationManager.a(new Packet3Chat("\u00A7d[Server] " + s));
+                                this.serverConfigurationManager.a(new Packet3Chat("§d[Server] " + s));
                             } else if (s.toLowerCase().startsWith("tell ")) {
                                 astring = s.split(" ");
                                 if (astring.length >= 3) {
                                     s = s.substring(s.indexOf(" ")).trim();
                                     s = s.substring(s.indexOf(" ")).trim();
                                     LOGGER.info("[" + s1 + "->" + astring[1] + "] " + s);
-                                    s = "\u00A77" + s1 + " whispers " + s;
+                                    s = "§7" + s1 + " whispers " + s;
                                     LOGGER.info(s);
-                                    if (!this.serverConfigurationManager.a(astring[1], new Packet3Chat(s))) {
+                                    if (!this.serverConfigurationManager.trySendPacket(astring[1], new Packet3Chat(s))) {
                                         icommandlistener.b("There's no player by that name online.");
                                     }
                                 }
@@ -534,10 +539,10 @@ public class MinecraftServer implements ICommandListener, Runnable {
         }
     }
 
-    private void a(String s, String s1) {
+    private void broadcastToOperators(String s, String s1) {
         String s2 = s + ": " + s1;
 
-        this.serverConfigurationManager.i("\u00A77(" + s2 + ")");
+        this.serverConfigurationManager.broadcastToOperators("§7(" + s2 + ")");
         LOGGER.info(s2);
     }
 

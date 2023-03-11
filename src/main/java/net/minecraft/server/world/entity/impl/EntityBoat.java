@@ -55,14 +55,14 @@ public class EntityBoat extends Entity {
                 this.a(Item.STICK.aW, 1, 0.0F);
             }
 
-            this.l();
+            this.die();
         }
 
         return true;
     }
 
     public boolean c_() {
-        return !this.F;
+        return !this.dead;
     }
 
     public void b_() {
@@ -151,7 +151,7 @@ public class EntityBoat extends Entity {
         }
 
         if (this.positionChanged && d5 > 0.15D) {
-            this.l();
+            this.die();
 
             int k;
 
@@ -209,7 +209,7 @@ public class EntityBoat extends Entity {
             }
         }
 
-        if (this.j != null && this.j.F) {
+        if (this.j != null && this.j.dead) {
             this.j = null;
         }
     }

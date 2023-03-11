@@ -28,7 +28,7 @@ public class EntityGhast extends EntityFlying implements IMonster {
 
     protected void c() {
         if (this.world.k == 0) {
-            this.l();
+            this.die();
         }
 
         this.e = this.f;
@@ -56,7 +56,7 @@ public class EntityGhast extends EntityFlying implements IMonster {
             }
         }
 
-        if (this.ai != null && this.ai.F) {
+        if (this.ai != null && this.ai.dead) {
             this.ai = null;
         }
 
